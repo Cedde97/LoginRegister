@@ -66,6 +66,26 @@ public class ParserTest {
 
 					break;
 				}
+					
+				case ROUTING: {
+				System.out.println("Routing:");
+					
+				    Corner corner  = new Corner(0,1);
+				    Corner corner1 = new Corner(1,1);
+				    Corner corner2 = new Corner(0,0);
+				    Corner corner3 = new Corner(1,0);
+
+				    RoutHelper rh = server.getRoutHelper(buffer);
+
+				    Zone zone = new Zone(corner,corner1,corner2,corner3);
+
+				    Node oldNode = new Node(01l, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, "192.168.2.110", 2, zone);
+
+				    Node nodeNew = oldNode.routing(rh.getIP(),rh.getX(),rh.getY(),rh.getID());
+
+				    System.out.println(nodeNew.toString());
+
+                		}
 			}
 
 			ss.close();
