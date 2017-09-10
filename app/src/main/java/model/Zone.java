@@ -156,33 +156,33 @@ public class Zone {
 
      double midX = getLengthX(node1) / 2.0;
      // set peers und neigbour und update Corner
-     node1.setCornerBottomRightX(midX);
-     node1.setCornerTopRightX(midX);
+     node1.getBottomRight().setX(midX);
+     node1.getTopRight().setX(midX);
 
-     node2.setCornerTopRightX(midX);
-     node2.setCornerBottomRightX(midX);
+     node2.getTopRight().setX(midX);
+     node2.getBottomRight().setX(midX);
 
-     node3.setCornerBottomLeftX(midX);
-     node3.setCornerTopLeftX(midX);
+     node3.getBottomLeft().setX(midX);
+     node3.getTopLeft().setX(midX);
 
-     node4.setCornerTopLeftX(midX);
-     node4.setCornerBottomLeftX(midX);
+     node4.getTopLeft().setX(midX);
+     node4.getBottomLeft().setX(midX);
 
      } else {
 
      double midY =  getLengthY(node1) / 2.0;
      // set peers und neigbour und update Corner
-     node1.setCornerTopRightY(midY);
-     node1.setCornerTopLeftY(midY);
+     node1.getTopRight().setY(midY);
+     node1.getTopLeft().setY(midY);
 
-     node2.setCornerBottomLeftY(midY);
-     node2.setCornerBottomRightY(midY);
+     node2.getBottomLeft().setY(midY);
+     node2.getBottomRight().setY(midY);
 
-     node3.setCornerTopRightY(midY);
-     node3.setCornerTopLeftY(midY);
+     node3.getTopRight().setY(midY);
+     node3.getTopLeft().setY(midY);
 
-     node4.setCornerBottomRightY(midY);
-     node4.setCornerBottomLeftY(midY);
+     node4.getBottomRight().setY(midY);
+     node4.getBottomLeft().setY(midY);
      }
 
      }
@@ -190,14 +190,14 @@ public class Zone {
      * Get the length of the Y side of the zone
      */
       private double getLengthY(Node node) {
-        return   node.getCornerTopLeftY() - node.getCornerBottomLeftY();
+        return   node.getTopLeft().getY() - node.getBottomLeft().getY();
     }
 
     /**
      * Get the length of the X side of the zone
      */
       private double getLengthX(Node node) {
-        return  node.getCornerBottomRightX() - node.getCornerBottomLeftX();
+        return  node.getBottomRight().getX() - node.getBottomLeft().getX();
     }
 
     /**

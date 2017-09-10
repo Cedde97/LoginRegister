@@ -39,6 +39,7 @@ public class Node {
     }
 
 
+
     /**
      * Konstruktor zum Erstellen eines Nodes
      * @param uid User-ID

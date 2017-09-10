@@ -123,10 +123,15 @@ public class ExampleInstrumentedTest {
 
             zone = new Zone(cornerTopLeft,cornerTopRight,cornerBottomLeft,cornerBottomRight);
 
-            Node node1 = new Node(cornerBottomLeft,cornerBottomRight,cornerTopLeft,cornerTopRight);
+            /*Node node1 = new Node(cornerBottomLeft,cornerBottomRight,cornerTopLeft,cornerTopRight);
             Node node2 = new Node(cornerBottomLeft,cornerBottomRight,cornerTopLeft,cornerTopRight);
             Node node3 = new Node(cornerBottomLeft,cornerBottomRight,cornerTopLeft,cornerTopRight);
-            Node node4 = new Node(cornerBottomLeft,cornerBottomRight,cornerTopLeft,cornerTopRight);
+            Node node4 = new Node(cornerBottomLeft,cornerBottomRight,cornerTopLeft,cornerTopRight);*/
+
+            Node node1 = new Node(1,0.3,0.4,"1.1.1.1" ,3, zone);
+            Node node2 = new Node(1,0.6,0.8,"1.2.1.1" ,3, zone);
+            Node node3 = new Node(1,0.7,0.3,"1.3.1.1" ,3, zone);
+            Node node4 = new Node(1,0.1,0.7,"1.4.1.1" ,3, zone);
 
             /*dateiMemoDbSource.createDateiMemo(node1);
             dateiMemoDbSource.createDateiMemo(node2);
@@ -135,14 +140,14 @@ public class ExampleInstrumentedTest {
 
             zone.split(node1,node2,node3,node4);
 
-            assertEquals(0.5, node1.getCornerBottomRightX(), 0);
-            assertEquals(0.5, node1.getCornerTopRightX() ,0);
-            assertEquals(0.5, node2.getCornerBottomRightX(), 0);
-            assertEquals(0.5, node2.getCornerTopRightX() ,0);
-            assertEquals(0.5, node3.getCornerBottomLeftX(), 0);
-            assertEquals(0.5, node3.getCornerTopLeftX() ,0);
-            assertEquals(0.5, node4.getCornerBottomLeftX(), 0);
-            assertEquals(0.5, node4.getCornerTopLeftX() ,0);
+            assertEquals(0.5, node1.getBottomRight().getX(), 0);
+            assertEquals(0.5, node1.getTopRight().getX() ,0);
+            assertEquals(0.5, node2.getBottomRight().getX(), 0);
+            assertEquals(0.5, node2.getTopRight().getX() ,0);
+            assertEquals(0.5, node3.getBottomLeft().getX(), 0);
+            assertEquals(0.5, node3.getTopLeft().getX() ,0);
+            assertEquals(0.5, node4.getBottomLeft().getX(), 0);
+            assertEquals(0.5, node4.getTopLeft().getX() ,0);
         }
         catch(XMustBeLargerThanZeroException xMBLTZE)
         {
@@ -179,10 +184,15 @@ public class ExampleInstrumentedTest {
             cornerTopRight = new Corner(1.0,1.0);
             zone = new Zone(cornerTopLeft,cornerTopRight,cornerBottomLeft,cornerBottomRight);
 
-            Node node1 = new Node(cornerBottomLeft,cornerBottomRight,cornerTopLeft,cornerTopRight);
+            /*Node node1 = new Node(cornerBottomLeft,cornerBottomRight,cornerTopLeft,cornerTopRight);
             Node node2 = new Node(cornerBottomLeft,cornerBottomRight,cornerTopLeft,cornerTopRight);
             Node node3 = new Node(cornerBottomLeft,cornerBottomRight,cornerTopLeft,cornerTopRight);
-            Node node4 = new Node(cornerBottomLeft,cornerBottomRight,cornerTopLeft,cornerTopRight);
+            Node node4 = new Node(cornerBottomLeft,cornerBottomRight,cornerTopLeft,cornerTopRight);*/
+
+            Node node1 = new Node(1,0.3,0.4,"1.1.1.1" ,3, zone);
+            Node node2 = new Node(1,0.6,0.8,"1.2.1.1" ,3, zone);
+            Node node3 = new Node(1,0.7,0.3,"1.3.1.1" ,3, zone);
+            Node node4 = new Node(1,0.1,0.7,"1.4.1.1" ,3, zone);
 
             /*dateiMemoDbSource.createDateiMemo(node1);
             dateiMemoDbSource.createDateiMemo(node2);
@@ -192,14 +202,14 @@ public class ExampleInstrumentedTest {
             zone.split(node1,node2,node3,node4);
             zone.split(node1,node2,node3,node4);
 
-            assertEquals(0.5, node1.getCornerTopLeftY(), 0);
-            assertEquals(0.5, node1.getCornerTopRightY() ,0);
-            assertEquals(0.5, node2.getCornerBottomRightY(), 0);
-            assertEquals(0.5, node2.getCornerBottomLeftY() ,0);
-            assertEquals(0.5, node3.getCornerTopRightY(), 0);
-            assertEquals(0.5, node3.getCornerTopLeftY() ,0);
-            assertEquals(0.5, node4.getCornerBottomLeftY(), 0);
-            assertEquals(0.5, node4.getCornerBottomRightY() ,0);
+            assertEquals(0.5, node1.getTopLeft().getY(), 0);
+            assertEquals(0.5, node1.getTopRight().getY() ,0);
+            assertEquals(0.5, node2.getBottomRight().getY(), 0);
+            assertEquals(0.5, node2.getBottomLeft().getY() ,0);
+            assertEquals(0.5, node3.getTopRight().getY(), 0);
+            assertEquals(0.5, node3.getTopLeft().getY() ,0);
+            assertEquals(0.5, node4.getBottomLeft().getY(), 0);
+            assertEquals(0.5, node4.getBottomRight().getY() ,0);
         }
         catch(XMustBeLargerThanZeroException xMBLTZE)
         {

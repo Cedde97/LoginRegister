@@ -4,6 +4,7 @@ package app;
 
 import android.app.Application;
 import android.content.Context;
+import android.util.Log;
 
 import source.DateiMemoDbHelper;
 import source.DatabaseManager;
@@ -16,12 +17,13 @@ import source.DatabaseManager;
 public class App extends Application {
     private static Context context;
     private static DateiMemoDbHelper dbHelper;
+    private static final String LOG_TAG = App.class.getSimpleName();
 
     @Override
     public void onCreate()
     {
         super.onCreate();
-        System.out.println("APP.CONTEXT " + context);
+        Log.d(LOG_TAG ,"APP.CONTEXT " + context);
         context = this.getApplicationContext();
         //dbHelper = new DateiMemoDbHelper(context);
         dbHelper = new DateiMemoDbHelper();
