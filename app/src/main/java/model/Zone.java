@@ -184,7 +184,7 @@ public class Zone {
      node4.setCornerBottomRightY(midY);
      node4.setCornerBottomLeftY(midY);
      }
-     
+
      }
     /**
      * Get the length of the Y side of the zone
