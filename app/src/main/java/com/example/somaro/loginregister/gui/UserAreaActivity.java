@@ -30,17 +30,20 @@ import connection.Client;
 import connection.RoutHelper;
 import connection.ServerThreadActivity;
 import model.Neighbour;
+import model.Node;
 import model.Zone;
 
 
 public class UserAreaActivity extends Activity {
+    private static final int CAM_REQUEST = 1;
+    private static final int IMAGE_GALLERY_REQUEST = 20;
+
+    private ImageView imageView;
     private Client client;
 
-    public static final int IMAGE_GALLERY_REQUEST = 20;
-    private ImageView imageView;
-    static final int CAM_REQUEST = 1;
 
     Button routRequest, fileTransferRequest, neighbourTransfer, startServer;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,17 +81,18 @@ public class UserAreaActivity extends Activity {
     /**
      * Button Test für Routing
      */
-    View.OnClickListener RoutClickListener = new View.OnClickListener() {
+    private View.OnClickListener RoutClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             client = new Client();
 
             try {
-                //ip des s"imulierten" Knoten der bereits in CAN ist
+                //ip von Bootstrap-Server holen
+                //ip des "simulierten" Knoten der bereits in CAN ist
                 Socket socket = new Socket("192.168.2.110", 8080);
 
                 //Daten des zu routenden Knoten
-                RoutHelper rh = new RoutHelper("192.168.2.101", 0.5, 0.4, 02l);
+                RoutHelper rh = new RoutHelper("192.168.2.101", 0.4/*Node.hashX()*/, 0.5/*Node.hashY()*/, 02l);
 
                 //senden des RoutHelper-Objectes
                 SendRoutTask srt = new SendRoutTask(socket, rh);
@@ -103,7 +107,7 @@ public class UserAreaActivity extends Activity {
     };
 
 
-    View.OnClickListener StartServerListener = new View.OnClickListener() {
+    private View.OnClickListener StartServerListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
 
@@ -114,7 +118,7 @@ public class UserAreaActivity extends Activity {
     };
 
 
-    View.OnClickListener NeighbourTransferListener = new View.OnClickListener() {
+    private View.OnClickListener NeighbourTransferListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             client = new Client();
@@ -132,6 +136,30 @@ public class UserAreaActivity extends Activity {
             }
         }
     };
+
+
+
+    /**
+     * Button-Test fÃ¼r FileTransfer
+     */
+    private View.OnClickListener FileTransferListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            client = new Client();
+            String path = (Environment.getExternalStorageDirectory() + "/Hont.jpg");
+
+            try {
+                File file = new File(path);
+                Socket socket = new Socket("192.168.2.110", 8080);
+                FileTransferThread ftt = new FileTransferThread(socket, file);
+                ftt.execute();
+            } catch (IOException e) {
+                Log.d("FileTransfer: ", e.toString());
+            }
+        }
+    };
+
 
     class NeighbourTransferThread extends AsyncTask<String, String, String> {
         Socket socket = null;
@@ -160,26 +188,6 @@ public class UserAreaActivity extends Activity {
 
     }
 
-    /**
-     * Button-Test fÃ¼r FileTransfer
-     */
-    View.OnClickListener FileTransferListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-
-            client = new Client();
-            String path = (Environment.getExternalStorageDirectory() + "/Hont.jpg");
-
-            try {
-                File file = new File(path);
-                Socket socket = new Socket("192.168.2.110", 8080);
-                FileTransferThread ftt = new FileTransferThread(socket, file);
-                ftt.execute();
-            } catch (IOException e) {
-                Log.d("FileTransfer: ", e.toString());
-            }
-        }
-    };
 
 
     class FileTransferThread extends AsyncTask<String, String, String> {

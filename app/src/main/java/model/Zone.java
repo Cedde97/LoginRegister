@@ -5,12 +5,6 @@ package model;
  * Created by gyorgyi on 22/08/17.
  */
 public class Zone {
-
-    /** Bottom left corner */
-    private double x1, y1;
-    /** Top right corner */
-    private double x2, y2;
-
     private Corner topLeft;
     private Corner topRight;
     private Corner bottomLeft;
@@ -30,29 +24,11 @@ public class Zone {
         this.bottomRight = bottomRight;
     }
 
-    public Zone(double x1, double x2, double y1, double y2) {
-        this.x1 = x1;
-        this.x2 = x2;
-        this.y1 = y1;
-        this.y2 = y2;
-    }
 
 
 
 
-    /**
-     * Decides whether point (x; y) is in this zone
-     * @param x
-     * @param y
-     * @return true when the point is in the zone
-     */
-    public boolean contains(double x, double y) {
-        if((x >= x1 && x <= x2) && (y >= y1 && y <= y2)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+
 
     /**
      * Methode zum Testen ob ein Knoten/Bild in der eigenen Zone liegt
@@ -70,12 +46,12 @@ public class Zone {
         }
         return false;
     }
-
-    /**
+/*
+    *//**
      * Decides whether this zone and zone z are neighbours
      * @param z zone
      * @return true when this zone and zone z are neighbours
-     */
+     *//*
     public boolean isNeighbour(Zone z) {
 
         if(sectionsOverlap(z.x1, z.x2, this.x1, this.x2) && sectionsTouch(z.y1, z.y2, this.y1, this.y2)) {
@@ -87,6 +63,19 @@ public class Zone {
         }
     }
 
+    *//**
+     * Decides whether point (x; y) is in this zone
+     * @param x
+     * @param y
+     * @return true when the point is in the zone
+     *//*
+    public boolean contains(double x, double y) {
+        if((x >= x1 && x <= x2) && (y >= y1 && y <= y2)) {
+            return true;
+        } else {
+            return false;
+        }
+    }*/
 
     /**
      * Determines whether sections a and b overlap
@@ -136,6 +125,22 @@ public class Zone {
         return bottomRight;
     }
 
+    public void setTopRight(Corner topRight){
+        this.topRight = topRight;
+    }
+
+    public void setTopLeft(Corner topLeft) {
+        this.topLeft = topLeft;
+    }
+
+    public void setBottomRight(Corner bottomRight) {
+        this.bottomRight = bottomRight;
+    }
+
+    public void setBottomLeft(Corner bottomLeft) {
+        this.bottomLeft = bottomLeft;
+    }
+
     /**
      * Split a zone along its longest side into two new zones.
 
@@ -179,6 +184,7 @@ public class Zone {
      node4.setCornerBottomRightY(midY);
      node4.setCornerBottomLeftY(midY);
      }
+     
      }
     /**
      * Get the length of the Y side of the zone
@@ -254,7 +260,7 @@ public class Zone {
     }
 
 
-
+/*
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -281,5 +287,5 @@ public class Zone {
         temp = Double.doubleToLongBits(y2);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         return result;
-    }
+    }*/
 }

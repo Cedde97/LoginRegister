@@ -68,10 +68,10 @@ public class ServerThreadActivity extends Activity{
                 Log.d("Client Connected", "");
 
                 byte[] buffer = server.receiveByteArray(ss, s);
-
                 Log.d("Received ByteArray", "");
 
                 int methodName = serialization.getByteHeader(buffer);
+
                 switch (methodName) {
                     case FILETRANS: {
 
@@ -168,6 +168,7 @@ public class ServerThreadActivity extends Activity{
                         //da
                         Node nodeNew = oldNode.routing(rh.getIP(),rh.getX(),rh.getY(),rh.getID());
 
+                        //senden des nodeNew an seine IP-Adresse
                         Log.d("ZoneOfnewNode",""+ nodeNew.getMyZone().toString());
                     }
                 }

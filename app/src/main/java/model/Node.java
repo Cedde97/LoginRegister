@@ -1,46 +1,34 @@
 package model;
 
-import android.util.Log;
-
-import org.json.JSONException;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.List;
 
 
 import connection.Client;
 import connection.RoutHelper;
-import source.DatabaseManager;
-import source.DateiMemoDbSource;
-import source.NeighborDbSource;
-import source.OwnDataDbSource;
-import source.PeerDbSource;
+
 /**
- *
+ * @author Joshua Zabel
  */
-
 public class Node {
-
-
     private static final int    maxPeers= 3;
-    private NeighborDbSource    nDB;
-    private PeerDbSource        peerDB;
-    private OwnDataDbSource     ownDataDB;
     private static final long   DIVIDER=2552552552l;
     private static final int    PORTNR = 8080;
+
 
     private long   uid;
     private double punktX;
     private double punktY;
     private String iP;
     private int    countPeers;
+    private Corner topRight;
+    private Corner topLeft;
+    private Corner bottomRight;
+    private Corner bottomLeft;
     private Zone   ownZone;
-    //private DateiMemoDbSource dateiMemoDbSource = new DateiMemoDbSource();
-    private PeerMemo peerMemo;
     private Socket socket;
     private Client client = new Client();
 
@@ -50,22 +38,14 @@ public class Node {
 
     }
 
- //Zum Testen der Splittfunktion
- public Node(Corner bottomLeft, Corner bottomRight, Corner topLeft, Corner topRight)
- {
- this.setCornerBottomLeft(bottomLeft.getX(),bottomLeft.getY());
- this.setCornerBottomRight(bottomRight.getX(),bottomRight.getY());
- this.setCornerTopLeft(topLeft.getX(),topLeft.getY());
- this.setCornerTopRight(topRight.getX(),topRight.getY());
- }
 
     /**
-     *
-     * @param uid
-     * @param punktX
-     * @param punktY
-     * @param iP
-     * @param countPeers
+     * Konstruktor zum Erstellen eines Nodes
+     * @param uid User-ID
+     * @param punktX X-Wert wo der Knoten in CAN ist
+     * @param punktY Y-Wert wo der Knoten in CAN ist
+     * @param iP IP des Gerätes auf dem die APP läuft
+     * @param countPeers Anzahl der Peers
      */
     public Node(long uid, double punktX, double punktY, String iP, int countPeers, Zone ownZone) {
         this.uid                 = uid;
@@ -75,32 +55,12 @@ public class Node {
         this.countPeers          = countPeers;
         this.ownZone             = ownZone;
     }
-//    public Node(long uid, boolean checked,
-//                     double cornerTopRightX, double cornerTopRightY, double cornerTopLeftX, double cornerTopLeftY,
-//                     double cornerBottomRightX, double cornerBottomRightY, double cornerBottomLeftX, double cornerBottomLeftY,
-//                     double punktX, double punktY, String iP, int countPeers, Zone ownZone) {
-//
-//        this.uid                 = uid;
-//        this.checked             = checked;
-//        this.cornerTopRightX     = cornerTopRightX;
-//        this.cornerTopRightY     = cornerTopRightY;
-//        this.cornerTopLeftX      = cornerTopLeftX;
-//        this.cornerTopLeftY      = cornerTopLeftY;
-//        this.cornerBottomRightX  = cornerBottomRightX;
-//        this.cornerBottomRightY  = cornerBottomRightY;
-//        this.cornerBottomLeftX   = cornerBottomLeftX;
-//        this.cornerBottomLeftY   = cornerBottomLeftY;
-//        this.punktX              = punktX;
-//        this.punktY              = punktY;
-//        this.iP                  = iP;
-//        this.countPeers          = countPeers;
-//        this.ownZone             = ownZone;
-//   }
+
 
 
     /**
      * Diese Methode liefert einen x-Wert der zwischen 0 und 1 liegt
-     * Es wird durch 2552552552lgeteilt, da so Werte zwischen 0 und 1 liegt
+     * Es wird durch 2552552552l geteilt, da so die Werte zwischen 0 und 1 liegt
      * @param ip Anhand der IP wird ein x-Wert berechnet
      * @return Gebe einen double X-Wert zurÃ¼ck
      */
@@ -117,7 +77,7 @@ public class Node {
 
     /**
      * Diese Methode liefert einen Y-Wert der zwischen 0 und 1 liegt
-     * Es wird durch 2552552552l geteilt, da so Werte zwischen 0 und 1 liegen und die IP wird von hinten nach vorne gelesen durch Methode-Umkehren
+     * Es wird durch 2552552552l geteilt, da so die Werte zwischen 0 und 1 liegen und die IP wird von hinten nach vorne gelesen durch Methode-Umkehren
      * @param ip Anhand der IP wird ein Y-Wert berechnet
      * @return Gebe einen double Y-Wert zurÃ¼ck
      */
@@ -227,13 +187,15 @@ public class Node {
         //client.sendRoutHelperAsByteArray(socket,rh);
 
     }
-    /**
+    /*
+
+    *//**
      * Routing Methode: In der Routing-Methode wird die Distanz zu allen Nachbarn berechnet und zu dem routet zu dem die Distanz am geringsten ist
      * @param ip Des zu routenden Knoten/Bild
      * @param x Des zu routenden Knoten/Bild
      * @param y Des zu routenden Knoten/Bild
      * @param id Des zu routenden Knoten/Bild
-     */
+     *//*
     public void routingDB(String ip, double x ,double y, int id) throws IOException {
         double neighbourX, neighbourY;
         double [] distances = new double[4];
@@ -264,9 +226,9 @@ public class Node {
         client.sendRoutHelperAsByteArray(socket,rh);
         //// TODO: 07.09.2017 sende ein receiveRoutingRequest  an ip
         //// TODO: 14.08.2017 Verbindungsaufbau zu dem Neighbour der an Stelle == Index steht und IP und x,y-Werte Ã¼bertragen so das dieser weiter routen kann, bzw recreive routing request bei ihm aufrufen
-    }
+    }*/
 
-    //axel fragen wie ich jetzt die iplist bekomme
+
     /**
      * Mit dieser Methode findet ein neuer Knoten einen Einstiegspunkt in das CAN, indem er den Bootstrapserver nach einer IP anfragt
      *
@@ -331,7 +293,7 @@ public class Node {
     /**
      * Methode mit der ein neuer Knoten seinen Peers seine ID und IP (zweck=zum Eintragen in PeersDB) mitteilen kann
      * @param ip
-     */
+     *//*
     private void informPeersAboutYourself(String ip) {
         //// TODO: 0114.08.27    user.getUid(); von DB, user.getIP von DB
         //long uid = dateiMemoDbSource.getUid();
@@ -342,7 +304,7 @@ public class Node {
         peerMemo.setPeerIp(ip);
         //// TODO: 14.08.2017 user.getUid(); von DB, user.getIP von DB
         //// TODO: 14.08.2017 sende an alle deine Peers ein setPeer mit diesen Informationen
-    }
+    }*/
 
     /**
      * Vergleiche alle Distanzen der Nachbarn
@@ -371,7 +333,7 @@ public class Node {
      * @param fotoID
      * @param uid
      * @throws IOException
-     */
+     *//*
     public void checkForOwnData(String ip, double x, double y, int fotoID, int uid) throws IOException {
         for(int i =0; i<=4; i++){
             //muss ich hier this.ownDataDB machen?
@@ -389,7 +351,7 @@ public class Node {
 
         picRouting(ip,x,y,fotoID,uid);
         // TODO: 28.08.2017  checken ob OwnData( auch wirklich die Bilder)
-    }
+    }*/
 
     /**
      * Methode die aufgerufen wird wenn das routing beendet ist und die DB's des neuen Knoten updaten muss
@@ -397,7 +359,7 @@ public class Node {
      */
     private void replyToRequest(String ip) throws IOException {
         socket = new Socket(ip,PORTNR);
-        List<PeerMemo> peerList = peerDB.getAllPeer();
+
 
         //muss setPeers aufrufen
         //Liste senden?
@@ -405,23 +367,6 @@ public class Node {
         //// TODO: 15.08.2017 nach update der eigenen PeersDB muss Ã¼berprÃ¼ft werden ob die Anzahl Peers nun 3 betrÃ¤gt, falls dies der Fall ist => Split
         // TODO: 05.09.2017 Node erstellen. und an IP senden
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     public void increasePeersCount(){
@@ -440,7 +385,7 @@ public class Node {
         }
     }
 
-    // TODO: 15.08.2017 Vielleicht so implementieren das hier auch noch gecheckt wird ob gesplittet wird
+
     private boolean checkIfMaxPeersCount(){
         if (countPeers == maxPeers){
             return true;
@@ -474,20 +419,26 @@ public class Node {
         return getMyZone().getBottomLeft();
     }
 
+    public void setTopRight(Corner topRight){
+        this.topRight = topRight;
+        getMyZone().setTopRight(topRight);
+    }
 
-
-     //    public boolean isChecked() {
-     //        return checked;
-     //    }
-     //
-     //    public void setChecked (boolean checked) {
-     //        this.checked = checked;
-     //    }
-
+    public void setTopLeft(Corner topLeft){
+        this.topLeft = topLeft;
+        getMyZone().setTopLeft(topLeft);
+    }
+    public void setBottomRight(Corner bottomRight){
+        this.bottomRight = bottomRight;
+        getMyZone().setBottomRight(bottomRight);
+    }
+    public void setBottomLeft(Corner bottomLeft){
+        this.bottomLeft = bottomLeft;
+        getMyZone().setBottomLeft(bottomLeft);
+    }
 
      public double getPunktX() {
      return punktX;
-     //return dateiMemoDbSource.getPunktX(dateiMemoDbSource.getUid());
      }
 
      public void setPunktX(double punktX) {
@@ -496,7 +447,6 @@ public class Node {
 
      public double getPunktY() {
      return punktY;
-     //return dateiMemoDbSource.getPunktY(dateiMemoDbSource.getUid());
      }
 
      public void setPunktY(double punktY) {
