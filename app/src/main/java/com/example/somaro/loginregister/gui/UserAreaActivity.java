@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
@@ -26,10 +27,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
-import activity.FileTransferActivity;
-import activity.NeighbourTransferActivity;
-import activity.SendRoutActivity;
+import activity.*;
 import bootstrap.AllIPsActivity;
+import bootstrap.InsertOwnIPActivity;
 import connection.Client;
 import connection.RoutHelper;
 import connection.ServerThreadActivity;
@@ -95,22 +95,37 @@ public class UserAreaActivity extends Activity {
             try {
                 //ip von Bootstrap-Server holen
                 //ip des "simulierten" Knoten der bereits in CAN ist
-                Socket socket = new Socket("192.168.2.110", PORT);
+
+                //startGetBootsIp();
+
+               // Log.d("BootsIP:", bootsIp);
+
+               Socket socket = new Socket("192.168.2.110", PORT);
+
+
+                Log.d("Socket: ", socket.toString());
                 String ownIP = Client.getOwnIpAddress();
+                Log.d("ownIP: ", ownIP);
                 //Daten des zu routenden Knoten
-                RoutHelper rh = new RoutHelper(ownIP, Node.hashX(ownIP), Node.hashY(ownIP), 02l);
+               RoutHelper rh = new RoutHelper(ownIP, Node.hashX(ownIP), Node.hashY(ownIP), 02l);
+               Log.d("Routhelper: ", rh.toString());
 
                 //senden des RoutHelper-Objectes
+                Log.d("Clicked", "RoutRequ");
                 SendRoutActivity srt = new SendRoutActivity(socket, rh);
                 srt.execute();
 
-
-            } catch (IOException e) {
-                Log.d("client.sendNode", e.toString());
+            } catch (Exception e){
+                e.printStackTrace();
             }
 
         }
     };
+
+    private void insertOwnIP() throws JSONException {
+        new InsertOwnIPActivity().execute();
+    }
+
 
 
     private View.OnClickListener StartServerListener = new View.OnClickListener() {
@@ -179,7 +194,12 @@ public class UserAreaActivity extends Activity {
             @Override
             public void processFinish(String[] ipArray){
                 for(int i = 0; i<ipArray.length; i++){
-                    if(ipArray[i] == "192.168.2.110"){
+
+                    Log.d("", ipArray[i]);
+                    Log.d("CharAt0:", Character.toString(ipArray[i].charAt(0)));
+
+                    if(ipArray[i].contains("192.168.2.110")){
+                        Log.d("bin drin","");
                         bootsIp = ipArray[i];
                     }
                 }

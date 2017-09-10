@@ -14,23 +14,27 @@ import connection.RoutHelper;
  */
 
 public class SendRoutActivity extends AsyncTask<Void, Void, Void> {
-    private Client client;
+    private Client client = new Client();
     private Socket socket;
     private RoutHelper rh;
 
-    public SendRoutActivity(Socket socket, RoutHelper rh) {
+    public SendRoutActivity(Socket socket, RoutHelper rh){
         this.socket = socket;
         this.rh = rh;
     }
 
     protected Void doInBackground(Void... arg0) {
 
+
+        Log.d("Vor Try", "Block");
+
         try {
+            Log.d("Send Routhelper ", "");
             client.sendRoutHelperAsByteArray(socket, rh);
         } catch (IOException e) {
             Log.d("client.sendNode", e.toString());
         } catch (Exception e) {
-            Log.d("RoutHelper: ", rh.toString());
+            Log.d("RoutHelperExc: ", e.toString());
         }
         return null;
     }

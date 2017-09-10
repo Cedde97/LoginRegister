@@ -1,4 +1,6 @@
 package connection;
+import android.util.Log;
+
 import model.*;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -104,7 +106,7 @@ public class Client {
 		this.socket = socket;
 
 		byte[] buffer = serialization.fillRoutHelperByteArray(routhelper);
-
+		Log.d("Send ByteArray Start", "");
 		sendByteArray(socket, buffer);
 	}
 
