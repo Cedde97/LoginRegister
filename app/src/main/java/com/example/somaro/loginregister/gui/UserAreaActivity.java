@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
@@ -19,13 +18,18 @@ import android.widget.Toast;
 
 import com.example.somaro.loginregister.R;
 
+import org.json.JSONException;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.net.UnknownHostException;
 
+import activity.FileTransferActivity;
+import activity.NeighbourTransferActivity;
+import activity.SendRoutActivity;
+import bootstrap.AllIPsActivity;
 import connection.Client;
 import connection.RoutHelper;
 import connection.ServerThreadActivity;
@@ -37,9 +41,11 @@ import model.Zone;
 public class UserAreaActivity extends Activity {
     private static final int CAM_REQUEST = 1;
     private static final int IMAGE_GALLERY_REQUEST = 20;
+    private static final int PORT = 8080;
 
     private ImageView imageView;
     private Client client;
+    private String bootsIp;
 
 
     Button routRequest, fileTransferRequest, neighbourTransfer, startServer;
@@ -89,13 +95,13 @@ public class UserAreaActivity extends Activity {
             try {
                 //ip von Bootstrap-Server holen
                 //ip des "simulierten" Knoten der bereits in CAN ist
-                Socket socket = new Socket("192.168.2.110", 8080);
-
+                Socket socket = new Socket("192.168.2.110", PORT);
+                String ownIP = Client.getOwnIpAddress();
                 //Daten des zu routenden Knoten
-                RoutHelper rh = new RoutHelper("192.168.2.101", 0.4/*Node.hashX()*/, 0.5/*Node.hashY()*/, 02l);
+                RoutHelper rh = new RoutHelper(ownIP, Node.hashX(ownIP), Node.hashY(ownIP), 02l);
 
                 //senden des RoutHelper-Objectes
-                SendRoutTask srt = new SendRoutTask(socket, rh);
+                SendRoutActivity srt = new SendRoutActivity(socket, rh);
                 srt.execute();
 
 
@@ -125,11 +131,11 @@ public class UserAreaActivity extends Activity {
 
 
             try {
-                Socket socket = new Socket("192.168.2.110", 8080);
+                Socket socket = new Socket("192.168.2.110", PORT);
                 Zone zone = new Zone();
                 Neighbour neighbour = new Neighbour(01l, 1.1, 2.2, 3.3, 4.4, 1.1, 2.2, 3.3, 4.4, 0.0, 0.1, "192.33.2.12", 12.3);
 
-                NeighbourTransferThread nft = new NeighbourTransferThread(socket, neighbour);
+                NeighbourTransferActivity nft = new NeighbourTransferActivity(socket, neighbour);
                 nft.execute();
             } catch (IOException e) {
                 Log.d("NeighbourTransfer: ", e.toString());
@@ -151,8 +157,8 @@ public class UserAreaActivity extends Activity {
 
             try {
                 File file = new File(path);
-                Socket socket = new Socket("192.168.2.110", 8080);
-                FileTransferThread ftt = new FileTransferThread(socket, file);
+                Socket socket = new Socket("192.168.2.110", PORT);
+                FileTransferActivity ftt = new FileTransferActivity(socket, file);
                 ftt.execute();
             } catch (IOException e) {
                 Log.d("FileTransfer: ", e.toString());
@@ -161,86 +167,29 @@ public class UserAreaActivity extends Activity {
     };
 
 
-    class NeighbourTransferThread extends AsyncTask<String, String, String> {
-        Socket socket = null;
-        Neighbour neighbour = null;
 
-        public NeighbourTransferThread(Socket socket, Neighbour neighbour) {
-            this.socket = socket;
-            this.neighbour = neighbour;
-        }
 
-        protected String doInBackground(String... args) {
 
-            try {
 
-                client.sendNeighbourAsByteArray(socket, neighbour);
 
-                socket.close();
 
-            } catch (UnknownHostException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
+
+    private void startGetBootsIp() throws JSONException {
+        new AllIPsActivity(new AllIPsActivity.AsyncResponse(){
+            @Override
+            public void processFinish(String[] ipArray){
+                for(int i = 0; i<ipArray.length; i++){
+                    if(ipArray[i] == "192.168.2.110"){
+                        bootsIp = ipArray[i];
+                    }
+                }
+                /*int index =(int)(Math.random() * (ipArray.length - 0));
+                bootsIp = ipArray[index];*/
+
             }
-            return null;
-        }
-
+        }).execute();
     }
 
-
-
-    class FileTransferThread extends AsyncTask<String, String, String> {
-        Socket socket = null;
-        File file = null;
-
-        public FileTransferThread(Socket socket, File file) {
-            this.socket = socket;
-            this.file = file;
-        }
-
-        protected String doInBackground(String... args) {
-
-            try {
-
-                client.sendImageAsByteArray(socket, file);
-
-                socket.close();
-
-            } catch (UnknownHostException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-    }
-
-
-
-    class SendRoutTask extends AsyncTask<Void, Void, Void> {
-
-        Socket socket;
-        RoutHelper rh;
-
-        public SendRoutTask(Socket socket, RoutHelper rh) {
-            this.socket = socket;
-            this.rh = rh;
-        }
-
-        protected Void doInBackground(Void... arg0) {
-
-            try {
-                client.sendRoutHelperAsByteArray(socket, rh);
-            } catch (IOException e) {
-                Log.d("client.sendNode", e.toString());
-            } catch (Exception e) {
-                Log.d("RoutHelper: ", rh.toString());
-            }
-            return null;
-        }
-        //ServerSeite hash Function Aufruf von getIP
-    }
 
     /**
      *  Methode zum starten der Kammera

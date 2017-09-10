@@ -3,8 +3,11 @@ import model.*;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Enumeration;
 
 public class Client {
 
@@ -136,5 +139,30 @@ public class Client {
 		byte[] buffer = serialization.fillForeignDataByteArray(foreignData);
 
 		sendByteArray(socket, buffer);
+	}
+
+	public static String getOwnIpAddress() {
+		String ip = "";
+		try {
+			Enumeration<NetworkInterface> enumNetworkInterfaces = NetworkInterface.getNetworkInterfaces();
+			while (enumNetworkInterfaces.hasMoreElements()) {
+				NetworkInterface networkInterface = enumNetworkInterfaces
+						.nextElement();
+				Enumeration<InetAddress> enumInetAddress = networkInterface
+						.getInetAddresses();
+				while (enumInetAddress.hasMoreElements()) {
+					InetAddress inetAddress = enumInetAddress.nextElement();
+
+					if (inetAddress.isSiteLocalAddress()) {
+						ip = inetAddress.getHostAddress();
+					}
+
+				}
+			}
+		} catch (java.net.SocketException e){
+			e.printStackTrace();
+		}
+
+		return ip;
 	}
 }

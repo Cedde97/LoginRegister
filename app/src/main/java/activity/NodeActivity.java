@@ -14,11 +14,6 @@ import task.HashXTask;
 import task.HashYTask;
 import task.RoutingTask;
 
-
-/**
- * Created by Joshi on 07.09.2017.
- */
-
 public class NodeActivity extends Activity {
 
     @Override
@@ -58,3 +53,10 @@ public class NodeActivity extends Activity {
         new RoutingTask().execute("1.3","3.5");
     }
 }
+
+
+
+
+/**
+ * Created by Joshi on 07.09.2017.
+ */
