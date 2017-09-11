@@ -16,6 +16,7 @@ public class LoginRequest extends StringRequest{
     // für localhost muss Nur die aktuelle IP einsetzen (ipconfig)
     //private static final String LOGIN_REQUEST_URL = "http://192.168.1.162/Login.php";
     private static final String LOGIN_REQUEST_URL = "http://agelong-rations.000webhostapp.com/Login.php";
+    private static final String GET_USER_ID_URL = "http://agelong-rations.000webhostapp.com/abfrage.php";
     private Map<String, String> params;
 
     public LoginRequest(String username, String password, Response.Listener<String> listener){
@@ -25,6 +26,8 @@ public class LoginRequest extends StringRequest{
         params.put("password", password);
 
     }
+
+
 
     @Override
     public Map<String, String> getParams(){

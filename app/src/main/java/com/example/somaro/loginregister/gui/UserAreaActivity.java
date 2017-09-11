@@ -19,12 +19,24 @@ import android.widget.Toast;
 
 import com.example.somaro.loginregister.R;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.Socket;
+import java.net.URL;
 import java.net.UnknownHostException;
+import java.util.HashMap;
+import java.util.concurrent.ExecutionException;
 
 import connection.Client;
 import connection.RoutHelper;
@@ -32,6 +44,7 @@ import connection.ServerThreadActivity;
 import model.Neighbour;
 import model.Node;
 import model.Zone;
+import source.OwnDataDbSource;
 
 
 public class UserAreaActivity extends Activity {
@@ -40,9 +53,26 @@ public class UserAreaActivity extends Activity {
     public static final int IMAGE_GALLERY_REQUEST = 20;
     private ImageView imageView;
     static final int CAM_REQUEST = 1;
+    int BildAnzahl;
+    String singleParsed = "";
+    String dataParsed = "";
+    int id ;
+
+    String data = null;
+
+   // UserSeeionManager session ;
 
     Button routRequest, fileTransferRequest, neighbourTransfer, startServer;
+    
 
+public String photoId( ){
+
+ String data = "";
+
+    data = "" + id + getBildAnzahl() ;
+    return data;
+
+}
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +81,8 @@ public class UserAreaActivity extends Activity {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
+
+
 
         routRequest = (Button) findViewById(R.id.routingRequest);
         routRequest.setOnClickListener(RoutClickListener);
@@ -69,11 +101,14 @@ public class UserAreaActivity extends Activity {
 
         Intent intent = getIntent();
         String name = intent.getStringExtra("name");
+        id = intent.getIntExtra("id",0);
+       // String phototID = photoId(id);
+        String message = id + " " + photoId() + name + " welcome to your user area";
 
-        String message = name + " welcome to your user area";
         welcomeMsg.setText(message);
-    }
 
+
+    }
 
     View.OnClickListener StartServerListener = new View.OnClickListener() {
         @Override
@@ -271,7 +306,16 @@ public class UserAreaActivity extends Activity {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        BildAnzahl = BildAnzahl +1 ;
+
+        Toast.makeText(UserAreaActivity.this, photoId() , Toast.LENGTH_SHORT).show();
+
         return filename;
+    }
+
+    public int getBildAnzahl(){
+
+        return  BildAnzahl;
     }
 
     /**
@@ -296,7 +340,7 @@ public class UserAreaActivity extends Activity {
 
         dir.mkdirs();
         String uriString = (dir.getAbsolutePath() +"/"
-                + System.currentTimeMillis() + ".jpg");
+                + photoId() + ".jpg");
         return uriString;
     }
 
