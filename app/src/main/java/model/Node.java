@@ -144,7 +144,7 @@ public class Node {
     private void routingCheckZoneDB(String ip, double x ,double y, int id){
         if(getMyZone().checkIfInMyZone(x,y)){
             //was fÃ¼r peerId mitte?
-            PeerMemo pm = new PeerMemo(id,0,ip);
+            PeerMemo pm = new PeerMemo();
 
             //neuen Knoten seine aktuelle PeersList geben (mit sichselbst)
             //neuen Knoten eintragen in eigene peer list

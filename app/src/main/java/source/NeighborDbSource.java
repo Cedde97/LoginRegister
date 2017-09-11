@@ -945,32 +945,33 @@ public class NeighborDbSource {
      * @param index
      * @return den Neighbour an der stelle index
      */
-    public Neighbour getNeighbour(int index){
-        database = DatabaseManager.getInstance().openDatabase();
+//    public Neighbour getNeighbour(int index){
+//        database = DatabaseManager.getInstance().openDatabase();
+//
+//        double topRightX = getCornerTopRightXNeighbor(index);
+//        double topRightY = getCornerTopRightYNeighbor(index);
+//        double topLeftX  = getCornerTopLeftXNeighbor(index);
+//        double topLeftY  = getCornerTopLeftYNeighbor(index);
+//        double bottomRightX = getCornerBottomRightXNeighbor(index);
+//        double bottomRightY= getCornerBottomRightYNeighbor(index);
+//        double bottomLeftX = getCornerBottomLeftXNeighbor(index);
+//        double bottomLeftY = getCornerBottomLeftYNeighbor(index);
+//        double punktX = getPunktXNeighbor(index);
+//        double punktY = getPunktYNeighbor(index);
+//        String uIp    = getUip(index);
+//        double rtt    = getRTT(index);
+//        long uid      = getUID(index);
+//
+//        Neighbour n = new Neighbour(uid,topRightX,topRightY,topLeftX,topLeftY,bottomRightX,bottomRightY,bottomLeftX,bottomLeftY,punktX,punktY,uIp,rtt);
+//        return n;
+//    }
 
-        double topRightX = getCornerTopRightXNeighbor(index);
-        double topRightY = getCornerTopRightYNeighbor(index);
-        double topLeftX  = getCornerTopLeftXNeighbor(index);
-        double topLeftY  = getCornerTopLeftYNeighbor(index);
-        double bottomRightX = getCornerBottomRightXNeighbor(index);
-        double bottomRightY= getCornerBottomRightYNeighbor(index);
-        double bottomLeftX = getCornerBottomLeftXNeighbor(index);
-        double bottomLeftY = getCornerBottomLeftYNeighbor(index);
-        double punktX = getPunktXNeighbor(index);
-        double punktY = getPunktYNeighbor(index);
-        String uIp    = getUip(index);
-        double rtt    = getRTT(index);
-        long uid      = getUID(index);
-
-        Neighbour n = new Neighbour(uid,topRightX,topRightY,topLeftX,topLeftY,bottomRightX,bottomRightY,bottomLeftX,bottomLeftY,punktX,punktY,uIp,rtt);
-        return n;
-    }
-
-    public List<Neighbour> getAllNeighborMemo() {
+    public List<Neighbour> getAllNeighborMemo(int index) {
         List<Neighbour> NeighborMemoList = new LinkedList<Neighbour>();
 
         //1. query
-        String query = "SELECT * FROM " + dbHelper.TABLE_NEIGHBOR_LIST;
+        String query = "SELECT * FROM " + dbHelper.TABLE_NEIGHBOR_LIST + " WHERE "
+                + DateiMemoDbHelper.COLUMN_NEIGHBOUR_ID + " = " + index;
 
         //2. open Database
         database = DatabaseManager.getInstance().openDatabase();
@@ -1001,7 +1002,7 @@ public class NeighborDbSource {
                 neighborMemo.setPunktY(cursor.getDouble(cursor.getColumnIndex(dbHelper.COLUMN_PUNKTY)));
                 neighborMemo.setUIP(cursor.getString(cursor.getColumnIndex(dbHelper.COLUMN_UIP)));
                 neighborMemo.setRTT(cursor.getDouble(cursor.getColumnIndex(dbHelper.COLUMN_RTT)));
-                //neighborMemo.setNeighbour_id(cursor.getLong(cursor.getColumnIndex(dbHelper.COLUMN_NEIGHBOUR_ID)));
+                neighborMemo.setNeighbour_id(cursor.getLong(cursor.getColumnIndex(dbHelper.COLUMN_NEIGHBOUR_ID)));
 
 
                 // Add book to books
