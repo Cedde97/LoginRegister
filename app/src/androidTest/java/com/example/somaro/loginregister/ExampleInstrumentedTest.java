@@ -110,12 +110,12 @@ public class ExampleInstrumentedTest {
     public void testSplit_Vertical()
     {
 
-        Context appContext = InstrumentationRegistry.getTargetContext();
+       /* Context appContext = InstrumentationRegistry.getTargetContext();
         DateiMemoDbHelper dateiMemoDbHelper = new DateiMemoDbHelper(appContext);
         DatabaseManager.initializeInstance(dateiMemoDbHelper);
 
         DateiMemoDbSource dateiMemoDbSource = new DateiMemoDbSource();
-
+*/
 
         Corner cornerBottomLeft;
         Corner cornerBottomRight;
@@ -140,6 +140,7 @@ public class ExampleInstrumentedTest {
             Node node3 = new Node(1,0.7,0.3,"1.3.1.1" ,3, zone);
             Node node4 = new Node(1,0.1,0.7,"1.4.1.1" ,3, zone);
 
+            DateiMemoDbSource dateiMemoDbSource = new DateiMemoDbSource();
             dateiMemoDbSource.createDateiMemo(node1);
             dateiMemoDbSource.createDateiMemo(node2);
             dateiMemoDbSource.createDateiMemo(node3);

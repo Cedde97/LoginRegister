@@ -1,6 +1,7 @@
 package model;
 
 import exception.*;
+import source.DateiMemoDbSource;
 
 
 /**
@@ -8,6 +9,7 @@ import exception.*;
  */
 
 public class Corner {
+    DateiMemoDbSource dateiMemoDbSource;
     private double x;
     private double y;
 
@@ -34,7 +36,7 @@ public class Corner {
     }
 
     public double getX() {
-        return x;
+        return dateiMemoDbSource.getCornerBottomLeftX();
     }
 
     public double getY() {
