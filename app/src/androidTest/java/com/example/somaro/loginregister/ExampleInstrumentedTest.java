@@ -45,18 +45,35 @@ public class ExampleInstrumentedTest {
         OwnDataDbSource ownDataDbSource = new OwnDataDbSource();
         PeerDbSource peerDbSource = new PeerDbSource();
 
+        Node dateiMemo = new Node();
+        dateiMemo.setUid(7872);
+        //dateiMemo.setChecked(true);
+        dateiMemo.setCornerTopRightX(0.5);
+        dateiMemo.setCornerTopRightY(0.6);
+        dateiMemo.setCornerTopLeftX(0.2);
+        dateiMemo.setCornerTopLeftY(0.2);
+        dateiMemo.setCornerBottomLeftX(0.4);
+        dateiMemo.setCornerBottomLeftY(0.6);
+        dateiMemo.setCornerBottomRightX(0.5);
+        dateiMemo.setCornerBottomRightY(1);
+        dateiMemo.setPunktX(0.2);
+        dateiMemo.setPunktY(0.4);
+        dateiMemo.setIP("277.0.0.0/8");
+        dateiMemo.setCountPeers(2);
+        dateiMemoDbSource.createDateiMemo(dateiMemo);
 
         PeerMemo peerMemo = new PeerMemo();
-        peerMemo.setPeerIp("1.1.1.1");
-        peerMemo.setUid(2);
-        peerMemo.setPeerId(3);
+        //foreign key
+        peerMemo.setUid(dateiMemoDbSource.getUid());
+        peerMemo.setPeerIp("277.0.0.1");
         peerDbSource.createPeerMemo(peerMemo);
 
-        dateiMemoDbSource.deleteDateiMemo();
+
+        //dateiMemoDbSource.deleteDateiMemo();
         //foreignData.deleteForeignData();
         //neighborDbSource.deleteNeighbormemo();
         //ownDataDbSource.deleteOwnData();
-        peerDbSource.deletePeerMemo();
+        //peerDbSource.deletePeerMemo();
 
     }
 
