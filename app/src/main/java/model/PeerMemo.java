@@ -9,15 +9,15 @@ public class PeerMemo {
     private String peerIp;
 
 
-//    public PeerMemo(){
-//    }
-//
-//    public PeerMemo(long uid, int peerId, String peerIp) {
-//        this.uid = uid;
-//        this.peerId = peerId;
-//        this.peerIp = peerIp;
-//
-//    }
+    public PeerMemo(){
+    }
+
+/*    public PeerMemo(long uid, int peerId, String peerIp) {
+        this.uid = uid;
+        this.peerId = peerId;
+        this.peerIp = peerIp;
+
+    }*/
 
     public long getUid() {
         return uid;

@@ -34,7 +34,7 @@ public class ExampleInstrumentedTest {
     @Test
     public void test()
     {
-       /* Context appContext = InstrumentationRegistry.getTargetContext();
+        Context appContext = InstrumentationRegistry.getTargetContext();
 
         DateiMemoDbHelper dateiMemoDbHelper = new DateiMemoDbHelper(appContext);
         DatabaseManager.initializeInstance(dateiMemoDbHelper);
@@ -45,12 +45,19 @@ public class ExampleInstrumentedTest {
         OwnDataDbSource ownDataDbSource = new OwnDataDbSource();
         PeerDbSource peerDbSource = new PeerDbSource();
 
+
+        PeerMemo peerMemo = new PeerMemo();
+        peerMemo.setPeerIp("1.1.1.1");
+        peerMemo.setUid(2);
+        peerMemo.setPeerId(3);
+        peerDbSource.createPeerMemo(peerMemo);
+
         dateiMemoDbSource.deleteDateiMemo();
         //foreignData.deleteForeignData();
         //neighborDbSource.deleteNeighbormemo();
         //ownDataDbSource.deleteOwnData();
-        //peerDbSource.deletePeerMemo();
-*/
+        peerDbSource.deletePeerMemo();
+
     }
 
     @Test
@@ -103,12 +110,12 @@ public class ExampleInstrumentedTest {
     public void testSplit_Vertical()
     {
 
-       /* Context appContext = InstrumentationRegistry.getTargetContext();
+        Context appContext = InstrumentationRegistry.getTargetContext();
         DateiMemoDbHelper dateiMemoDbHelper = new DateiMemoDbHelper(appContext);
         DatabaseManager.initializeInstance(dateiMemoDbHelper);
 
         DateiMemoDbSource dateiMemoDbSource = new DateiMemoDbSource();
-*/
+
 
         Corner cornerBottomLeft;
         Corner cornerBottomRight;
@@ -133,10 +140,10 @@ public class ExampleInstrumentedTest {
             Node node3 = new Node(1,0.7,0.3,"1.3.1.1" ,3, zone);
             Node node4 = new Node(1,0.1,0.7,"1.4.1.1" ,3, zone);
 
-            /*dateiMemoDbSource.createDateiMemo(node1);
+            dateiMemoDbSource.createDateiMemo(node1);
             dateiMemoDbSource.createDateiMemo(node2);
             dateiMemoDbSource.createDateiMemo(node3);
-            dateiMemoDbSource.createDateiMemo(node4);*/
+            dateiMemoDbSource.createDateiMemo(node4);
 
             zone.split(node1,node2,node3,node4);
 
@@ -165,12 +172,12 @@ public class ExampleInstrumentedTest {
     @Test
     public void testSplit_Horizontal()
     {
-        /*Context appContext = InstrumentationRegistry.getTargetContext();
+        Context appContext = InstrumentationRegistry.getTargetContext();
         DateiMemoDbHelper dateiMemoDbHelper = new DateiMemoDbHelper(appContext);
         DatabaseManager.initializeInstance(dateiMemoDbHelper);
 
         DateiMemoDbSource dateiMemoDbSource = new DateiMemoDbSource();
-*/
+
 
         Corner cornerBottomLeft;
         Corner cornerBottomRight;
@@ -194,10 +201,10 @@ public class ExampleInstrumentedTest {
             Node node3 = new Node(1,0.7,0.3,"1.3.1.1" ,3, zone);
             Node node4 = new Node(1,0.1,0.7,"1.4.1.1" ,3, zone);
 
-            /*dateiMemoDbSource.createDateiMemo(node1);
+            dateiMemoDbSource.createDateiMemo(node1);
             dateiMemoDbSource.createDateiMemo(node2);
             dateiMemoDbSource.createDateiMemo(node3);
-            dateiMemoDbSource.createDateiMemo(node4);*/
+            dateiMemoDbSource.createDateiMemo(node4);
 
             zone.split(node1,node2,node3,node4);
             zone.split(node1,node2,node3,node4);

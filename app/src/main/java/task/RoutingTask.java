@@ -89,7 +89,7 @@ public class RoutingTask extends AsyncTask<String, String , String> {
         //getMyZone().checkIfInMyZone(x,y)
         if(true){
             //was für peerId mitte?
-            PeerMemo pm = new PeerMemo(id,0,ip);
+            //PeerMemo pm = new PeerMemo(id,0,ip);
 
             //neuen Knoten seine aktuelle PeersList geben (mit sichselbst)
             //neuen Knoten eintragen in eigene peer list

@@ -29,24 +29,24 @@ public class Neighbour {
 //
 //    }
 //
-//        public Neighbour(long uid,
-//                        double cornerTopRightX, double cornerTopRightY, double cornerTopLeftX, double cornerTopLeftY,
-//                        double cornerBottomRightX, double cornerBottomRightY, double cornerBottomLeftX, double cornerBottomLeftY,
-//                        double punktX, double punktY, String UIP, double RTT) {
-//        this.uid = uid;
-//        this.cornerTopRightX = cornerTopRightX;
-//        this.cornerTopRightY = cornerTopRightY;
-//        this.cornerTopLeftX = cornerTopLeftX;
-//        this.cornerTopLeftY = cornerTopLeftY;
-//        this.cornerBottomRightX = cornerBottomRightX;
-//        this.cornerBottomRightY = cornerBottomRightY;
-//        this.cornerBottomLeftX = cornerBottomLeftX;
-//        this.cornerBottomLeftY = cornerBottomLeftY;
-//        this.punktX = punktX;
-//        this.punktY = punktY;
-//        this.UIP = UIP;
-//        this.RTT = RTT;
-//    }
+        public Neighbour(long uid,
+                        double cornerTopRightX, double cornerTopRightY, double cornerTopLeftX, double cornerTopLeftY,
+                        double cornerBottomRightX, double cornerBottomRightY, double cornerBottomLeftX, double cornerBottomLeftY,
+                        double punktX, double punktY, String UIP, double RTT) {
+        this.uid = uid;
+        this.cornerTopRightX = cornerTopRightX;
+        this.cornerTopRightY = cornerTopRightY;
+        this.cornerTopLeftX = cornerTopLeftX;
+        this.cornerTopLeftY = cornerTopLeftY;
+        this.cornerBottomRightX = cornerBottomRightX;
+        this.cornerBottomRightY = cornerBottomRightY;
+        this.cornerBottomLeftX = cornerBottomLeftX;
+        this.cornerBottomLeftY = cornerBottomLeftY;
+        this.punktX = punktX;
+        this.punktY = punktY;
+        this.UIP = UIP;
+        this.RTT = RTT;
+    }
 
 
     public double getCornerTopRightX() {

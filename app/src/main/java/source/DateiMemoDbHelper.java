@@ -154,6 +154,9 @@ public class DateiMemoDbHelper extends SQLiteOpenHelper{
         super(App.getContext(), DB_NAME, null, DB_VERSION);
     }
 
+    public DateiMemoDbHelper(Context context) {
+        super(context, DB_NAME, null, DB_VERSION);
+    }
 
     //enable foreign key
     @Override
