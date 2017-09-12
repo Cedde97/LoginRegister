@@ -15,7 +15,8 @@ import java.util.List;
  * class to retrieve all IPs, which are stored on a webserver
  */
 public class AllIPsActivity extends AsyncTask<String, String, String[]> {
-    String[] ipsList;
+    private String[] ipsList;
+
     /**
      * Interface to retrieve the result-list in an String-array
      */
@@ -100,6 +101,7 @@ public class AllIPsActivity extends AsyncTask<String, String, String[]> {
                 //storing IPs in string-array
                 ipsList[i] = ip;
 
+
             }return ipsList;
 
         } catch (JSONException e) {
@@ -113,11 +115,12 @@ public class AllIPsActivity extends AsyncTask<String, String, String[]> {
      * @param args
      */
     @Override
-    protected void onPostExecute(String[]args) {
+    protected void onPostExecute(String[] args) {
+
         delegate.processFinish(args);
-        for (int i = 0; i < args.length; i ++){
+        /*for (int i = 0; i < args.length; i ++){
             Log.d("IpList in onPostExecute", args[i].toString());
-        }
+        }*/
     }
 
 

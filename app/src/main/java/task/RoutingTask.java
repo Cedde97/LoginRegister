@@ -18,7 +18,7 @@ import source.PeerDbSource;
  */
 
 public class RoutingTask extends AsyncTask<String, String , String> {
-    private final static int PORTNR = 8080;
+    private final static int PORTNR = 9797;
 
     //bekommt man so die DB
     private PeerDbSource peerDB;
