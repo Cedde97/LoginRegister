@@ -155,7 +155,7 @@ public class Zone {
         // we split the zone along the longest side
         if (getLengthX(bottomLeftNode) >= getLengthY(bottomLeftNode)) {
 
-            double midX = getLengthX(bottomLeftNode) / 2.0;
+            double midX = getLengthX(nodeArray[0]) / 2.0;
             // set peers und neigbour und update Corner
 
             nodeArray[0].getBottomRight().setX(midX);
@@ -172,7 +172,7 @@ public class Zone {
 
         } else {
 
-            double midY =  getLengthY(bottomLeftNode) / 2.0;
+            double midY =  getLengthY(nodeArray[0]) / 2.0;
             // set peers und neigbour und update Corner
 
             nodeArray[0].getTopRight().setY(midY);
