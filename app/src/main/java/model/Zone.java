@@ -149,42 +149,124 @@ public class Zone {
      * @return the new pair of zones created by splitting this zone
      */
 
-    public void split(Node node1, Node node2, Node node3, Node node4) {
+    public void split(Node bottomLeftNode, Node topLeftNode, Node bottomRightNode, Node topRightNode) {
 
+        Node[] nodeArray = determineLocation(bottomLeftNode,topLeftNode,bottomRightNode,topRightNode);
         // we split the zone along the longest side
-        if (getLengthX(node1) >= getLengthY(node1)) {
+        if (getLengthX(bottomLeftNode) >= getLengthY(bottomLeftNode)) {
 
-            double midX = getLengthX(node1) / 2.0;
+            double midX = getLengthX(bottomLeftNode) / 2.0;
             // set peers und neigbour und update Corner
-            node1.getBottomRight().setX(midX);
-            node1.getTopRight().setX(midX);
 
-            node2.getTopRight().setX(midX);
-            node2.getBottomRight().setX(midX);
+            nodeArray[0].getBottomRight().setX(midX);
+            nodeArray[0].getTopRight().setX(midX);
 
-            node3.getBottomLeft().setX(midX);
-            node3.getTopLeft().setX(midX);
+            nodeArray[1].getTopRight().setX(midX);
+            nodeArray[1].getBottomRight().setX(midX);
 
-            node4.getTopLeft().setX(midX);
-            node4.getBottomLeft().setX(midX);
+            nodeArray[2].getBottomLeft().setX(midX);
+            nodeArray[2].getTopLeft().setX(midX);
+
+            nodeArray[3].getTopLeft().setX(midX);
+            nodeArray[3].getBottomLeft().setX(midX);
 
         } else {
 
-            double midY =  getLengthY(node1) / 2.0;
+            double midY =  getLengthY(bottomLeftNode) / 2.0;
             // set peers und neigbour und update Corner
-            node1.getTopRight().setY(midY);
-            node1.getTopLeft().setY(midY);
 
-            node2.getBottomLeft().setY(midY);
-            node2.getBottomRight().setY(midY);
+            nodeArray[0].getTopRight().setY(midY);
+            nodeArray[0].getTopLeft().setY(midY);
 
-            node3.getTopRight().setY(midY);
-            node3.getTopLeft().setY(midY);
+            nodeArray[1].getBottomLeft().setY(midY);
+            nodeArray[1].getBottomRight().setY(midY);
 
-            node4.getBottomRight().setY(midY);
-            node4.getBottomLeft().setY(midY);
+            nodeArray[2].getTopRight().setY(midY);
+            nodeArray[2].getTopLeft().setY(midY);
+
+            nodeArray[3].getBottomRight().setY(midY);
+            nodeArray[3].getBottomLeft().setY(midY);
         }
 
+    }
+
+    private Node[] determineLocation(Node node1, Node node2, Node node3, Node node4){
+        Node[] nodeArray = new Node[4];
+       if(node1.getPunktX()< node2.getPunktX() && node1.getPunktX()< node3.getPunktX() && node1.getPunktX()< node4.getPunktX() ) {
+           if(node1.getPunktY() < node2.getPunktY() && node1.getPunktY() < node3.getPunktY() && node1.getPunktY() < node4.getPunktY()){
+                nodeArray[0] = node1;
+           }
+       }else if(node2.getPunktX()< node3.getPunktX() && node2.getPunktX()< node4.getPunktX() &&  node2.getPunktX() < node1.getPunktX()){
+           if(node2.getPunktY() < node1.getPunktY() && node2.getPunktY() < node3.getPunktY() && node2.getPunktY() < node4.getPunktY()){
+                nodeArray[0] = node2;
+           }
+       }else if(node3.getPunktX()< node2.getPunktX() && node3.getPunktX()< node1.getPunktX() && node3.getPunktX()< node4.getPunktX() ) {
+            if(node3.getPunktY() < node2.getPunktY() && node3.getPunktY() < node1.getPunktY() && node3.getPunktY() < node4.getPunktY()){
+                nodeArray[0] = node3;
+            }
+        }else if(node4.getPunktX()< node3.getPunktX() && node4.getPunktX()< node2.getPunktX() &&  node4.getPunktX() < node1.getPunktX()){
+            if(node4.getPunktY() < node1.getPunktY() && node4.getPunktY() < node3.getPunktY() && node4.getPunktY() < node2.getPunktY()){
+                nodeArray[0] = node4;
+            }
+        }
+
+        if(node1.getPunktX()< node2.getPunktX() && node1.getPunktX()< node3.getPunktX() && node1.getPunktX()< node4.getPunktX() ) {
+            if(node1.getPunktY() > node2.getPunktY() && node1.getPunktY() > node3.getPunktY() && node1.getPunktY() > node4.getPunktY()){
+                nodeArray[1] = node1;
+            }
+        }else if(node2.getPunktX()< node3.getPunktX() && node2.getPunktX()< node4.getPunktX() &&  node2.getPunktX() < node1.getPunktX()){
+            if(node2.getPunktY() > node1.getPunktY() && node2.getPunktY() > node3.getPunktY() && node2.getPunktY() > node4.getPunktY()){
+                nodeArray[1] = node2;
+            }
+        }else if(node3.getPunktX()< node2.getPunktX() && node3.getPunktX()< node1.getPunktX() && node3.getPunktX()< node4.getPunktX() ) {
+            if(node3.getPunktY() > node2.getPunktY() && node3.getPunktY() > node1.getPunktY() && node3.getPunktY() > node4.getPunktY()){
+                nodeArray[1] = node3;
+            }
+        }else if(node4.getPunktX()< node3.getPunktX() && node4.getPunktX()< node2.getPunktX() &&  node4.getPunktX() < node1.getPunktX()){
+            if(node4.getPunktY() > node1.getPunktY() && node4.getPunktY() > node3.getPunktY() && node4.getPunktY() > node2.getPunktY()){
+                nodeArray[1] = node4;
+            }
+        }
+
+
+        if(node1.getPunktX()> node2.getPunktX() && node1.getPunktX()> node3.getPunktX() && node1.getPunktX()> node4.getPunktX() ) {
+            if(node1.getPunktY() < node2.getPunktY() && node1.getPunktY() < node3.getPunktY() && node1.getPunktY() < node4.getPunktY()){
+                nodeArray[2] = node1;
+            }
+        }else if(node2.getPunktX()>node3.getPunktX() && node2.getPunktX()>node4.getPunktX() &&  node2.getPunktX() >node1.getPunktX()){
+            if(node2.getPunktY() < node1.getPunktY() && node2.getPunktY() < node3.getPunktY() && node2.getPunktY() < node4.getPunktY()){
+                nodeArray[2] = node2;
+            }
+        }else if(node3.getPunktX()> node2.getPunktX() && node3.getPunktX()> node1.getPunktX() && node3.getPunktX()> node4.getPunktX() ) {
+            if(node3.getPunktY() < node2.getPunktY() && node3.getPunktY() < node1.getPunktY() && node3.getPunktY() < node4.getPunktY()){
+                nodeArray[2] = node3;
+            }
+        }else if(node4.getPunktX()> node3.getPunktX() && node4.getPunktX()> node2.getPunktX() &&  node4.getPunktX() > node1.getPunktX()){
+            if(node4.getPunktY() < node1.getPunktY() && node4.getPunktY() < node3.getPunktY() && node4.getPunktY() < node2.getPunktY()){
+                nodeArray[2] = node4;
+            }
+        }
+
+
+        if(node1.getPunktX()> node2.getPunktX() && node1.getPunktX()> node3.getPunktX() && node1.getPunktX()> node4.getPunktX() ) {
+            if(node1.getPunktY() > node2.getPunktY() && node1.getPunktY() > node3.getPunktY() && node1.getPunktY() > node4.getPunktY()){
+                nodeArray[3] = node1;
+            }
+        }else if(node2.getPunktX()> node3.getPunktX() && node2.getPunktX()> node4.getPunktX() &&  node2.getPunktX() > node1.getPunktX()){
+            if(node2.getPunktY() > node1.getPunktY() && node2.getPunktY() > node3.getPunktY() && node2.getPunktY() > node4.getPunktY()){
+                nodeArray[3] = node2;
+            }
+        }else if(node3.getPunktX()> node2.getPunktX() && node3.getPunktX()>node1.getPunktX() && node3.getPunktX()> node4.getPunktX() ) {
+            if(node3.getPunktY() > node2.getPunktY() && node3.getPunktY() > node1.getPunktY() && node3.getPunktY() > node4.getPunktY()){
+                nodeArray[3] = node3;
+            }
+        }else if(node4.getPunktX()> node3.getPunktX() && node4.getPunktX()> node2.getPunktX() &&  node4.getPunktX() > node1.getPunktX()){
+            if(node4.getPunktY() > node1.getPunktY() && node4.getPunktY() > node3.getPunktY() && node4.getPunktY() > node2.getPunktY()){
+                nodeArray[3] = node4;
+            }
+        }
+
+        return nodeArray;
     }
     /**
      * Get the length of the Y side of the zone

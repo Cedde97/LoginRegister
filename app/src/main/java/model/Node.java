@@ -160,7 +160,11 @@ public class Node {
 
     }
 
-    private void updateNeighbourAndPeer(Node newNode)  {
+    /**
+     *
+     * @param newNode
+     */
+    public void updateNeighbourAndPeer(Node newNode)  {
         if(neighbourList != null){
             //setzte die NeighbourList des neuen Knoten auf seine eigene
             newNode.getNeighbourList().addAll(neighbourList);
@@ -172,11 +176,16 @@ public class Node {
         }
     }
 
+
+
     private Node routingCheckZone(RoutHelper rh) {
         if(getMyZone().checkIfInMyZone(rh.getX(),rh.getY())){
             //hier noch statt 3 getUID von OnlineDB
             Node newNode = new Node(rh.getID(), rh.getX(), rh.getY(), rh.getIP(), 3, getMyZone());
+            countPeers++;
             if(checkIfMaxPeersCount()){
+
+
                 //splitt
             }else{
                 //testen ob geht
