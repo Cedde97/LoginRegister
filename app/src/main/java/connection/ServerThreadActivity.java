@@ -31,11 +31,11 @@ import task.RoutingTask;
  */
 
 public class ServerThreadActivity extends Activity{
-    private static final int PORTNR   = 9797;
-    private static final int FILETRANS=  1;
-    private static final int NODETRANS=  2;
-    private static final int NEIGHTRANS= 4;
-    private static final int PEERTRANS = 5;
+    private static final int PORTNR       = 9797;
+    private static final int FILETRANSFER =  1;
+    private static final int NODETRANSFER =  2;
+    private static final int NEIGHTRANSFER= 4;
+    private static final int PEERTRANSFER = 5;
     private static final int FOREIGNTRANS = 6;
     private static final int ROUTING = 7;
 
@@ -82,7 +82,7 @@ public class ServerThreadActivity extends Activity{
 
                 switch(methodName){
 
-                    case 1: {
+                    case FILETRANSFER: {
                         Log.d("File Transfer Request","");
 
                         String pathDestination = "C://Users/Cedric/Pictures/test/placeholderNew1.jpg";

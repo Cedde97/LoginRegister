@@ -450,23 +450,19 @@ public class Node {
         return getMyZone().getBottomLeft();
     }
 
-/*    public void setTopRight(Corner topRight){
-        this.topRight = topRight;
+    public void setTopRight(Corner topRight){
         getMyZone().setTopRight(topRight);
     }
 
     public void setTopLeft(Corner topLeft){
-        this.topLeft = topLeft;
         getMyZone().setTopLeft(topLeft);
     }
     public void setBottomRight(Corner bottomRight){
-        this.bottomRight = bottomRight;
         getMyZone().setBottomRight(bottomRight);
     }
     public void setBottomLeft(Corner bottomLeft){
-        this.bottomLeft = bottomLeft;
         getMyZone().setBottomLeft(bottomLeft);
-    }*/
+    }
 
     public double getPunktX() {
         return punktX;
