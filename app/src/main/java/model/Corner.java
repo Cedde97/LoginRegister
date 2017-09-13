@@ -9,7 +9,6 @@ import source.DateiMemoDbSource;
  */
 
 public class Corner {
-    DateiMemoDbSource dateiMemoDbSource;
     private double x;
     private double y;
 
@@ -36,7 +35,7 @@ public class Corner {
     }
 
     public double getX() {
-        return dateiMemoDbSource.getCornerBottomLeftX();
+        return x;
     }
 
     public double getY() {
