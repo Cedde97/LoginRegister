@@ -13,7 +13,7 @@ import java.util.Enumeration;
 
 public class Client {
 
-	protected static final int portNr = 8080;
+	protected static final int portNr = 9797;
 	Serialization serialization = new Serialization();
 	Socket socket = null;
 

@@ -10,7 +10,7 @@ import connection.Client;
 import connection.RoutHelper;
 
 /**
- * Created by Joshi on 10.09.2017.
+ * Created by Joshua Zabel on 10.09.2017.
  */
 
 public class SendRoutActivity extends AsyncTask<Void, Void, Void> {
@@ -30,7 +30,12 @@ public class SendRoutActivity extends AsyncTask<Void, Void, Void> {
 
         try {
             Log.d("Send Routhelper ", "");
-            client.sendRoutHelperAsByteArray(socket, rh);
+            if(socket != null){
+                client.sendRoutHelperAsByteArray(socket, rh);
+            }else{
+                Log.d("InSendRoutActivity","socket == null ");
+            }
+
         } catch (IOException e) {
             Log.d("client.sendNode", e.toString());
         } catch (Exception e) {

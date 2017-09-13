@@ -45,6 +45,7 @@ public class RegisterActivity extends AppCompatActivity {
                             JSONObject jsonResponse = new JSONObject(response);
                             boolean success = jsonResponse.getBoolean("success");
                             if (success){
+                                //start routing/ Abfrage ob das dies der erste Knoten ist der sich anmeldet
                                 // Nach dem erfolgreichen Registrieren öffnet sich die Login Seite
                                 Intent intent = new Intent(RegisterActivity.this,LoginActivity.class);
                                 RegisterActivity.this.startActivity(intent);

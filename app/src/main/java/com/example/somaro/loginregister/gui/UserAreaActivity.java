@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
@@ -27,13 +26,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
-import activity.*;
+import activity.FileTransferActivity;
+import activity.SendRoutActivity;
 import bootstrap.AllIPsActivity;
 import bootstrap.InsertOwnIPActivity;
 import connection.Client;
 import connection.RoutHelper;
 import connection.ServerThreadActivity;
-import model.Neighbour;
 import model.Node;
 import model.Zone;
 
@@ -41,11 +40,11 @@ import model.Zone;
 public class UserAreaActivity extends Activity {
     private static final int CAM_REQUEST = 1;
     private static final int IMAGE_GALLERY_REQUEST = 20;
-    private static final int PORT = 8080;
+    private static final int PORT = 9797;
 
     private ImageView imageView;
     private Client client;
-    private String bootsIp;
+    private static String bootsIp = null;
 
 
     Button routRequest, fileTransferRequest, neighbourTransfer, startServer;
@@ -54,7 +53,17 @@ public class UserAreaActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_area);
+        /**
+         *Hier hat der Papa geädert, dass die globale Variable direkt gesetzt wird
+         *Würde es im onCreate lassen, denn wenn man sie über einen Clicklistener realisieren will, muss man die Threads wieder mal handlen. Der Asynctask ist sonst nicht schnell genug fertig. Bzw gibts
+         *thread-sync probleme
+         */
+        try {
+            String bootsIp = startGetBootsIp();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        setContentView(R .layout.activity_user_area);
         if (android.os.Build.VERSION.SDK_INT > 9) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
@@ -96,22 +105,20 @@ public class UserAreaActivity extends Activity {
                 //ip von Bootstrap-Server holen
                 //ip des "simulierten" Knoten der bereits in CAN ist
 
-                //startGetBootsIp();
-
-               // Log.d("BootsIP:", bootsIp);
-
-               Socket socket = new Socket("192.168.2.110", PORT);
+                Log.d("Globale BootsIP", bootsIp);
+                Socket socket = new Socket(bootsIp, PORT);
 
 
                 Log.d("Socket: ", socket.toString());
                 String ownIP = Client.getOwnIpAddress();
                 Log.d("ownIP: ", ownIP);
+                //uid holen
                 //Daten des zu routenden Knoten
-               RoutHelper rh = new RoutHelper(ownIP, Node.hashX(ownIP), Node.hashY(ownIP), 02l);
-               Log.d("Routhelper: ", rh.toString());
+                RoutHelper rh = new RoutHelper(ownIP, Node.hashX(ownIP), Node.hashY(ownIP), 02l);
+                Log.d("Routhelper: ", rh.toString());
 
                 //senden des RoutHelper-Objectes
-                Log.d("Clicked", "RoutRequ");
+                Log.d("Clicked", "RoutRequest");
                 SendRoutActivity srt = new SendRoutActivity(socket, rh);
                 srt.execute();
 
@@ -146,12 +153,12 @@ public class UserAreaActivity extends Activity {
 
 
             try {
-                Socket socket = new Socket("192.168.2.110", PORT);
+                Socket socket = new Socket("192.168.2.115", PORT);
                 Zone zone = new Zone();
-                Neighbour neighbour = new Neighbour(01l, 1.1, 2.2, 3.3, 4.4, 1.1, 2.2, 3.3, 4.4, 0.0, 0.1, "192.33.2.12", 12.3);
+                //Neighbour neighbour = new Neighbour(01l, 0.0, 0.1, "192.33.2.12", 12.3);
 
-                NeighbourTransferActivity nft = new NeighbourTransferActivity(socket, neighbour);
-                nft.execute();
+                //NeighbourTransferActivity nft = new NeighbourTransferActivity(socket, neighbour);
+                // nft.execute();
             } catch (IOException e) {
                 Log.d("NeighbourTransfer: ", e.toString());
             }
@@ -172,7 +179,7 @@ public class UserAreaActivity extends Activity {
 
             try {
                 File file = new File(path);
-                Socket socket = new Socket("192.168.2.110", PORT);
+                Socket socket = new Socket("192.168.2.115", PORT);
                 FileTransferActivity ftt = new FileTransferActivity(socket, file);
                 ftt.execute();
             } catch (IOException e) {
@@ -182,32 +189,27 @@ public class UserAreaActivity extends Activity {
     };
 
 
+    /**Auch eine Änderung von Papa: In der If-Abfrage einfach die globale Variable gesetzte und reutrnt.
+     * Methode, welche einen Knoten aus der Liste der Bootstrap-Nodes auswählt
+     * @return IP des Bootstrap-Knotes, zu dem geroutet werden soll
+     * @throws JSONException
+     */
+    private String startGetBootsIp() throws JSONException {
 
-
-
-
-
-
-
-    private void startGetBootsIp() throws JSONException {
         new AllIPsActivity(new AllIPsActivity.AsyncResponse(){
+
             @Override
             public void processFinish(String[] ipArray){
                 for(int i = 0; i<ipArray.length; i++){
 
-                    Log.d("", ipArray[i]);
-                    Log.d("CharAt0:", Character.toString(ipArray[i].charAt(0)));
-
-                    if(ipArray[i].contains("192.168.2.110")){
-                        Log.d("bin drin","");
-                        bootsIp = ipArray[i];
+                    if(ipArray[i].contains("192.168.2.115")){
+                        UserAreaActivity.bootsIp = ipArray[i];
+                        Log.d("StatGetBootsIp", UserAreaActivity.bootsIp);
                     }
                 }
-                /*int index =(int)(Math.random() * (ipArray.length - 0));
-                bootsIp = ipArray[index];*/
-
             }
         }).execute();
+        return bootsIp;
     }
 
 

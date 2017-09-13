@@ -1,12 +1,17 @@
 package model;
 
 
-import java.io.File;
+import android.util.Log;
+
+import org.json.JSONException;
+
 import java.io.IOException;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.List;
 
 
+import bootstrap.AllIPsActivity;
 import connection.Client;
 import connection.RoutHelper;
 
@@ -14,9 +19,13 @@ import connection.RoutHelper;
  * @author Joshua Zabel
  */
 public class Node {
+    //vielleicht in eigene Klasse
     private static final int    maxPeers= 3;
     private static final long   DIVIDER=2552552552l;
-    private static final int    PORTNR = 8080;
+    private static final int    PORTNR = 9797;
+    private static final String NLIEE = "Die Neighbourliste ist Leer!!";
+    private static final String PLIEE = "Die Peerliste ist Leer!!!";
+    private static String bootsIp = null;
 
 
     private long   uid;
@@ -28,9 +37,17 @@ public class Node {
     private Corner topLeft;
     private Corner bottomRight;
     private Corner bottomLeft;
-    private Zone   ownZone = new Zone();
+    private Zone   ownZones = new Zone();
+    private Zone   ownZone;
     private Socket socket;
     private Client client = new Client();
+    //Da keine DB
+    private List<Neighbour> neighbourList = new ArrayList<>();
+    private List<PeerMemo> peerMemoList = new ArrayList<>();
+    private List<OwnDataMemo> ownDataMemoList;
+    private List<ForeignData> ForeignDataList;
+
+
 
 
     public Node ()
@@ -122,71 +139,52 @@ public class Node {
 
     }
 
-    /**
-     * Methode die den Routing-Vorgang weiterleitet falls das Ziel noch nicht erreicht wurde
-     * @param ip IP des zu routenden Knoten
-     * @param x X-Wert des zu routenden Knoten
-     * @param y Y-Wert des zu routenden Knoten
-     * @param id kann jeweils FotoID oder UID sein, wird benÃ¶tigt sodass man seinen Peers die nÃ¶tigen Informationen zu dem neuen Knoten geben kann
-     */
-    public void receiveRoutingRequest(String ip, double x, double y, int id) throws IOException {
 
-        //fortsetzung des routing
-        routing(ip,x,y,id);
-    }
-    /**
-     * Hilfsmethode zum routing um zu Ã¼berprÃ¼fen ob der zu routende Knoten in der momentanen Zone liegt
-     * @param ip Des zu routenden Knoten/Bild
-     * @param x Des zu routenden Knoten/Bild
-     * @param y Des zu routenden Knoten/Bild
-     * @param id Des zu routenden Knoten/Bild
-     */
-    private void routingCheckZoneDB(String ip, double x ,double y, int id){
-        if(getMyZone().checkIfInMyZone(x,y)){
-            //was fÃ¼r peerId mitte?
-            PeerMemo pm = new PeerMemo();
+    public Node routing(RoutHelper rh) throws IOException {
+        Node nodeNew = routingCheckZone(rh);
+        double[] distance = new double[3];
 
-            //neuen Knoten seine aktuelle PeersList geben (mit sichselbst)
-            //neuen Knoten eintragen in eigene peer list
-
-            //// TODO: 14.08.2017  Reply to Request-Method(muss setPeers(mit sich selbst) und setNeighbours mitsenden)
-            //// TODO: 14.08.2017 Muss aktuelle Peers Ã¼ber den neuen Knoten Informieren, sodass diese ihre Peerliste updaten. Nun update deine eigene Peerlist
-            //// TODO: 08.09.2017 abbrechen
-            if(checkIfMaxPeersCount()){
-
-                //// TODO: 15.08.2017 informiere deine Peers das sie nun Splitten mÃ¼ssen// methode die einen Splitt aufruft
-                //// TODO: 14.08.2017 SPLITT
-                // TODO: 08.09.2017 abbrechen
+        if(neighbourList != null) {
+            for (int i = 0; i < neighbourList.size(); i++) {
+                distance[i] = computeDistance(rh.getX(), rh.getY(), neighbourList.get(i).getPunktX(), neighbourList.get(i).getPunktY());
             }
+            int index = compareValues(distance);
 
+            //socket = new Socket(neighbourList.get(index).getUIP(), PORTNR);
+        }
+        //berechne die Distanz von den Neighbourn zu den x,y-Werten und liefere den Index an welcher Stelle der Neighbour steht der am nächsten an den x,y-Werten ist
+
+
+        //client.sendRoutHelperAsByteArray(socket,rh);
+        return nodeNew;
+
+    }
+
+    private void updateNeighbourAndPeer(Node newNode)  {
+        if(neighbourList != null){
+            //setzte die NeighbourList des neuen Knoten auf seine eigene
+            newNode.getNeighbourList().addAll(neighbourList);
+            if(peerMemoList != null){
+                //setzte die PeerList des neuen Knoten auf seinsy;
+                PeerMemo pm = new PeerMemo((int)getUid(),getIP());
+                newNode.getPeerMemoList().add(pm);
+            }
         }
     }
 
-    private Node routingCheckZone(String ip, double x ,double y, long id){
-
-        Node returnNode = new Node();
-
-        if(getMyZone().checkIfInMyZone(x,y)){
-            Node newNode = new Node(id, x, y, ip, 3, getMyZone());
+    private Node routingCheckZone(RoutHelper rh) {
+        if(getMyZone().checkIfInMyZone(rh.getX(),rh.getY())){
+            //hier noch statt 3 getUID von OnlineDB
+            Node newNode = new Node(rh.getID(), rh.getX(), rh.getY(), rh.getIP(), 3, getMyZone());
             if(checkIfMaxPeersCount()){
                 //splitt
-
+            }else{
+                //testen ob geht
+                updateNeighbourAndPeer(newNode);
             }
             return newNode;
-
         }
-        return returnNode;
-    }
-
-
-    public Node routing(String ip, double x ,double y, long id) throws IOException {
-        Node nodeNew = routingCheckZone(ip,x,y,id);
-
-        // socket = new Socket("192.168.2.110", PORTNR);
-        RoutHelper rh = new RoutHelper(ip,x,y,id);
-        return nodeNew;
-        //client.sendRoutHelperAsByteArray(socket,rh);
-
+        return null;
     }
     /*
 
@@ -229,30 +227,69 @@ public class Node {
         //// TODO: 14.08.2017 Verbindungsaufbau zu dem Neighbour der an Stelle == Index steht und IP und x,y-Werte Ã¼bertragen so das dieser weiter routen kann, bzw recreive routing request bei ihm aufrufen
     }*/
 
-
     /**
-     * Mit dieser Methode findet ein neuer Knoten einen Einstiegspunkt in das CAN, indem er den Bootstrapserver nach einer IP anfragt
-     *
+     * Hilfsmethode zum routing um zu Ã¼berprÃ¼fen ob der zu routende Knoten in der momentanen Zone liegt
+     * @param ip Des zu routenden Knoten/Bild
+     * @param x Des zu routenden Knoten/Bild
+     * @param y Des zu routenden Knoten/Bild
+     * @param id Des zu routenden Knoten/Bild
      */
-    /*
-    private static void requestJoin() throws JSONException {
-        AllIPsActivity all = new AllIPsActivity();
-        if(all.ipsList.isEmpty()){
-            Log.e("Fehler " , "Ist leer!");
-        }else{
+    private void routingCheckZoneDB(String ip, double x ,double y, int id){
+        if(getMyZone().checkIfInMyZone(x,y)){
+            //was fÃ¼r peerId mitte?
+            PeerMemo pm = new PeerMemo(id,0,ip);
 
-            for (int i = 0; i <all.ipsList.size(); i++){
+            //neuen Knoten seine aktuelle PeersList geben (mit sichselbst)
+            //neuen Knoten eintragen in eigene peer list
 
+            //// TODO: 14.08.2017  Reply to Request-Method(muss setPeers(mit sich selbst) und setNeighbours mitsenden)
+            //// TODO: 14.08.2017 Muss aktuelle Peers Ã¼ber den neuen Knoten Informieren, sodass diese ihre Peerliste updaten. Nun update deine eigene Peerlist
+            //// TODO: 08.09.2017 abbrechen
+            if(checkIfMaxPeersCount()){
 
-
-                Log.d("Inhalt ", all.ipsList.get(i).toString());
+                //// TODO: 15.08.2017 informiere deine Peers das sie nun Splitten mÃ¼ssen// methode die einen Splitt aufruft
+                //// TODO: 14.08.2017 SPLITT
+                // TODO: 08.09.2017 abbrechen
             }
 
         }
+    }
+
+    private String startGetBootsIp() throws JSONException {
+        new AllIPsActivity(new AllIPsActivity.AsyncResponse(){
+
+            @Override
+            public void processFinish(String[] ipArray){
+                for(int i = 0; i<ipArray.length; i++){
+
+                    if(ipArray[i].contains("192.168.2.115")){
+                        Node.bootsIp = ipArray[i];
+                        Log.d("StatGetBootsIp", Node.bootsIp);
+                    }
+                }
+            }
+        }).execute();
+        return bootsIp;
+    }
+
+    /**
+     * Mit dieser Methode findet ein neuer Knoten einen Einstiegspunkt in das CAN, indem er den Bootstrapserver nach einer IP anfragt.
+     * Dieser Bootstrap-Knoten startet dann wiederum das routing.
+     *
+     */
+    private void requestJoin() throws JSONException, IOException {
+        bootsIp = startGetBootsIp();
+        // getUid von Server, noch eine Random IP auswählen
+        //int uid =
+        RoutHelper rh = new RoutHelper(bootsIp,hashX(bootsIp), hashY(bootsIp), 3);
+
+        Socket socket = new Socket(bootsIp,PORTNR);
+        client.sendRoutHelperAsByteArray(socket,rh);
+
         //// TODO: 15.08.2017 getBootsTrapIP() Methode
         //// TODO: 15.08.2017 nun Verbindung zu dieser IP herstellen und routing-Anfrage mit(eigener IP und x ,y Werten, id und isNode als Parameter)
     }
-    */
+
 
     /**
      * Methode um ein Bild auf dem GerÃ¤t und dann auch im CAN zu lÃ¶schen
@@ -322,7 +359,7 @@ public class Node {
                 index = i;
             }
         }
-        return index;
+        return index-1;
     }
 
 
@@ -360,8 +397,6 @@ public class Node {
      */
     private void replyToRequest(String ip) throws IOException {
         socket = new Socket(ip,PORTNR);
-
-
         //muss setPeers aufrufen
         //Liste senden?
         //// TODO: 15.08.2017 Verbindung zu IP herstellen, und setPeer und setNeighbour aufrufen auf diesem Knoten(mit den eigenen Peers und Neighbour-Werten)
@@ -369,7 +404,7 @@ public class Node {
         // TODO: 05.09.2017 Node erstellen. und an IP senden
     }
 
-
+    //vielleicht split einfügen
     public void increasePeersCount(){
         if(checkIfMaxPeersCount()){
 
@@ -420,7 +455,7 @@ public class Node {
         return getMyZone().getBottomLeft();
     }
 
-    public void setTopRight(Corner topRight){
+/*    public void setTopRight(Corner topRight){
         this.topRight = topRight;
         getMyZone().setTopRight(topRight);
     }
@@ -436,28 +471,27 @@ public class Node {
     public void setBottomLeft(Corner bottomLeft){
         this.bottomLeft = bottomLeft;
         getMyZone().setBottomLeft(bottomLeft);
+    }*/
+
+    public double getPunktX() {
+        return punktX;
     }
 
-     public double getPunktX() {
-     return punktX;
-     }
+    public void setPunktX(double punktX) {
+        this.punktX = punktX;
+    }
 
-     public void setPunktX(double punktX) {
-     this.punktX = punktX;
-     }
+    public double getPunktY() {
+        return punktY;
+    }
 
-     public double getPunktY() {
-     return punktY;
-     }
+    public void setPunktY(double punktY) {
+        this.punktY = punktY;
+    }
 
-     public void setPunktY(double punktY) {
-     this.punktY = punktY;
-     }
-
-     public String getIP() {
-     return iP;
-     //return dateiMemoDbSource.getIp(dateiMemoDbSource.getUid());
-     }
+    public String getIP() {
+        return iP;
+    }
     public void setIP(String IP) {
         this.iP = IP;
     }
@@ -478,20 +512,45 @@ public class Node {
         this.ownZone = zone;
     }
 
-    public String toString() {
-        StringBuffer sb = new StringBuffer();
-        sb.append("topLeft: " + ownZone.getTopLeft().toString() +
-                "\n top right: " + ownZone.getTopRight().toString() +
-                "\n bottom left: " + ownZone.getBottomLeft().toString() +
-                "\n bottom right: " + ownZone.getBottomRight().toString());
 
-        return sb.toString();
+    public List<Neighbour> getNeighbourList() {
+        return neighbourList;
+    }
+
+    public void setNeighbourList(List<Neighbour> neighbourList) {
+        this.neighbourList = neighbourList;
+    }
+
+    public List<PeerMemo> getPeerMemoList() {
+        return peerMemoList;
+    }
+
+    public void setPeerMemoList(List<PeerMemo> peerMemoList) {
+        this.peerMemoList = peerMemoList;
     }
 
 
 
+    //noch updaten
+    public String toString() {
+        StringBuffer sb = new StringBuffer();
+        if(neighbourList != null && peerMemoList != null) {
+            sb.append("Node: " + "\nUserId: " + uid + " PunktX: " + punktX + " PunktY: " + punktY + " IP: " + iP +
+                    " countPeers: " + countPeers + " Own Zone: " + ownZone.toString() +
+                    "topLeft: " + ownZone.getTopLeft().toString() +
+                    "\nntop right: " + ownZone.getTopRight().toString() +
+                    "\nbottom left: " + ownZone.getBottomLeft().toString() +
+                    "\nbottom right: " + ownZone.getBottomRight().toString() +
+                    "\n\nNeighbourList: " + neighbourList.toString() + "\n\nPeerList: " + peerMemoList.toString());
 
-    /*public static void main(String [] args) throws JSONException {
+            return sb.toString();
+        }
+        return null;
+    }
+
+
+
+   /*public static void main(String [] args) throws JSONException {
         requestJoin();
     }*/
 
