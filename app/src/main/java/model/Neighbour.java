@@ -3,7 +3,9 @@ package model;
 
 
 
-/**/
+/**
+ * @author Eridho
+ * */
 public class Neighbour {
 
     //DateiMemo dateiMemo;
@@ -20,6 +22,12 @@ public class Neighbour {
     private double punktY;
     private String UIP;
     private double RTT;
+
+    private Corner topRight;
+    private Corner topLeft;
+    private Corner bottomRight;
+    private Corner bottomLeft;
+    private Zone zone;
     //private boolean checked;
     private long uid;
     //private long neighbour_id;
@@ -44,6 +52,24 @@ public class Neighbour {
         this.punktY = punktY;
         this.UIP = UIP;
         this.RTT = RTT;
+    }
+
+    /**
+     * @author Joshua Zabel
+     * @param uid
+     * @param punktX
+     * @param punktY
+     * @param ip
+     * @param zone
+     * @param rtt
+     */
+    public Neighbour(long uid, double punktX, double punktY, String ip, Zone zone, double rtt){
+        this.uid = uid;
+        this.punktX = punktX;
+        this.punktY = punktY;
+        this.UIP    = ip;
+        this.zone   = zone;
+        this.RTT    = rtt;
     }
 
 //    public double getCornerTopRight() {
@@ -114,33 +140,25 @@ public class Neighbour {
         return cornerBottomRightX;
     }
 
-    public void setCornerBottomRightX(double cornerBottomRightX) {
-        this.cornerBottomRightX = cornerBottomRightX;
-    }
+    public void setCornerBottomRightX(double cornerBottomRightX) {this.cornerBottomRightX = cornerBottomRightX;}
 
     public double getCornerBottomRightY() {
         return cornerBottomRightY;
     }
 
-    public void setCornerBottomRightY(double cornerBottomRightY) {
-        this.cornerBottomRightY = cornerBottomRightY;
-    }
+    public void setCornerBottomRightY(double cornerBottomRightY) {this.cornerBottomRightY = cornerBottomRightY;}
 
     public double getCornerBottomLeftX() {
         return cornerBottomLeftX;
     }
 
-    public void setCornerBottomLeftX(double cornerBottomLeftX) {
-        this.cornerBottomLeftX = cornerBottomLeftX;
-    }
+    public void setCornerBottomLeftX(double cornerBottomLeftX) {this.cornerBottomLeftX = cornerBottomLeftX;}
 
     public double getCornerBottomLeftY() {
         return cornerBottomLeftY;
     }
 
-    public void setCornerBottomLeftY(double cornerBottomLeftY) {
-        this.cornerBottomLeftY = cornerBottomLeftY;
-    }
+    public void setCornerBottomLeftY(double cornerBottomLeftY) {this.cornerBottomLeftY = cornerBottomLeftY;}
 
     public double getPunktX() {
         return punktX;
@@ -174,14 +192,6 @@ public class Neighbour {
         this.RTT = RTT;
     }
 
-//    public boolean isChecked() {
-//        return checked;
-//    }
-//
-//    public void setChecked(boolean checked) {
-//        this.checked = checked;
-//    }
-
     public long getUid() {
         return uid;
     }
@@ -190,23 +200,13 @@ public class Neighbour {
         this.uid = uid;
     }
 
-//    public long getNeighbour_id() {
-//        return neighbour_id;
-//    }
-//
-//    public void setNeighbour_id(long neighbour_id) {
-//        this.neighbour_id = neighbour_id;
-//    }
 
     @Override
     public String toString() {
-        String output = uid + " -- " + UIP + " -- " + //neighbour_id +
-                "\nCorner top Left : x -> "+ cornerTopLeftX + " -- y -> "+ cornerTopLeftY +
-                "\nCorner top Right : x -> "+ cornerTopRightX + " -- y -> "+ cornerTopRightY +
-                "\nCorner Bottom Left : x -> "+ cornerBottomLeftX + " -- y -> "+ cornerBottomLeftY +
-                "\nCorner Bottom Right : x -> "+ cornerBottomRightX + " -- y -> "+ cornerBottomRightY +
-                "\nCorner Punkt : x -> "+ punktX + " -- y -> "+ punktY +
-                "\n RTT : "+ RTT;
+        String output = "Neighbour: " + "\nUserID: " + uid + ", IP: " + UIP + "\n" +
+                "Zone: "+ zone.toString()+
+                "PunktX :"+ punktX + ", PunktY: "+ punktY +
+                "\nRTT : "+ RTT+ "\n\n";
         return output;
     }
 

@@ -112,12 +112,13 @@ public class UserAreaActivity extends Activity {
                 Log.d("Socket: ", socket.toString());
                 String ownIP = Client.getOwnIpAddress();
                 Log.d("ownIP: ", ownIP);
+                //uid holen
                 //Daten des zu routenden Knoten
                 RoutHelper rh = new RoutHelper(ownIP, Node.hashX(ownIP), Node.hashY(ownIP), 02l);
                 Log.d("Routhelper: ", rh.toString());
 
                 //senden des RoutHelper-Objectes
-                Log.d("Clicked", "RoutRequ");
+                Log.d("Clicked", "RoutRequest");
                 SendRoutActivity srt = new SendRoutActivity(socket, rh);
                 srt.execute();
 
@@ -152,7 +153,7 @@ public class UserAreaActivity extends Activity {
 
 
             try {
-                Socket socket = new Socket("192.168.2.110", PORT);
+                Socket socket = new Socket("192.168.2.115", PORT);
                 Zone zone = new Zone();
                 //Neighbour neighbour = new Neighbour(01l, 0.0, 0.1, "192.33.2.12", 12.3);
 
@@ -178,7 +179,7 @@ public class UserAreaActivity extends Activity {
 
             try {
                 File file = new File(path);
-                Socket socket = new Socket("192.168.2.110", PORT);
+                Socket socket = new Socket("192.168.2.115", PORT);
                 FileTransferActivity ftt = new FileTransferActivity(socket, file);
                 ftt.execute();
             } catch (IOException e) {
@@ -201,7 +202,7 @@ public class UserAreaActivity extends Activity {
             public void processFinish(String[] ipArray){
                 for(int i = 0; i<ipArray.length; i++){
 
-                    if(ipArray[i].contains("192.168.178.78")){
+                    if(ipArray[i].contains("192.168.2.115")){
                         UserAreaActivity.bootsIp = ipArray[i];
                         Log.d("StatGetBootsIp", UserAreaActivity.bootsIp);
                     }

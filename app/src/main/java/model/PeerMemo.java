@@ -19,9 +19,15 @@ public class PeerMemo {
 
     }
 
+    public PeerMemo(int peerId, String peerIp){
+        this.peerId = peerId;
+        this.peerIp = peerIp;
+    }
+
     public long getUid() {
         return uid;
     }
+
     public void setUid(long uid) {
         this.uid = uid;
     }
@@ -33,15 +39,6 @@ public class PeerMemo {
     public void setPeerId(long peerId) {
         this.peerId = peerId;
     }
-
-//    public boolean isChecked() {
-//        return checked;
-//    }
-//
-//    public void setChecked (boolean checked) {
-//        this.checked = checked;
-//    }
-
 
     public String getPeerIp() {
         return peerIp;
@@ -67,19 +64,10 @@ public class PeerMemo {
         return i;
     }
 
-    public void decreasePeers(){
-        peerId = peerId-1;
-    }
-
-    public void increasePeers(){
-        peerId = peerId+1;
-    }
-
-
 
     @Override
     public String toString() {
-        String output = uid + " -- " + peerId;
+        String output = "UserID: " +uid + ", PeerID: " + peerId + ", IP: "+ peerIp+"\n";
         return output;
     }
 }

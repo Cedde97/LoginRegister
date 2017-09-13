@@ -254,7 +254,10 @@ public class Zone {
     public String toString(){
         StringBuffer sb = new StringBuffer();
 
-        sb.append(topRight.toString()).append(topLeft.toString()).append(bottomRight.toString()).append(bottomLeft.toString());
+        sb.append(topRight.toString()+", ")
+                .append(topLeft.toString()+", ")
+                .append(bottomRight.toString()+", ")
+                .append(bottomLeft.toString()+", \n");
 
         return sb.toString();
     }

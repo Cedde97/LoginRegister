@@ -2,6 +2,11 @@ package com.example.somaro.loginregister;
 
 import org.junit.Test;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import connection.RoutHelper;
 import exception.XMustBeLargerThanZeroException;
 import exception.YMustBeLargerThanZeroException;
 import model.*;
@@ -140,6 +145,41 @@ public class LogicTest {
         assertEquals(1, node.compareValues(dis));
     }
 
+    @Test
+    public void test_UpdateNeighbourAndPeer() throws YMustBeLargerThanZeroException, XMustBeLargerThanZeroException, IOException {
+        List<Neighbour> neighbourList = new ArrayList<>();
+        List<PeerMemo> peerMemoList = new ArrayList<>();
+        String ip = "192.168.2.115";
+
+        Corner cornerBottomLeft1 = new Corner(0.0,0.0);
+        Corner cornerBottomRight1 = new Corner(0.5,0.0);
+        Corner cornerTopLeft1 = new Corner(0.0,1.0);
+        Corner cornerTopRight1 = new Corner(0.5,1.0);
+
+        Corner cornerBottomLeft2 = new Corner(0.5,0.0);
+        Corner cornerBottomRight2 = new Corner(1.0,0.0);
+        Corner cornerTopLeft2 = new Corner(0.5,1.0);
+        Corner cornerTopRight2 = new Corner(1.0,1.0);
+
+        Zone zone = new Zone(cornerTopLeft1,cornerTopRight1,cornerBottomLeft1,cornerBottomRight1);
+        Zone neighbourZone = new Zone(cornerTopLeft2, cornerTopRight2, cornerBottomLeft2, cornerBottomRight2);
+        Neighbour n = new Neighbour(03l,0.4,0.5,ip,zone,0.5);
+        Neighbour n1 = new Neighbour(03l,0.5,0.5,ip,neighbourZone,0.5);
+        PeerMemo p = new PeerMemo(03l,93,ip);
+        neighbourList.add(n);
+        neighbourList.add(n1);
+        peerMemoList.add(p);
+
+
+        Node node = new Node(01l,0.5,0.5,ip,2,zone);
+        node.setNeighbourList(neighbourList);
+        node.setPeerMemoList(peerMemoList);
+        RoutHelper rh = new RoutHelper(ip,0.3,0.5,02l);
+
+        Node neuerNode = node.routing(rh);
+        System.out.println(neuerNode.toString());
+
+    }
   /*  @Test
     public void testSendIPAddress() throws IOException {
         Client client = new Client();
