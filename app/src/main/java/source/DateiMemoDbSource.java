@@ -54,28 +54,6 @@ public class DateiMemoDbSource {
         dateiMemo = new Node();
     }
 
-    /*
-    *
-    * For single table
-    *
-    * */
-
-//    public DateiMemoDbSource(Context context) {
-//        Log.d(LOG_TAG, "Unsere DataSource erzeugt jetzt den dbHelper.");
-//        dbHelper = new DateiMemoDbHelper(context);
-//    }
-//
-//    //mit getWritableDatabase öffnet man die Verbindung DB
-//    public void open() {
-//        Log.d(LOG_TAG, "Eine Referenz auf die Datenbank wird jetzt angefragt.");
-//        database = dbHelper.getWritableDatabase();
-//        Log.d(LOG_TAG, "Datenbank-Referenz erhalten. Pfad zur Datenbank: " + database.getPath());
-//    }
-//
-//    public void close() {
-//        dbHelper.close();
-//        Log.d(LOG_TAG, "Datenbank mit Hilfe des DbHelpers geschlossen.");
-//    }
     //
     //==================================================================================================================
     //
@@ -160,17 +138,6 @@ public class DateiMemoDbSource {
         data_Id = (int)database.insert(DateiMemoDbHelper.TABLE_DATEI_LIST, null, values);
         DatabaseManager.getInstance().closeDatabase();
 
-        //
-        //dataId
-        //insert data in Array
-        //
-//        Cursor cursor = database.query(DateiMemoDbHelper.TABLE_DATEI_LIST,
-//                        columns, DateiMemoDbHelper.COLUMN_UID + "=" + data_Id ,
-//                        null, null, null, null);
-//
-//        cursor.moveToFirst();
-//        dateiMemo = cursorToDateiMemo(cursor);
-//        cursor.close();
 
         return data_Id;
     }
@@ -502,13 +469,6 @@ public class DateiMemoDbSource {
         double CornerBottomRightY;
         CornerBottomRightY = cursor.getDouble(cursor.getColumnIndex(DateiMemoDbHelper.COLUMN_CORNERBOTTOMRIGHTY));
 
-//        while(!cursor.isAfterLast()) {
-//            CornerBottomRightX = cursor.getDouble(cursor.getColumnIndex(DateiMemoDbHelper.COLUMN_CORNERBOTTOMRIGHTX));
-//            //CornerBottomRightList.add(CornerBottomRight);
-//            Log.d(LOG_TAG, selectQuery);
-//            cursor.moveToNext();
-//        }
-
         cursor.close();
         DatabaseManager.getInstance().closeDatabase();
         return CornerBottomRightY;
@@ -538,12 +498,6 @@ public class DateiMemoDbSource {
         double CornerBottomLeftX;
         CornerBottomLeftX = cursor.getDouble(cursor.getColumnIndex(DateiMemoDbHelper.COLUMN_CORNERBOTTOMLEFTX));
 
-//        while(!cursor.isAfterLast()) {
-//            CornerBottomLeftX = cursor.getDouble(cursor.getColumnIndex(DateiMemoDbHelper.COLUMN_CORNERBOTTOMLEFTX));
-//            //CornerBottomLeftList.add(CornerBottomLeft);
-//            Log.d(LOG_TAG, selectQuery);
-//            cursor.moveToNext();
-//        }
 
         cursor.close();
         DatabaseManager.getInstance().closeDatabase();
@@ -561,12 +515,6 @@ public class DateiMemoDbSource {
         double CornerBottomLeftY;
         CornerBottomLeftY = cursor.getDouble(cursor.getColumnIndex(DateiMemoDbHelper.COLUMN_CORNERBOTTOMLEFTY));
 
-//        while(!cursor.isAfterLast()) {
-//            CornerBottomLeftX = cursor.getDouble(cursor.getColumnIndex(DateiMemoDbHelper.COLUMN_CORNERBOTTOMLEFTX));
-//            //CornerBottomLeftList.add(CornerBottomLeft);
-//            Log.d(LOG_TAG, selectQuery);
-//            cursor.moveToNext();
-//        }
 
         cursor.close();
         DatabaseManager.getInstance().closeDatabase();
@@ -597,13 +545,6 @@ public class DateiMemoDbSource {
         CornerTopRightX = cursor.getDouble(cursor.getColumnIndex(DateiMemoDbHelper.COLUMN_CORNERTOPRIGHTX));
 
 
-//        while(!cursor.isAfterLast()) {
-//            CornerTopRightX = cursor.getDouble(cursor.getColumnIndex(DateiMemoDbHelper.COLUMN_CORNERTOPRIGHTX));
-//            //CornerTopRightList.add(CornerTopRight);
-//            Log.d(LOG_TAG, selectQuery);
-//            cursor.moveToNext();
-//        }
-
         cursor.close();
         DatabaseManager.getInstance().closeDatabase();
         return CornerTopRightX;
@@ -620,13 +561,6 @@ public class DateiMemoDbSource {
         double CornerTopRightY;
         CornerTopRightY = cursor.getDouble(cursor.getColumnIndex(DateiMemoDbHelper.COLUMN_CORNERTOPRIGHTY));
 
-
-//        while(!cursor.isAfterLast()) {
-//            CornerTopRightX = cursor.getDouble(cursor.getColumnIndex(DateiMemoDbHelper.COLUMN_CORNERTOPRIGHTX));
-//            //CornerTopRightList.add(CornerTopRight);
-//            Log.d(LOG_TAG, selectQuery);
-//            cursor.moveToNext();
-//        }
 
         cursor.close();
         DatabaseManager.getInstance().closeDatabase();
@@ -658,13 +592,6 @@ public class DateiMemoDbSource {
         CornerTopLeftX = cursor.getDouble(cursor.getColumnIndex(DateiMemoDbHelper.COLUMN_CORNERTOPLEFTX));
 
 
-//        while(!cursor.isAfterLast()) {
-//            CornerTopRightX = cursor.getDouble(cursor.getColumnIndex(DateiMemoDbHelper.COLUMN_CORNERTOPRIGHTX));
-//            //CornerTopRightList.add(CornerTopRight);
-//            Log.d(LOG_TAG, selectQuery);
-//            cursor.moveToNext();
-//        }
-
         cursor.close();
         DatabaseManager.getInstance().closeDatabase();
         return CornerTopLeftX;
@@ -681,13 +608,6 @@ public class DateiMemoDbSource {
         double CornerTopLeftY;
         CornerTopLeftY = cursor.getDouble(cursor.getColumnIndex(DateiMemoDbHelper.COLUMN_CORNERTOPLEFTY));
 
-
-//        while(!cursor.isAfterLast()) {
-//            CornerTopRightX = cursor.getDouble(cursor.getColumnIndex(DateiMemoDbHelper.COLUMN_CORNERTOPRIGHTX));
-//            //CornerTopRightList.add(CornerTopRight);
-//            Log.d(LOG_TAG, selectQuery);
-//            cursor.moveToNext();
-//        }
 
         cursor.close();
         DatabaseManager.getInstance().closeDatabase();
