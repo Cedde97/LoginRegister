@@ -56,26 +56,6 @@ public class ExampleInstrumentedTest {
         Node dateiMemo = new Node();
         PeerMemo peerMemo = new PeerMemo();
 
-        Node dateiMemo = new Node();
-        dateiMemo.setUid(7872);
-        //dateiMemo.setChecked(true);
-        dateiMemo.setCornerTopRightX(0.5);
-        dateiMemo.setCornerTopRightY(0.6);
-        dateiMemo.setCornerTopLeftX(0.2);
-        dateiMemo.setCornerTopLeftY(0.2);
-        dateiMemo.setCornerBottomLeftX(0.4);
-        dateiMemo.setCornerBottomLeftY(0.6);
-        dateiMemo.setCornerBottomRightX(0.5);
-        dateiMemo.setCornerBottomRightY(1);
-        dateiMemo.setPunktX(0.2);
-        dateiMemo.setPunktY(0.4);
-        dateiMemo.setIP("277.0.0.0/8");
-        dateiMemo.setCountPeers(2);
-        dateiMemoDbSource.createDateiMemo(dateiMemo);
-
-
-
-        //dateiMemoDbSource.deleteDateiMemo();
 
         Corner cornerBottomLeft;
         Corner cornerBottomRight;
@@ -87,6 +67,10 @@ public class ExampleInstrumentedTest {
             cornerBottomRight = new Corner(1.0,0.0);
             cornerTopLeft = new Corner(0.0,1.0);
             cornerTopRight = new Corner(1.0,1.0);
+
+            //dateiMemoDbSource.deleteDateiMemo();
+
+
             zone = new Zone(cornerTopLeft,cornerTopRight,cornerBottomLeft,cornerBottomRight);
 
             dateiMemo.setUid(7872);
@@ -127,7 +111,6 @@ public class ExampleInstrumentedTest {
         {
             Log.d("", "333333 " + e.getMessage());
         }
-        PeerMemo peerMemo = new PeerMemo();
         //foreign key
         peerMemo.setUid(dateiMemoDbSource.getUid());
         peerMemo.setPeerIp("277.0.0.1");
