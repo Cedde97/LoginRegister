@@ -161,8 +161,9 @@ public class Node {
     }
 
     /**
-     *
-     * @param newNode
+     * als wenn node.updateNeighbourAndPeer(newNode) so aufgerufen wird bekommt newNode die Listen von node
+     * Methode um dem übergebenen Knoten seine eigene Neighbour und Peerlist zu übertragen
+     * @param newNode dieser Knoten bekommt die Neighbour und Peerlist
      */
     public void updateNeighbourAndPeer(Node newNode)  {
         if(neighbourList != null){

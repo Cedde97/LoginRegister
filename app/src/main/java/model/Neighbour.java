@@ -30,29 +30,38 @@ public class Neighbour {
     private Zone zone;
     //private boolean checked;
     private long uid;
-    //private long neighbour_id;
+    private long neighbour_id;
+
+    public long getNeighbour_id() {
+        return neighbour_id;
+    }
+
+    public void setNeighbour_id(long neighbour_id) {
+        this.neighbour_id = neighbour_id;
+    }
+
     public Neighbour(){
 
     }
-
-    public Neighbour(long uid,
-                     double cornerTopRightX, double cornerTopRightY, double cornerTopLeftX, double cornerTopLeftY,
-                     double cornerBottomRightX, double cornerBottomRightY, double cornerBottomLeftX, double cornerBottomLeftY,
-                     double punktX, double punktY, String UIP, double RTT) {
-        this.uid = uid;
-        this.cornerTopRightX = cornerTopRightX;
-        this.cornerTopRightY = cornerTopRightY;
-        this.cornerTopLeftX = cornerTopLeftX;
-        this.cornerTopLeftY = cornerTopLeftY;
-        this.cornerBottomRightX = cornerBottomRightX;
-        this.cornerBottomRightY = cornerBottomRightY;
-        this.cornerBottomLeftX = cornerBottomLeftX;
-        this.cornerBottomLeftY = cornerBottomLeftY;
-        this.punktX = punktX;
-        this.punktY = punktY;
-        this.UIP = UIP;
-        this.RTT = RTT;
-    }
+//
+//    public Neighbour(long uid,
+//                     double cornerTopRightX, double cornerTopRightY, double cornerTopLeftX, double cornerTopLeftY,
+//                     double cornerBottomRightX, double cornerBottomRightY, double cornerBottomLeftX, double cornerBottomLeftY,
+//                     double punktX, double punktY, String UIP, double RTT) {
+//        this.uid = uid;
+//        this.cornerTopRightX = cornerTopRightX;
+//        this.cornerTopRightY = cornerTopRightY;
+//        this.cornerTopLeftX = cornerTopLeftX;
+//        this.cornerTopLeftY = cornerTopLeftY;
+//        this.cornerBottomRightX = cornerBottomRightX;
+//        this.cornerBottomRightY = cornerBottomRightY;
+//        this.cornerBottomLeftX = cornerBottomLeftX;
+//        this.cornerBottomLeftY = cornerBottomLeftY;
+//        this.punktX = punktX;
+//        this.punktY = punktY;
+//        this.UIP = UIP;
+//        this.RTT = RTT;
+//    }
 
     /**
      * @author Joshua Zabel
@@ -71,38 +80,6 @@ public class Neighbour {
         this.zone   = zone;
         this.RTT    = rtt;
     }
-
-//    public double getCornerTopRight() {
-//        return cornerTopRight;
-//    }
-//
-//    public void setCornerTopRight(double cornerTopRight) {
-//        this.cornerTopRight = cornerTopRight;
-//    }
-//
-//    public double getCornerTopLeft() {
-//        return cornerTopLeft;
-//    }
-//
-//    public void setCornerTopLeft(double cornerTopLeft) {
-//        this.cornerTopLeft = cornerTopLeft;
-//    }
-//
-//    public double getCornerBottomRight() {
-//        return cornerBottomRight;
-//    }
-//
-//    public void setCornerBottomRight(double cornerBottomRight) {
-//        this.cornerBottomRight = cornerBottomRight;
-//    }
-//
-//    public double getCornerBottomLeft() {
-//        return cornerBottomLeft;
-//    }
-//
-//    public void setCornerBottomLeft(double cornerBottomLeft) {
-//        this.cornerBottomLeft = cornerBottomLeft;
-//    }
 
     public double getCornerTopRightX() {
         return cornerTopRightX;
