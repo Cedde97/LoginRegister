@@ -230,27 +230,28 @@ public class ExampleInstrumentedTest {
             Node node3 = new Node(cornerBottomLeft,cornerBottomRight,cornerTopLeft,cornerTopRight);
             Node node4 = new Node(cornerBottomLeft,cornerBottomRight,cornerTopLeft,cornerTopRight);*/
 
-            Node node1 = new Node(1,0.3,0.4,"1.1.1.1" ,3, zone);
-            Node node2 = new Node(1,0.6,0.8,"1.2.1.1" ,3, zone);
-            Node node3 = new Node(1,0.7,0.3,"1.3.1.1" ,3, zone);
-            Node node4 = new Node(1,0.1,0.7,"1.4.1.1" ,3, zone);
+            Node node1 = new Node(1,0.1,0.4,"1.1.1.1" ,3, zone);
+            Node node2 = new Node(1,0.9,0.8,"1.2.1.1" ,3, zone);
+            Node node3 = new Node(1,0.9,0.9,"1.3.1.1" ,3, zone);
+            Node node4 = new Node(1,0.1,0.1,"1.4.1.1" ,3, zone);
 
-            DateiMemoDbSource dateiMemoDbSource = new DateiMemoDbSource();
+            /*DateiMemoDbSource dateiMemoDbSource = new DateiMemoDbSource();
             dateiMemoDbSource.createDateiMemo(node1);
             dateiMemoDbSource.createDateiMemo(node2);
             dateiMemoDbSource.createDateiMemo(node3);
-            dateiMemoDbSource.createDateiMemo(node4);
+            dateiMemoDbSource.createDateiMemo(node4);*/
 
             zone.split(node1,node2,node3,node4);
 
-            assertEquals(0.5, dateiMemoDbSource.getCornerBottomRightX(), 0);
-            assertEquals(0.5, dateiMemoDbSource.getCornerTopRightX() ,0);
-            assertEquals(0.5, node2.getBottomRight().getX(), 0);
-            assertEquals(0.5, node2.getTopRight().getX() ,0);
-            assertEquals(0.5, node3.getBottomLeft().getX(), 0);
-            assertEquals(0.5, node3.getTopLeft().getX() ,0);
-            assertEquals(0.5, node4.getBottomLeft().getX(), 0);
-            assertEquals(0.5, node4.getTopLeft().getX() ,0);
+            Log.d("TEST", "NODE1: " + node1.getBottomRight().getX() + ", " +node1.getBottomRight().getX());
+            assertEquals(0.6, node1.getBottomRight().getX(), 0);
+            assertEquals(0.6, node1.getTopRight().getX() ,0);
+            assertEquals(0.6, node2.getBottomRight().getX(), 0);
+            assertEquals(0.6, node2.getTopRight().getX() ,0);
+            assertEquals(0.6, node3.getBottomLeft().getX(), 0);
+            assertEquals(0.6, node3.getTopLeft().getX() ,0);
+            assertEquals(0.6, node4.getBottomLeft().getX(), 0);
+            assertEquals(0.6, node4.getTopLeft().getX() ,0);
         }
         catch(XMustBeLargerThanZeroException xMBLTZE)
         {
@@ -260,7 +261,7 @@ public class ExampleInstrumentedTest {
 
         }catch( Exception e)
         {
-
+            Log.d("Exception", e.getMessage());
         }
 
     }

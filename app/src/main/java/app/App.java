@@ -25,8 +25,8 @@ public class App extends Application {
         super.onCreate();
         Log.d(LOG_TAG ,"APP.CONTEXT " + context);
         context = this.getApplicationContext();
-        //dbHelper = new DateiMemoDbHelper(context);
-        dbHelper = new DateiMemoDbHelper();
+        dbHelper = new DateiMemoDbHelper(context);
+        //dbHelper = new DateiMemoDbHelper();
         DatabaseManager.initializeInstance(dbHelper);
 
     }

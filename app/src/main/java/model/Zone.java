@@ -1,6 +1,8 @@
 package model;
 
 
+import android.util.Log;
+
 /**
  * Created by gyorgyi on 22/08/17.
  */
@@ -152,6 +154,7 @@ public class Zone {
     public void split(Node bottomLeftNode, Node topLeftNode, Node bottomRightNode, Node topRightNode) {
 
         Node[] nodeArray = determineLocation(bottomLeftNode,topLeftNode,bottomRightNode,topRightNode);
+
         // we split the zone along the longest side
         if (getLengthX(bottomLeftNode) >= getLengthY(bottomLeftNode)) {
 
@@ -192,80 +195,138 @@ public class Zone {
 
     private Node[] determineLocation(Node node1, Node node2, Node node3, Node node4){
         Node[] nodeArray = new Node[4];
-       if(node1.getPunktX()< node2.getPunktX() && node1.getPunktX()< node3.getPunktX() && node1.getPunktX()< node4.getPunktX() ) {
-           if(node1.getPunktY() < node2.getPunktY() && node1.getPunktY() < node3.getPunktY() && node1.getPunktY() < node4.getPunktY()){
+
+        nodeArray[0] = node1;
+        nodeArray[1] = node2;
+        nodeArray[2] = node3;
+        nodeArray[3] = node4;
+
+        Node temp = new Node();
+        int links = 0;
+        int rechts = 0;
+
+        
+
+
+
+       // Log.d("TEST", "Determine");
+      /* if(node1.getPunktX()<= node2.getPunktX() || node1.getPunktX()<= node3.getPunktX() || node1.getPunktX()<= node4.getPunktX() ) {
+           Log.d("1.TEST_X", "NODE1");
+           if(node1.getPunktY() <= node2.getPunktY() || node1.getPunktY() <= node3.getPunktY() || node1.getPunktY() <= node4.getPunktY()){
+               Log.d("1.TEST_Y", "NODE1");
                 nodeArray[0] = node1;
            }
-       }else if(node2.getPunktX()< node3.getPunktX() && node2.getPunktX()< node4.getPunktX() &&  node2.getPunktX() < node1.getPunktX()){
-           if(node2.getPunktY() < node1.getPunktY() && node2.getPunktY() < node3.getPunktY() && node2.getPunktY() < node4.getPunktY()){
+       }
+       if(node2.getPunktX()<= node3.getPunktX() || node2.getPunktX()<= node4.getPunktX() ||  node2.getPunktX() <= node1.getPunktX()){
+           Log.d("1.TEST_X", "NODE2");
+           if(node2.getPunktY() <= node1.getPunktY() || node2.getPunktY() <= node3.getPunktY() || node2.getPunktY() <= node4.getPunktY()){
+               Log.d("1.TEST_Y", "NODE2");
                 nodeArray[0] = node2;
            }
-       }else if(node3.getPunktX()< node2.getPunktX() && node3.getPunktX()< node1.getPunktX() && node3.getPunktX()< node4.getPunktX() ) {
-            if(node3.getPunktY() < node2.getPunktY() && node3.getPunktY() < node1.getPunktY() && node3.getPunktY() < node4.getPunktY()){
+       }
+       if(node3.getPunktX()<= node2.getPunktX() || node3.getPunktX()<= node1.getPunktX() || node3.getPunktX()<= node4.getPunktX() ) {
+           Log.d("1.TEST_X", "NODE3");
+            if(node3.getPunktY() <= node2.getPunktY() || node3.getPunktY() <= node1.getPunktY() || node3.getPunktY() <= node4.getPunktY()){
+                Log.d("1.TEST_Y", "NODE3");
                 nodeArray[0] = node3;
             }
-        }else if(node4.getPunktX()< node3.getPunktX() && node4.getPunktX()< node2.getPunktX() &&  node4.getPunktX() < node1.getPunktX()){
-            if(node4.getPunktY() < node1.getPunktY() && node4.getPunktY() < node3.getPunktY() && node4.getPunktY() < node2.getPunktY()){
+        }
+        if(node4.getPunktX()<= node3.getPunktX() || node4.getPunktX()<= node2.getPunktX() ||  node4.getPunktX() <= node1.getPunktX()){
+           Log.d("1.TEST_X", "NODE4");
+            if(node4.getPunktY() <= node1.getPunktY() || node4.getPunktY() <= node3.getPunktY() || node4.getPunktY() <= node2.getPunktY()){
+                Log.d("1.TEST_Y", "NODE4");
                 nodeArray[0] = node4;
             }
         }
 
-        if(node1.getPunktX()< node2.getPunktX() && node1.getPunktX()< node3.getPunktX() && node1.getPunktX()< node4.getPunktX() ) {
-            if(node1.getPunktY() > node2.getPunktY() && node1.getPunktY() > node3.getPunktY() && node1.getPunktY() > node4.getPunktY()){
+        if(node1.getPunktX()<= node2.getPunktX() | node1.getPunktX()<= node3.getPunktX() | node1.getPunktX()<= node4.getPunktX() ) {
+            Log.d("2.TEST_X", "NODE1" + node1.getPunktY() + ", " + node4.getPunktY());
+            if(node1.getPunktY() >= node2.getPunktY() | node1.getPunktY() >= node3.getPunktY() | node1.getPunktY() >= node4.getPunktY()){
+                Log.d("2.TEST_Y", "NODE1");
                 nodeArray[1] = node1;
             }
-        }else if(node2.getPunktX()< node3.getPunktX() && node2.getPunktX()< node4.getPunktX() &&  node2.getPunktX() < node1.getPunktX()){
-            if(node2.getPunktY() > node1.getPunktY() && node2.getPunktY() > node3.getPunktY() && node2.getPunktY() > node4.getPunktY()){
+        }
+        if(node2.getPunktX()<= node3.getPunktX() && node2.getPunktX()<= node4.getPunktX() &&  node2.getPunktX() <= node1.getPunktX()){
+            Log.d("2.TEST_X", "NODE2");
+            if(node2.getPunktY() >= node1.getPunktY() && node2.getPunktY() >= node3.getPunktY() && node2.getPunktY() >= node4.getPunktY()){
+                Log.d("2.TEST_Y", "NODE2");
                 nodeArray[1] = node2;
             }
-        }else if(node3.getPunktX()< node2.getPunktX() && node3.getPunktX()< node1.getPunktX() && node3.getPunktX()< node4.getPunktX() ) {
-            if(node3.getPunktY() > node2.getPunktY() && node3.getPunktY() > node1.getPunktY() && node3.getPunktY() > node4.getPunktY()){
+        }
+        if(node3.getPunktX()<= node2.getPunktX() && node3.getPunktX()<= node1.getPunktX() && node3.getPunktX()<= node4.getPunktX() ) {
+            Log.d("2.TEST_X", "NODE3");
+            if(node3.getPunktY() >= node2.getPunktY() && node3.getPunktY() >= node1.getPunktY() && node3.getPunktY() >= node4.getPunktY()){
+                Log.d("2.TEST_Y", "NODE3");
                 nodeArray[1] = node3;
             }
-        }else if(node4.getPunktX()< node3.getPunktX() && node4.getPunktX()< node2.getPunktX() &&  node4.getPunktX() < node1.getPunktX()){
-            if(node4.getPunktY() > node1.getPunktY() && node4.getPunktY() > node3.getPunktY() && node4.getPunktY() > node2.getPunktY()){
+        }
+        if(node4.getPunktX()<= node3.getPunktX() && node4.getPunktX()<= node2.getPunktX() &&  node4.getPunktX() <= node1.getPunktX()){
+            Log.d("2.TEST_X", "NODE4");
+            if(node4.getPunktY() >= node1.getPunktY() && node4.getPunktY() >= node3.getPunktY() && node4.getPunktY() >= node2.getPunktY()){
+                Log.d("2.TEST_Y", "NODE4");
                 nodeArray[1] = node4;
             }
         }
 
 
-        if(node1.getPunktX()> node2.getPunktX() && node1.getPunktX()> node3.getPunktX() && node1.getPunktX()> node4.getPunktX() ) {
-            if(node1.getPunktY() < node2.getPunktY() && node1.getPunktY() < node3.getPunktY() && node1.getPunktY() < node4.getPunktY()){
+        if(node1.getPunktX()>= node2.getPunktX() && node1.getPunktX()>= node3.getPunktX() && node1.getPunktX()>= node4.getPunktX() ) {
+            Log.d("3.TEST_X", "NODE1");
+            if(node1.getPunktY() <= node2.getPunktY() && node1.getPunktY() <= node3.getPunktY() && node1.getPunktY() <= node4.getPunktY()){
+                Log.d("3.TEST_Y", "NODE1");
                 nodeArray[2] = node1;
             }
-        }else if(node2.getPunktX()>node3.getPunktX() && node2.getPunktX()>node4.getPunktX() &&  node2.getPunktX() >node1.getPunktX()){
-            if(node2.getPunktY() < node1.getPunktY() && node2.getPunktY() < node3.getPunktY() && node2.getPunktY() < node4.getPunktY()){
+        }
+        if(node2.getPunktX()>= node3.getPunktX() && node2.getPunktX()>= node4.getPunktX() &&  node2.getPunktX() >= node1.getPunktX()){
+            Log.d("3.TEST_X", "NODE2");
+            if(node2.getPunktY() <= node1.getPunktY() && node2.getPunktY() <= node3.getPunktY() && node2.getPunktY() <= node4.getPunktY()){
+                Log.d("3.TEST_Y", "NODE2");
                 nodeArray[2] = node2;
             }
-        }else if(node3.getPunktX()> node2.getPunktX() && node3.getPunktX()> node1.getPunktX() && node3.getPunktX()> node4.getPunktX() ) {
-            if(node3.getPunktY() < node2.getPunktY() && node3.getPunktY() < node1.getPunktY() && node3.getPunktY() < node4.getPunktY()){
+        }
+        if(node3.getPunktX()>= node2.getPunktX() && node3.getPunktX()>= node1.getPunktX() && node3.getPunktX()>= node4.getPunktX() ) {
+            Log.d("3.TEST_X", "NODE3");
+            if(node3.getPunktY() <= node2.getPunktY() && node3.getPunktY() <= node1.getPunktY() && node3.getPunktY() <= node4.getPunktY()){
+                Log.d("3.TEST_Y", "NODE3");
                 nodeArray[2] = node3;
             }
-        }else if(node4.getPunktX()> node3.getPunktX() && node4.getPunktX()> node2.getPunktX() &&  node4.getPunktX() > node1.getPunktX()){
-            if(node4.getPunktY() < node1.getPunktY() && node4.getPunktY() < node3.getPunktY() && node4.getPunktY() < node2.getPunktY()){
+        }
+        if(node4.getPunktX()>= node3.getPunktX() && node4.getPunktX()>= node2.getPunktX() &&  node4.getPunktX() >= node1.getPunktX()){
+            Log.d("3.TEST_X", "NODE4");
+            if(node4.getPunktY() <= node1.getPunktY() && node4.getPunktY() <= node3.getPunktY() && node4.getPunktY() <= node2.getPunktY()){
+                Log.d("3.TEST_Y", "NODE4");
                 nodeArray[2] = node4;
             }
         }
 
 
-        if(node1.getPunktX()> node2.getPunktX() && node1.getPunktX()> node3.getPunktX() && node1.getPunktX()> node4.getPunktX() ) {
-            if(node1.getPunktY() > node2.getPunktY() && node1.getPunktY() > node3.getPunktY() && node1.getPunktY() > node4.getPunktY()){
+        if(node1.getPunktX()>= node2.getPunktX() && node1.getPunktX()>= node3.getPunktX() && node1.getPunktX()>= node4.getPunktX() ) {
+            Log.d("4.TEST_X", "NODE1");
+            if(node1.getPunktY() >= node2.getPunktY() && node1.getPunktY() >= node3.getPunktY() && node1.getPunktY() >= node4.getPunktY()){
+                Log.d("4.TEST_Y", "NODE1");
                 nodeArray[3] = node1;
             }
-        }else if(node2.getPunktX()> node3.getPunktX() && node2.getPunktX()> node4.getPunktX() &&  node2.getPunktX() > node1.getPunktX()){
-            if(node2.getPunktY() > node1.getPunktY() && node2.getPunktY() > node3.getPunktY() && node2.getPunktY() > node4.getPunktY()){
+        }
+        if(node2.getPunktX()>= node3.getPunktX() && node2.getPunktX()>= node4.getPunktX() &&  node2.getPunktX() >= node1.getPunktX()){
+            Log.d("4.TEST_X", "NODE2");
+            if(node2.getPunktY() >= node1.getPunktY() && node2.getPunktY() >= node3.getPunktY() && node2.getPunktY() >= node4.getPunktY()){
+                Log.d("4.TEST_Y", "NODE2");
                 nodeArray[3] = node2;
             }
-        }else if(node3.getPunktX()> node2.getPunktX() && node3.getPunktX()>node1.getPunktX() && node3.getPunktX()> node4.getPunktX() ) {
-            if(node3.getPunktY() > node2.getPunktY() && node3.getPunktY() > node1.getPunktY() && node3.getPunktY() > node4.getPunktY()){
+        }
+        if(node3.getPunktX()>= node2.getPunktX() && node3.getPunktX()>= node1.getPunktX() && node3.getPunktX()>= node4.getPunktX() ) {
+            Log.d("4.TEST_X", "NODE3");
+            if(node3.getPunktY() >= node2.getPunktY() && node3.getPunktY() >= node1.getPunktY() && node3.getPunktY() >= node4.getPunktY()){
+                Log.d("4.TEST_Y", "NODE3");
                 nodeArray[3] = node3;
             }
-        }else if(node4.getPunktX()> node3.getPunktX() && node4.getPunktX()> node2.getPunktX() &&  node4.getPunktX() > node1.getPunktX()){
-            if(node4.getPunktY() > node1.getPunktY() && node4.getPunktY() > node3.getPunktY() && node4.getPunktY() > node2.getPunktY()){
+        }
+        if(node4.getPunktX()>= node3.getPunktX() && node4.getPunktX()>= node2.getPunktX() &&  node4.getPunktX() >= node1.getPunktX()){
+            Log.d("4.TEST_X", "NODE4");
+            if(node4.getPunktY() >= node1.getPunktY() && node4.getPunktY() >= node3.getPunktY() && node4.getPunktY() >= node2.getPunktY()){
+                Log.d("4.TEST_Y", "NODE4");
                 nodeArray[3] = node4;
             }
-        }
-
+        }*/
         return nodeArray;
     }
     /**
