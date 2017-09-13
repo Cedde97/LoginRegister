@@ -9,7 +9,6 @@ public class ForeignData {
     //DateiMemo dateiMemo;
 
     private long uid;
-    //private boolean checked;
     private int fotoId;
     private double punktX;
     private double punktY;

@@ -26,14 +26,6 @@ public class OwnDataMemo {
         this.uid = uid;
     }
 
-//    public boolean isChecked() {
-//        return checked;
-//    }
-//
-//    public void setChecked(boolean checked) {
-//        this.checked = checked;
-//    }
-
     public int getFileId() {
         return fileId;
     }

@@ -38,29 +38,6 @@ public class OwnDataDbSource {
         ownDataMemo = new OwnDataMemo();
     }
 
-     /*
-    *
-    * For single table
-    *
-    * */
-
-//    public OwnDataDbSource(Context context) {
-//        Log.d(LOG_TAG, "Unsere DataSource erzeugt jetzt den dbHelper.");
-//        dbHelper = new DateiMemoDbHelper(context);
-//    }
-//
-//    //mit getWritableDatabase öffnet man die Verbindung DB
-//    public void open() {
-//        Log.d(LOG_TAG, "Eine Referenz auf die Datenbank wird jetzt angefragt.");
-//        database = dbHelper.getWritableDatabase();
-//        Log.d(LOG_TAG, "Datenbank-Referenz erhalten. Pfad zur Datenbank: " + database.getPath());
-//    }
-//
-//    public void close() {
-//        dbHelper.close();
-//        Log.d(LOG_TAG, "Datenbank mit Hilfe des DbHelpers geschlossen.");
-//    }
-
 
     //
     //==================================================================================================================
@@ -137,26 +114,16 @@ public class OwnDataDbSource {
         database = DatabaseManager.getInstance().openDatabase();
         ContentValues values = new ContentValues();
         values.put(DateiMemoDbHelper.COLUMN_OID, ownDataMemo.getUid());
-        //values.put(DateiMemoDbHelper.COLUMN_CHECKED, ownDataMemo.isChecked());
-        values.put(DateiMemoDbHelper.COLUMN_FILEID, ownDataMemo.getFileId());
+        //automatisch
+        //values.put(DateiMemoDbHelper.COLUMN_FILEID, ownDataMemo.getFileId());
 
         //
         //insert row
         //insert muss long
         //
         int ownData_Id = (int)database.insert(DateiMemoDbHelper.TABLE_OWNDATA_LIST, null, values);
+
         DatabaseManager.getInstance().closeDatabase();
-        //
-        //Own Data ID
-        //insert data in Array
-        //
-//        Cursor cursor = database.query(DateiMemoDbHelper.TABLE_OWNDATA_LIST,
-//                columns_OwnData, DateiMemoDbHelper.COLUMN_UID + "=" + ownData_Id ,
-//                null, null, null, null);
-//
-//        cursor.moveToFirst();
-//        ownDataMemo = cursorToOwnData(cursor);
-//        cursor.close();
 
         return ownData_Id;
     }
@@ -212,7 +179,7 @@ public class OwnDataDbSource {
      * @param index
      * @return
      */
-    public int getFotoId(int index){
+    public int getFileId(int index){
         database = DatabaseManager.getInstance().openDatabase();
         String selectQuery = "SELECT "+ DateiMemoDbHelper.COLUMN_FILEID+" FROM " + DateiMemoDbHelper.TABLE_OWNDATA_LIST + " WHERE "
                 + DateiMemoDbHelper.COLUMN_OID + " = " + index;
@@ -240,7 +207,7 @@ public class OwnDataDbSource {
     public long getUID(int index){
         database = DatabaseManager.getInstance().openDatabase();
         String selectQuery = "SELECT "+ DateiMemoDbHelper.COLUMN_UID+" FROM " + DateiMemoDbHelper.TABLE_OWNDATA_LIST + " WHERE "
-                + DateiMemoDbHelper.COLUMN_OID + " = " + index;
+                + DateiMemoDbHelper.COLUMN_FILEID + " = " + index;
 
         Cursor cursor = database.rawQuery(selectQuery,null);
 
@@ -268,7 +235,7 @@ public class OwnDataDbSource {
         database = DatabaseManager.getInstance().openDatabase();
         //List<long> UidList = new ArrayList<>();
         String selectQuery = "SELECT "+ DateiMemoDbHelper.COLUMN_FILEID + " FROM " + DateiMemoDbHelper.TABLE_OWNDATA_LIST+ " WHERE "
-                + DateiMemoDbHelper.COLUMN_UID + " = " + uid;
+                + DateiMemoDbHelper.COLUMN_FILEID + " = " + uid;
 
         Cursor cursor = database.rawQuery(selectQuery, null);
 
@@ -306,9 +273,39 @@ public class OwnDataDbSource {
 
         Cursor cursor = database.rawQuery(query, null);
 
-//        int idChecked = cursor.getColumnIndex(DateiMemoDbHelper.COLUMN_CHECKED);
-//        int intValueChecked = cursor.getInt(idChecked);
-//        boolean isChecked = (intValueChecked != 0);
+
+        //3. Durchführen Zeile und füge in List hinzu
+        OwnDataMemo ownDataMemo = null;
+        if (cursor.moveToFirst()) {
+            do {
+                ownDataMemo = new OwnDataMemo();
+                ownDataMemo.setUid(cursor.getLong(cursor.getColumnIndex(dbHelper.COLUMN_OID)));
+                //ownDataMemo.setChecked(isChecked);
+                ownDataMemo.setFileId(cursor.getInt(cursor.getColumnIndex(dbHelper.COLUMN_FILEID)));
+
+
+                // Add Own Data to own data List
+                OwnDataList.add(ownDataMemo);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        DatabaseManager.getInstance().closeDatabase();
+
+        return OwnDataList;
+    }
+
+    public List<OwnDataMemo> getEachOwnData(int file_id) {
+        List<OwnDataMemo> OwnDataList = new LinkedList<OwnDataMemo>();
+
+        //1. query
+        String query = "SELECT * FROM " + dbHelper.TABLE_OWNDATA_LIST+ " WHERE "
+                + DateiMemoDbHelper.COLUMN_FILEID + " = " + file_id;
+
+        //2. open Database
+        database = DatabaseManager.getInstance().openDatabase();
+
+        Cursor cursor = database.rawQuery(query, null);
 
 
         //3. Durchführen Zeile und füge in List hinzu
@@ -321,7 +318,7 @@ public class OwnDataDbSource {
                 ownDataMemo.setFileId(cursor.getInt(cursor.getColumnIndex(dbHelper.COLUMN_FILEID)));
 
 
-                // Add book to books
+                // Add Own Data to own data List
                 OwnDataList.add(ownDataMemo);
             } while (cursor.moveToNext());
         }
