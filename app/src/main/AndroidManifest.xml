@@ -12,7 +12,9 @@
 
     <uses-feature android:name="android.hardware.location.gps" />
 
-
+    <uses-sdk
+        android:maxSdkVersion="26"
+        android:minSdkVersion="8" />
 
     <application
         android:allowBackup="true"

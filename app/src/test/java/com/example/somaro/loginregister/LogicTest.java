@@ -37,27 +37,27 @@ public class LogicTest {
             cornerTopRight = new Corner(1.0,1.0);
             zone = new Zone(cornerTopLeft,cornerTopRight,cornerBottomLeft,cornerBottomRight);
 
-        System.out.print("IP: 192.111.23.4 = " + node.hashX("192.111.23.4") + ", " + node.hashY("192.111.23.4") + "\n");
-        System.out.print("IP: 255.255.255.255 = " +node.hashX("255.255.255.255") + ", " + node.hashY("255.255.255.255") + "\n");
-        System.out.print("IP: 180.1.23.123 = " +node.hashX("180.1.23.123") + ", " + node.hashY("180.1.23.123") + "\n");
-        System.out.print("IP: 12.191.3.255 = " +node.hashX("12.191.3.255") + ", " + node.hashY("12.191.3.255") + "\n");
-        System.out.print("IP: 1.111.223.34 = " +node.hashX("1.111.223.34") + ", " + node.hashY("1.111.223.34") + "\n");
-        System.out.print("IP: 0.0.0.0 = " +node.hashX("0.0.0.0") + ", " + node.hashY("0.0.0.0") + "\n");
-        System.out.print("IP: 78.31.3.129 = " +node.hashX("78.31.3.129") + ", " + node.hashY("78.31.3.129") + "\n");
-        System.out.print("IP: 111.111.111.111 = " +node.hashX("111.111.111.111") + ", " + node.hashY("111.111.111.111") + "\n");
-        System.out.print("IP: 222.222.222.222 = " +node.hashX("222.222.222.222") + ", " + node.hashY("222.222.222.222") + "\n");
-        System.out.print("IP: 12.191.10.255 = " +node.hashX("12.191.10.255") + ", " + node.hashY("12.191.10.255") + "\n");
-        System.out.print("IP: 12.191.11.255 = " +node.hashX("12.191.11.255") + ", " + node.hashY("12.191.11.255") + "\n");
-        System.out.print("IP: 12.191.12.255 = " +node.hashX("12.191.12.255") + ", " + node.hashY("12.191.12.255") + "\n");
-        System.out.print("IP: 12.255.255.255 = " +node.hashX("12.191.13.255") + ", " + node.hashY("12.191.13.255") + "\n");
+            System.out.print("IP: 192.111.23.4 = " + node.hashX("192.111.23.4") + ", " + node.hashY("192.111.23.4") + "\n");
+            System.out.print("IP: 255.255.255.255 = " +node.hashX("255.255.255.255") + ", " + node.hashY("255.255.255.255") + "\n");
+            System.out.print("IP: 180.1.23.123 = " +node.hashX("180.1.23.123") + ", " + node.hashY("180.1.23.123") + "\n");
+            System.out.print("IP: 12.191.3.255 = " +node.hashX("12.191.3.255") + ", " + node.hashY("12.191.3.255") + "\n");
+            System.out.print("IP: 1.111.223.34 = " +node.hashX("1.111.223.34") + ", " + node.hashY("1.111.223.34") + "\n");
+            System.out.print("IP: 0.0.0.0 = " +node.hashX("0.0.0.0") + ", " + node.hashY("0.0.0.0") + "\n");
+            System.out.print("IP: 78.31.3.129 = " +node.hashX("78.31.3.129") + ", " + node.hashY("78.31.3.129") + "\n");
+            System.out.print("IP: 111.111.111.111 = " +node.hashX("111.111.111.111") + ", " + node.hashY("111.111.111.111") + "\n");
+            System.out.print("IP: 222.222.222.222 = " +node.hashX("222.222.222.222") + ", " + node.hashY("222.222.222.222") + "\n");
+            System.out.print("IP: 12.191.10.255 = " +node.hashX("12.191.10.255") + ", " + node.hashY("12.191.10.255") + "\n");
+            System.out.print("IP: 12.191.11.255 = " +node.hashX("12.191.11.255") + ", " + node.hashY("12.191.11.255") + "\n");
+            System.out.print("IP: 12.191.12.255 = " +node.hashX("12.191.12.255") + ", " + node.hashY("12.191.12.255") + "\n");
+            System.out.print("IP: 12.255.255.255 = " +node.hashX("12.191.13.255") + ", " + node.hashY("12.191.13.255") + "\n");
 
-        assertEquals(true, zone.checkIfInMyZone(node.hashX("192.111.23.4"), node.hashY("192.111.23.4")));
-        assertEquals(true, zone.checkIfInMyZone(node.hashX("180.1.23.123"), node.hashY("180.1.23.123")));
-        assertEquals(true, zone.checkIfInMyZone(node.hashX("12.191.3.255"), node.hashY("12.191.3.255")));
-        assertEquals(true, zone.checkIfInMyZone(node.hashX("1.111.223.34"), node.hashY("1.111.223.34")));
-        assertEquals(true, zone.checkIfInMyZone(node.hashX("255.255.255.255"), node.hashY("255.255.255.255")));
-        assertEquals(true, zone.checkIfInMyZone(node.hashX("0.0.0.0"), node.hashY("0.0.0.0")));
-        assertEquals(true, zone.checkIfInMyZone(node.hashX("78.31.3.129"), node.hashY("78.31.3.129")));
+            assertEquals(true, zone.checkIfInMyZone(node.hashX("192.111.23.4"), node.hashY("192.111.23.4")));
+            assertEquals(true, zone.checkIfInMyZone(node.hashX("180.1.23.123"), node.hashY("180.1.23.123")));
+            assertEquals(true, zone.checkIfInMyZone(node.hashX("12.191.3.255"), node.hashY("12.191.3.255")));
+            assertEquals(true, zone.checkIfInMyZone(node.hashX("1.111.223.34"), node.hashY("1.111.223.34")));
+            assertEquals(true, zone.checkIfInMyZone(node.hashX("255.255.255.255"), node.hashY("255.255.255.255")));
+            assertEquals(true, zone.checkIfInMyZone(node.hashX("0.0.0.0"), node.hashY("0.0.0.0")));
+            assertEquals(true, zone.checkIfInMyZone(node.hashX("78.31.3.129"), node.hashY("78.31.3.129")));
 
         }
         catch(XMustBeLargerThanZeroException xMBLTZE)
@@ -87,25 +87,25 @@ public class LogicTest {
             cornerTopRight = new Corner(0.8,0.8);
             zone = new Zone(cornerTopLeft,cornerTopRight,cornerBottomLeft,cornerBottomRight);
 
-        System.out.print(node.hashX("192.111.23.4") + ", " + node.hashY("192.111.23.4") + "\n");
-        System.out.print(node.hashX("255.255.255.255") + ", " + node.hashY("255.255.255.255") + "\n");
-        System.out.print(node.hashX("0.0.0.0") + ", " + node.hashY("0.0.0.0") + "\n");
-        System.out.print(node.hashX("78.31.3.129") + ", " + node.hashY("78.31.3.129") + "\n");
-        assertEquals(false, zone.checkIfInMyZone(node.hashX("192.111.23.4"), node.hashY("192.111.23.4")));
-        assertEquals(false, zone.checkIfInMyZone(node.hashX("255.255.255.255"), node.hashY("255.255.255.255")));
-        assertEquals(false, zone.checkIfInMyZone(node.hashX("0.0.0.0"), node.hashY("0.0.0.0")));
-        assertEquals(false, zone.checkIfInMyZone(node.hashX("78.31.3.129"), node.hashY("78.31.3.129")));
+            System.out.print(node.hashX("192.111.23.4") + ", " + node.hashY("192.111.23.4") + "\n");
+            System.out.print(node.hashX("255.255.255.255") + ", " + node.hashY("255.255.255.255") + "\n");
+            System.out.print(node.hashX("0.0.0.0") + ", " + node.hashY("0.0.0.0") + "\n");
+            System.out.print(node.hashX("78.31.3.129") + ", " + node.hashY("78.31.3.129") + "\n");
+            assertEquals(false, zone.checkIfInMyZone(node.hashX("192.111.23.4"), node.hashY("192.111.23.4")));
+            assertEquals(false, zone.checkIfInMyZone(node.hashX("255.255.255.255"), node.hashY("255.255.255.255")));
+            assertEquals(false, zone.checkIfInMyZone(node.hashX("0.0.0.0"), node.hashY("0.0.0.0")));
+            assertEquals(false, zone.checkIfInMyZone(node.hashX("78.31.3.129"), node.hashY("78.31.3.129")));
 
-    }catch(XMustBeLargerThanZeroException xMBLTZE)
-    {
+        }catch(XMustBeLargerThanZeroException xMBLTZE)
+        {
 
-    }catch(YMustBeLargerThanZeroException yMBLTZE)
-    {
+        }catch(YMustBeLargerThanZeroException yMBLTZE)
+        {
 
-    }catch( Exception e)
-    {
+        }catch( Exception e)
+        {
 
-    }
+        }
     }
 
     @Test

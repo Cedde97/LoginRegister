@@ -149,54 +149,54 @@ public class Zone {
      * @return the new pair of zones created by splitting this zone
      */
 
-     public void split(Node node1, Node node2, Node node3, Node node4) {
+    public void split(Node node1, Node node2, Node node3, Node node4) {
 
-     // we split the zone along the longest side
-     if (getLengthX(node1) >= getLengthY(node1)) {
+        // we split the zone along the longest side
+        if (getLengthX(node1) >= getLengthY(node1)) {
 
-     double midX = getLengthX(node1) / 2.0;
-     // set peers und neigbour und update Corner
-     node1.getBottomRight().setX(midX);
-     node1.getTopRight().setX(midX);
+            double midX = getLengthX(node1) / 2.0;
+            // set peers und neigbour und update Corner
+            node1.getBottomRight().setX(midX);
+            node1.getTopRight().setX(midX);
 
-     node2.getTopRight().setX(midX);
-     node2.getBottomRight().setX(midX);
+            node2.getTopRight().setX(midX);
+            node2.getBottomRight().setX(midX);
 
-     node3.getBottomLeft().setX(midX);
-     node3.getTopLeft().setX(midX);
+            node3.getBottomLeft().setX(midX);
+            node3.getTopLeft().setX(midX);
 
-     node4.getTopLeft().setX(midX);
-     node4.getBottomLeft().setX(midX);
+            node4.getTopLeft().setX(midX);
+            node4.getBottomLeft().setX(midX);
 
-     } else {
+        } else {
 
-     double midY =  getLengthY(node1) / 2.0;
-     // set peers und neigbour und update Corner
-     node1.getTopRight().setY(midY);
-     node1.getTopLeft().setY(midY);
+            double midY =  getLengthY(node1) / 2.0;
+            // set peers und neigbour und update Corner
+            node1.getTopRight().setY(midY);
+            node1.getTopLeft().setY(midY);
 
-     node2.getBottomLeft().setY(midY);
-     node2.getBottomRight().setY(midY);
+            node2.getBottomLeft().setY(midY);
+            node2.getBottomRight().setY(midY);
 
-     node3.getTopRight().setY(midY);
-     node3.getTopLeft().setY(midY);
+            node3.getTopRight().setY(midY);
+            node3.getTopLeft().setY(midY);
 
-     node4.getBottomRight().setY(midY);
-     node4.getBottomLeft().setY(midY);
-     }
+            node4.getBottomRight().setY(midY);
+            node4.getBottomLeft().setY(midY);
+        }
 
-     }
+    }
     /**
      * Get the length of the Y side of the zone
      */
-      private double getLengthY(Node node) {
+    private double getLengthY(Node node) {
         return   node.getTopLeft().getY() - node.getBottomLeft().getY();
     }
 
     /**
      * Get the length of the X side of the zone
      */
-      private double getLengthX(Node node) {
+    private double getLengthX(Node node) {
         return  node.getBottomRight().getX() - node.getBottomLeft().getX();
     }
 

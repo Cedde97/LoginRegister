@@ -51,7 +51,7 @@ public class DateiMemoDbSource {
     };
 
     public DateiMemoDbSource(){
-        //dateiMemo = new Node();
+        dateiMemo = new Node();
     }
 
     /*

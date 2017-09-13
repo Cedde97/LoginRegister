@@ -1,8 +1,7 @@
 package source;
 
-/**
- * Created by en on 15.06.17.
- */
+
+
 /**
  * Created by en on 15.06.17.
  */
@@ -36,42 +35,39 @@ public class DateiMemoDbHelper extends SQLiteOpenHelper{
     public static final String TABLE_NEIGHBOR_LIST = "neighbor_list";
     public static final String TABLE_OWNDATA_LIST = "owndata_list";
     public static final String TABLE_FOREIGNDATA_LIST = "foreigndata_list";
-    //-------------------------------------------------------------------------------
 
 
-    //------------------------- neue Column    -------------------------------------
-    /*
-    * Column ID
-    * */
+
     public static final String COLUMN_UID = "_uid";
-    public static final String COLUMN_PEERID = "peerId";
-    public static final String COLUMN_FOTOID = "fotoId";
-    public static final String COLUMN_FILEID = "fileId";
-    public static final String COLUMN_NEIGHBOUR_ID = "neighbour_id";
-
-    /*
-    *  Column Foreign ID
-    * */
     public static final String COLUMN_PID = "peer_id_foreign";
     public static final String COLUMN_OID = "own_id_foreign";
     public static final String COLUMN_FID = "foreign_id_foreign";
     public static final String COLUMN_NID = "neighbour_id_foreign";
-
+    //    public static final String COLUMN_USERNAME = "username";
+//    public static final String COLUMN_PASSWORD = "password";
     public static final String COLUMN_IP = "IP";
     public static final String COLUMN_COUNTPEERS = "CountPeers";
 
 
+    public static final String COLUMN_NEIGHBOUR_ID = "neighbour_id";
+    public static final String COLUMN_PEERID = "peerId";
     public static final String COLUMN_PEERIP = "peerIp";
 
 
 
     public static final String COLUMN_UIP = "uip";
-
+    //    public static final String COLUMN_CORNERTOPRIGHT = "cornerTopRight";
+//    public static final String COLUMN_CORNERTOPLEFT = "cornerTopLeft";
+//    public static final String COLUMN_CORNERBOTTOMRIGHT = "cornerBottomRight";
+//    public static final String COLUMN_CORNERBOTTOMLEFT = "cornerBottomLeft";
     public static final String COLUMN_PUNKTX = "punktX";
     public static final String COLUMN_PUNKTY = "punktY";
-
-
     public static final String COLUMN_RTT = "rtt";
+
+
+
+    public static final String COLUMN_FOTOID = "fotoId";
+    public static final String COLUMN_FILEID = "fileId";
 
     public static final String COLUMN_CORNERTOPRIGHTX = "cornerTopRightX";
     public static final String COLUMN_CORNERTOPRIGHTY = "cornerTopRightY";
@@ -85,15 +81,8 @@ public class DateiMemoDbHelper extends SQLiteOpenHelper{
 
     //public static final String COLUMN_CHECKED = "checked";
 
-    /*
-    *
-    * ==============================================================================================
-    *
-    * */
 
-    //
-    //Neue Tabelle von Hauptdata
-    //
+
     public static final String SQL_CREATE_TABLE_DATEI =
             "CREATE TABLE " + TABLE_DATEI_LIST +
                     "(" + COLUMN_UID + " INTEGER PRIMARY KEY," +
@@ -109,18 +98,14 @@ public class DateiMemoDbHelper extends SQLiteOpenHelper{
                     COLUMN_PUNKTY + " REAL NOT NULL," +
                     COLUMN_IP + " TEXT NOT NULL," +
                     COLUMN_COUNTPEERS + " INTEGER NOT NULL );" ;
-    //
-    //Neue Tabelle von Peer
-    //
+
     public static final String SQL_CREATE_TABLE_PEERS =
             "CREATE TABLE " + TABLE_PEER_LIST +
                     " ( " + COLUMN_PEERID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                     COLUMN_PEERIP + " TEXT NOT NULL," +
                     COLUMN_PID + " INTEGER NOT NULL," +
                     " FOREIGN KEY ("+ COLUMN_PID +") REFERENCES "+ TABLE_DATEI_LIST +"("+ COLUMN_UID + "));";
-    //
-    //Neue Tabelle von Neighbour
-    //
+
     public static final String SQL_CREATE_TABLE_NEIGBHORS =
             "CREATE TABLE " + TABLE_NEIGHBOR_LIST +
                     " ( " + COLUMN_NEIGHBOUR_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -138,18 +123,13 @@ public class DateiMemoDbHelper extends SQLiteOpenHelper{
                     COLUMN_RTT + " REAL NOT NULL," +
                     COLUMN_NID + " INTEGER NOT NULL," +
                     " FOREIGN KEY ("+ COLUMN_NID +") REFERENCES "+ TABLE_DATEI_LIST +"("+ COLUMN_UID + "));";
-    //
-    //Neue Tabelle von OwnData
-    //
+
     public static final String SQL_CREATE_TABLE_OWNDATAS =
             "CREATE TABLE " + TABLE_OWNDATA_LIST +
                     " ( " + COLUMN_FILEID + " INTEGER PRIMARY KEY," +
                     COLUMN_OID + " INTEGER NOT NULL," +
                     " FOREIGN KEY ("+ COLUMN_OID +") REFERENCES "+ TABLE_DATEI_LIST +"("+ COLUMN_UID + "));";
 
-    //
-    //Neue Tabelle von Foreign Data
-    //
     public static final String SQL_CREATE_TABLE_FOREIGNDATAS =
             "CREATE TABLE " + TABLE_FOREIGNDATA_LIST +
                     " ( " + COLUMN_FOTOID + " INTEGER PRIMARY KEY," +
@@ -170,8 +150,8 @@ public class DateiMemoDbHelper extends SQLiteOpenHelper{
 
     //Konstruktor
     //SUPER verwendet man, weil unsere "helper" ist eine Ableitung von SQLiteOpenHelper
-    public DateiMemoDbHelper( ) {
-        super(App.getContext(), DB_NAME, null, DB_VERSION);
+    public DateiMemoDbHelper(Context context) {
+        super(context, DB_NAME, null, DB_VERSION);
     }
 
 

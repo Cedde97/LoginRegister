@@ -141,7 +141,7 @@ public class Node {
 
         if(neighbourList != null) {
             for (int i = 0; i < neighbourList.size(); i++) {
-                    distance[i] = computeDistance(rh.getX(), rh.getY(), neighbourList.get(i).getPunktX(), neighbourList.get(i).getPunktY());
+                distance[i] = computeDistance(rh.getX(), rh.getY(), neighbourList.get(i).getPunktX(), neighbourList.get(i).getPunktY());
             }
             int index = compareValues(distance);
 
@@ -468,25 +468,25 @@ public class Node {
         getMyZone().setBottomLeft(bottomLeft);
     }*/
 
-     public double getPunktX() {
-     return punktX;
-     }
+    public double getPunktX() {
+        return punktX;
+    }
 
-     public void setPunktX(double punktX) {
-     this.punktX = punktX;
-     }
+    public void setPunktX(double punktX) {
+        this.punktX = punktX;
+    }
 
-     public double getPunktY() {
-     return punktY;
-     }
+    public double getPunktY() {
+        return punktY;
+    }
 
-     public void setPunktY(double punktY) {
-     this.punktY = punktY;
-     }
+    public void setPunktY(double punktY) {
+        this.punktY = punktY;
+    }
 
-     public String getIP() {
-     return iP;
-     }
+    public String getIP() {
+        return iP;
+    }
     public void setIP(String IP) {
         this.iP = IP;
     }
