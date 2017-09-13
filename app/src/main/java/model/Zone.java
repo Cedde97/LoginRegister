@@ -153,18 +153,33 @@ public class Zone {
 
     public void split(Node bottomLeftNode, Node topLeftNode, Node bottomRightNode, Node topRightNode) {
 
-        Node[] nodeArray = determineLocation(bottomLeftNode,topLeftNode,bottomRightNode,topRightNode);
+
 
         // we split the zone along the longest side
         if (getLengthX(bottomLeftNode) >= getLengthY(bottomLeftNode)) {
+
+            Node[] nodeArray = determineLocationX(bottomLeftNode,topLeftNode,bottomRightNode,topRightNode);
+
+            Log.d("TEST_VORHER", "ARRAY: " + "\n" + "PunktX " + nodeArray[0].getPunktX() + " PunktY " + nodeArray[0].getPunktY() + "\n" +
+                    nodeArray[0].getMyZone().toString() + "\n" +
+                    "PunktX " + nodeArray[1].getPunktX() + " PunktY " + nodeArray[1].getPunktY() + "\n" +
+                    nodeArray[1].getMyZone().toString() + "\n" +
+                    "PunktX " + nodeArray[2].getPunktX() + " PunktY " + nodeArray[2].getPunktY() + "\n" +
+                    nodeArray[2].getMyZone().toString() + "\n" +
+                    "PunktX " + nodeArray[3].getPunktX() + " PunktY " + nodeArray[3].getPunktY() + "\n" +
+                    nodeArray[3].getMyZone().toString() + "\n");
 
             double midX = getLengthX(nodeArray[0]) / 2.0;
             // set peers und neigbour und update Corner
 
             nodeArray[0].getBottomRight().setX(midX);
+            Log.d("TEST_BOTTOMRight", "NODE1: " + nodeArray[0].getMyZone().toString());
+
             nodeArray[0].getTopRight().setX(midX);
+            Log.d("TEST_TOPRight", "NODE1: " + nodeArray[0].getMyZone().toString());
 
             nodeArray[1].getTopRight().setX(midX);
+            Log.d("TEST_TOPRight", "NODE4: " + nodeArray[3].getMyZone().toString());
             nodeArray[1].getBottomRight().setX(midX);
 
             nodeArray[2].getBottomLeft().setX(midX);
@@ -173,8 +188,13 @@ public class Zone {
             nodeArray[3].getTopLeft().setX(midX);
             nodeArray[3].getBottomLeft().setX(midX);
 
-        } else {
+            /*Log.d("TEST_NACHhER", "ARRAY: " + nodeArray[0].getMyZone().toString() + "\n" +
+                    nodeArray[1].getMyZone().toString() + "\n" +
+                    nodeArray[2].getMyZone().toString() + "\n" +
+                    nodeArray[3].getMyZone().toString() + "\n");*/
 
+        } else {
+            Node[] nodeArray = determineLocationY(bottomLeftNode,topLeftNode,bottomRightNode,topRightNode);
             double midY =  getLengthY(nodeArray[0]) / 2.0;
             // set peers und neigbour und update Corner
 
@@ -193,7 +213,8 @@ public class Zone {
 
     }
 
-    private Node[] determineLocation(Node node1, Node node2, Node node3, Node node4){
+    private Node[] determineLocationX(Node node1, Node node2, Node node3, Node node4)
+    {
         Node[] nodeArray = new Node[4];
 
         nodeArray[0] = node1;
@@ -201,11 +222,58 @@ public class Zone {
         nodeArray[2] = node3;
         nodeArray[3] = node4;
 
-        Node temp = new Node();
-        int links = 0;
-        int rechts = 0;
+        sortiere(nodeArray);
 
-        
+        return nodeArray;
+    }
+
+    private Node[] determineLocationY(Node node1, Node node2, Node node3, Node node4)
+    {
+        Node[] nodeArray = new Node[4];
+
+        nodeArray[0] = node1;
+        nodeArray[1] = node2;
+        nodeArray[2] = node3;
+        nodeArray[3] = node4;
+
+        sortiere(nodeArray);
+
+        return nodeArray;
+    }
+        public  void sortiere(Node x[]) {
+                qSort(x, 0, x.length-1);
+            }
+
+            public  void qSort(Node x[], int links, int rechts) {
+                if (links < rechts) {
+                    int i = partition(x,links,rechts);
+                    qSort(x,links,i-1);
+                    qSort(x,i+1,rechts);
+                }
+            }
+
+            public  int partition(Node x[], int links, int rechts) {
+                Node pivot, help;
+                int i, j;
+                pivot = x[rechts];
+                i     = links;
+                j     = rechts-1;
+                while(i<=j) {
+                    if (x[i].getPunktX() > pivot.getPunktX()) {
+                        // tausche x[i] und x[j]
+                        help = x[i];
+                        x[i] = x[j];
+                        x[j] = help;
+                        j--;
+                    } else i++;
+                }
+                // tausche x[i] und x[rechts]
+                help      = x[i];
+                x[i]      = x[rechts];
+                x[rechts] = help;
+
+                return i;
+            }
 
 
 
@@ -327,8 +395,7 @@ public class Zone {
                 nodeArray[3] = node4;
             }
         }*/
-        return nodeArray;
-    }
+
     /**
      * Get the length of the Y side of the zone
      */
@@ -397,10 +464,10 @@ public class Zone {
     public String toString(){
         StringBuffer sb = new StringBuffer();
 
-        sb.append(topRight.toString()+", ")
-                .append(topLeft.toString()+", ")
-                .append(bottomRight.toString()+", ")
-                .append(bottomLeft.toString()+", \n");
+        sb.append("TopRight " + topRight.toString()+", ")
+                .append("TopLeft " + topLeft.toString()+", ")
+                .append("BottomRight " + bottomRight.toString()+", ")
+                .append("BottomLeft " + bottomLeft.toString()+", \n");
 
         return sb.toString();
     }

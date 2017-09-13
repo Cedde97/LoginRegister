@@ -175,6 +175,7 @@ public class ExampleInstrumentedTest {
             //peerMemo.setPeerId(3);
             peerDbSource.createPeerMemo(peerMemo);
 
+            Log.d("TEST", peerDbSource.getAllPeer().toString());
 
         assertEquals(0.1,dateiMemoDbSource.getCornerTopRightY(),0);
         assertEquals(0.9,dateiMemoDbSource.getCornerTopRightX(),0);
@@ -196,7 +197,7 @@ public class ExampleInstrumentedTest {
 
         }catch( Exception e)
         {
-
+            Log.d("EXCEPTION", e.getMessage());
         }
 
     }
@@ -225,6 +226,7 @@ public class ExampleInstrumentedTest {
 
             zone = new Zone(cornerTopLeft,cornerTopRight,cornerBottomLeft,cornerBottomRight);
 
+
             /*Node node1 = new Node(cornerBottomLeft,cornerBottomRight,cornerTopLeft,cornerTopRight);
             Node node2 = new Node(cornerBottomLeft,cornerBottomRight,cornerTopLeft,cornerTopRight);
             Node node3 = new Node(cornerBottomLeft,cornerBottomRight,cornerTopLeft,cornerTopRight);
@@ -243,15 +245,19 @@ public class ExampleInstrumentedTest {
 
             zone.split(node1,node2,node3,node4);
 
-            Log.d("TEST", "NODE1: " + node1.getBottomRight().getX() + ", " +node1.getBottomRight().getX());
-            assertEquals(0.6, node1.getBottomRight().getX(), 0);
-            assertEquals(0.6, node1.getTopRight().getX() ,0);
-            assertEquals(0.6, node2.getBottomRight().getX(), 0);
-            assertEquals(0.6, node2.getTopRight().getX() ,0);
-            assertEquals(0.6, node3.getBottomLeft().getX(), 0);
-            assertEquals(0.6, node3.getTopLeft().getX() ,0);
-            assertEquals(0.6, node4.getBottomLeft().getX(), 0);
-            assertEquals(0.6, node4.getTopLeft().getX() ,0);
+           /* Log.d("TEST", "NODE1: " + node1.getMyZone().toString() + "BottomRightX: " + node1.getBottomRight().getX());
+            Log.d("TEST", "NODE2: " + node2.getMyZone().toString() + "BottomRightX: " + node2.getBottomRight().getX());
+            Log.d("TEST", "NODE3: " + node3.getMyZone().toString() + "BottomRightX: " + node3.getBottomRight().getX());
+            Log.d("TEST", "NODE4: " + node4.getMyZone().toString() + "BottomRightX: " + node4.getBottomRight().getX());*/
+
+            assertEquals(0.5, node1.getBottomRight().getX(), 0);
+            assertEquals(0.5, node1.getTopRight().getX() ,0);
+            assertEquals(0.5, node2.getBottomRight().getX(), 0);
+            assertEquals(0.5, node2.getTopRight().getX() ,0);
+            assertEquals(0.5, node3.getBottomLeft().getX(), 0);
+            assertEquals(0.5, node3.getTopLeft().getX() ,0);
+            assertEquals(0.5, node4.getBottomLeft().getX(), 0);
+            assertEquals(0.5, node4.getTopLeft().getX() ,0);
         }
         catch(XMustBeLargerThanZeroException xMBLTZE)
         {
@@ -269,11 +275,11 @@ public class ExampleInstrumentedTest {
     @Test
     public void testSplit_Horizontal()
     {
-        Context appContext = InstrumentationRegistry.getTargetContext();
+        /*Context appContext = InstrumentationRegistry.getTargetContext();
         DateiMemoDbHelper dateiMemoDbHelper = new DateiMemoDbHelper(appContext);
         DatabaseManager.initializeInstance(dateiMemoDbHelper);
 
-        DateiMemoDbSource dateiMemoDbSource = new DateiMemoDbSource();
+        DateiMemoDbSource dateiMemoDbSource = new DateiMemoDbSource();*/
 
 
         Corner cornerBottomLeft;
@@ -298,13 +304,18 @@ public class ExampleInstrumentedTest {
             Node node3 = new Node(1,0.7,0.3,"1.3.1.1" ,3, zone);
             Node node4 = new Node(1,0.1,0.7,"1.4.1.1" ,3, zone);
 
-            dateiMemoDbSource.createDateiMemo(node1);
+            /*dateiMemoDbSource.createDateiMemo(node1);
             dateiMemoDbSource.createDateiMemo(node2);
             dateiMemoDbSource.createDateiMemo(node3);
-            dateiMemoDbSource.createDateiMemo(node4);
+            dateiMemoDbSource.createDateiMemo(node4);*/
 
             zone.split(node1,node2,node3,node4);
             zone.split(node1,node2,node3,node4);
+
+            Log.d("TEST", "NODE1: " + node1.getMyZone().toString());
+            Log.d("TEST", "NODE2: " + node2.getMyZone().toString());
+            Log.d("TEST", "NODE3: " + node3.getMyZone().toString());
+            Log.d("TEST", "NODE4: " + node4.getMyZone().toString());
 
             assertEquals(0.5, node1.getTopLeft().getY(), 0);
             assertEquals(0.5, node1.getTopRight().getY() ,0);
@@ -323,7 +334,7 @@ public class ExampleInstrumentedTest {
 
         }catch( Exception e)
         {
-
+            Log.d("Exception", e.getMessage());
         }
 
     }

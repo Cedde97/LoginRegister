@@ -37,7 +37,6 @@ public class Node {
     private Corner topLeft;
     private Corner bottomRight;
     private Corner bottomLeft;
-    private Zone   ownZones = new Zone();
     private Zone   ownZone;
     private Socket socket;
     private Client client = new Client();
@@ -458,7 +457,7 @@ public class Node {
     }
 
     public Corner getBottomRight(){
-        return getMyZone().getTopRight();
+        return getMyZone().getBottomRight();
     }
 
     public Corner getBottomLeft(){
@@ -544,10 +543,10 @@ public class Node {
             sb.append("Node: " + "\nUserId: " + uid + " PunktX: " + punktX + " PunktY: " + punktY + " IP: " + iP +
                     " countPeers: " + countPeers + " Own Zone: " + ownZone.toString() +
                     "topLeft: " + ownZone.getTopLeft().toString() +
-                    "\nntop right: " + ownZone.getTopRight().toString() +
+                    "\ntop right: " + ownZone.getTopRight().toString() +
                     "\nbottom left: " + ownZone.getBottomLeft().toString() +
                     "\nbottom right: " + ownZone.getBottomRight().toString() +
-                    "\n\nNeighbourList: " + neighbourList.toString() + "\n\nPeerList: " + peerMemoList.toString());
+                    "\n\nNeighbourList: " + neighbourList.toString() + "\n\nPeerList: " + peerMemoList.toString() + "\n");
 
             return sb.toString();
         }
