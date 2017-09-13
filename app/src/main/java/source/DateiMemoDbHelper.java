@@ -104,7 +104,7 @@ public class DateiMemoDbHelper extends SQLiteOpenHelper{
                     " ( " + COLUMN_PEERID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                     COLUMN_PEERIP + " TEXT NOT NULL," +
                     COLUMN_PID + " INTEGER NOT NULL," +
-                    " FOREIGN KEY ("+ COLUMN_PID +") REFERENCES "+ TABLE_DATEI_LIST +"("+ COLUMN_UID + "));";
+                    " FOREIGN KEY ( " + COLUMN_PID + " ) REFERENCES "+ TABLE_DATEI_LIST +"("+ COLUMN_UID + "));";
 
     public static final String SQL_CREATE_TABLE_NEIGBHORS =
             "CREATE TABLE " + TABLE_NEIGHBOR_LIST +

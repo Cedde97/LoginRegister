@@ -33,6 +33,11 @@ public class Node {
     private double punktY;
     private String iP;
     private int    countPeers;
+    private Corner topRight;
+    private Corner topLeft;
+    private Corner bottomRight;
+    private Corner bottomLeft;
+    private Zone   ownZones = new Zone();
     private Zone   ownZone;
     private Socket socket;
     private Client client = new Client();
