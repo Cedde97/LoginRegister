@@ -137,7 +137,7 @@ public class DateiMemoDbSource {
     public int createDateiMemo(Node dateiMemo) {
         database = DatabaseManager.getInstance().openDatabase();
         ContentValues values = new ContentValues();
-        values.put(DateiMemoDbHelper.COLUMN_UID, dateiMemo.getUid());
+        //values.put(DateiMemoDbHelper.COLUMN_UID, dateiMemo.getUid());
         //values.put(DateiMemoDbHelper.COLUMN_CHECKED, dateiMemo.isChecked());
         values.put(DateiMemoDbHelper.COLUMN_CORNERTOPLEFTX, dateiMemo.getTopLeft().getX());
         values.put(DateiMemoDbHelper.COLUMN_CORNERTOPLEFTY, dateiMemo.getTopLeft().getY());

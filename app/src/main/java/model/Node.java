@@ -28,7 +28,7 @@ public class Node {
     private Corner topLeft;
     private Corner bottomRight;
     private Corner bottomLeft;
-    private Zone   ownZone;
+    private Zone   ownZone = new Zone();
     private Socket socket;
     private Client client = new Client();
 

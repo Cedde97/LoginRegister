@@ -30,7 +30,7 @@ public class PeerDbSource {
 
     private SQLiteDatabase database;
     private DateiMemoDbHelper dbHelper;
-    private DateiMemoDbSource dateiMemoDbSource;
+    private DateiMemoDbSource dateiMemoDbSource = new DateiMemoDbSource();
     private PeerMemo peerMemo;
 
 
@@ -44,7 +44,7 @@ public class PeerDbSource {
     };
 
     public PeerDbSource(){
-        peerMemo = new PeerMemo();
+        //peerMemo = new PeerMemo();
     }
 
 
@@ -148,6 +148,8 @@ public class PeerDbSource {
     * */
     public void createPeerMemo(PeerMemo peerMemo) {
         database = DatabaseManager.getInstance().openDatabase();
+        //DateiMemoDbHelper dateiMemoDbHelper = new DateiMemoDbHelper();
+        //dateiMemoDbHelper.onCreate(database);
         ContentValues values = new ContentValues();
         //automatisch
         //values.put(DateiMemoDbHelper.COLUMN_PEERID, peerMemo.getPeerId());
@@ -306,10 +308,30 @@ public class PeerDbSource {
     *           Get UID
     *
     * */
-    public double getUidPeer() {
+    public long getUidPeer() {
+        //database = DatabaseManager.getInstance().openDatabase();
+        long id = dateiMemoDbSource.getUid();
+        //DatabaseManager.getInstance().closeDatabase();
+        return id;
+    }
+
+    public int getPeer(long index)
+    {
         database = DatabaseManager.getInstance().openDatabase();
+        String selectQuery = "SELECT " + DateiMemoDbHelper.COLUMN_PEERID + " FROM " + DateiMemoDbHelper.TABLE_PEER_LIST + " WHERE "
+                + DateiMemoDbHelper.COLUMN_PEERID + " = " + index;
+
+        Cursor cursor = database.rawQuery(selectQuery, null);
+
+        cursor.moveToFirst();
+
+        int Id = cursor.getInt(cursor.getColumnIndex(DateiMemoDbHelper.COLUMN_PEERID));
+
+        cursor.close();
+
         DatabaseManager.getInstance().closeDatabase();
-        return dateiMemoDbSource.getUid();
+
+        return Id;
     }
 
 
@@ -319,7 +341,7 @@ public class PeerDbSource {
     *           Get Peer Ip
     *
     * */
-    public String getPeerIp(int index) {
+    public String getPeerIp(long index) {
         //List<Integer> PeerIdList = new ArrayList<>();
         String selectQuery = "SELECT "+ DateiMemoDbHelper.COLUMN_PEERIP + " FROM " + DateiMemoDbHelper.TABLE_PEER_LIST + " WHERE "
                 + DateiMemoDbHelper.COLUMN_PEERID + " = " + index;
