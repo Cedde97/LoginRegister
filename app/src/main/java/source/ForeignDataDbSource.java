@@ -230,11 +230,10 @@ public class ForeignDataDbSource {
     *
     *
     * */
-    public int getFotoId(long uid) {
+    public int getFotoId() {
         database = DatabaseManager.getInstance().openDatabase();
         //List<long> UidList = new ArrayList<>();
-        String selectQuery = "SELECT "+ DateiMemoDbHelper.COLUMN_FOTOID + " FROM " + DateiMemoDbHelper.TABLE_FOREIGNDATA_LIST+ " WHERE "
-                + DateiMemoDbHelper.COLUMN_FOTOID + " = " + uid;
+        String selectQuery = "SELECT "+ DateiMemoDbHelper.COLUMN_FOTOID + " FROM " + DateiMemoDbHelper.TABLE_FOREIGNDATA_LIST;
 
         Cursor cursor = database.rawQuery(selectQuery, null);
 

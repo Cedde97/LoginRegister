@@ -10,6 +10,9 @@ public class Neighbour {
 
     //DateiMemo dateiMemo;
 
+
+
+
     private double cornerTopRightX;
     private double cornerTopRightY;
     private double cornerTopLeftX;
@@ -22,6 +25,8 @@ public class Neighbour {
     private double punktY;
     private String UIP;
     private double RTT;
+
+    private Zone   ownZone;
 
     private Corner topRight;
     private Corner topLeft;
@@ -175,6 +180,44 @@ public class Neighbour {
 
     public  void setUid(long uid) {
         this.uid = uid;
+    }
+
+    public Corner getTopRight(){
+        return getMyZone().getTopRight();
+    }
+
+    public Corner getTopLeft(){
+        return getMyZone().getTopLeft();
+    }
+
+    public Corner getBottomRight(){
+        return getMyZone().getBottomRight();
+    }
+
+    public Corner getBottomLeft(){
+        return getMyZone().getBottomLeft();
+    }
+
+    public void setTopRight(Corner topRight){
+        getMyZone().setTopRight(topRight);
+    }
+
+    public void setTopLeft(Corner topLeft){
+        getMyZone().setTopLeft(topLeft);
+    }
+    public void setBottomRight(Corner bottomRight){
+        getMyZone().setBottomRight(bottomRight);
+    }
+    public void setBottomLeft(Corner bottomLeft){
+        getMyZone().setBottomLeft(bottomLeft);
+    }
+
+    public Zone getMyZone(){
+        return ownZone;
+    }
+
+    public void setMyZone(Zone zone){
+        this.ownZone = zone;
     }
 
 
