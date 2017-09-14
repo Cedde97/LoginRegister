@@ -152,6 +152,7 @@ public class DateiMemoDbHelper extends SQLiteOpenHelper{
     //SUPER verwendet man, weil unsere "helper" ist eine Ableitung von SQLiteOpenHelper
     public DateiMemoDbHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
+        super(App.getContext(), DB_NAME, null, DB_VERSION);
     }
 
 
