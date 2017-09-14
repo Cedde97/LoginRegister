@@ -1,4 +1,6 @@
 package connection;
+import android.os.Environment;
+
 import model.*;
 
 import java.io.ByteArrayInputStream;
@@ -35,7 +37,6 @@ public class Serialization {
 	 * @param node 	= einzuspeisender Knoten/Node
 	 * @return		= ByteArray buffer, in den das Knoten/Node Objekt eingespeist wurde
 	 */
-
 	protected byte[] serializeNode(Node node){
 
 		byte[] buffer = null;
@@ -58,10 +59,23 @@ public class Serialization {
 
 	}
 
+	public void serializeNode2(Node node) throws IOException {
+		FileOutputStream fileOut = new FileOutputStream(Environment.getExternalStorageDirectory());
+		ObjectOutputStream out = new ObjectOutputStream(fileOut);
+		out.writeObject(node);
+		out.close();
+		fileOut.close();
+	}
 
+	public Node getSerialzedNode() throws IOException, ClassNotFoundException {
+		FileInputStream fileIn = new FileInputStream(Environment.getExternalStorageDirectory());
+		ObjectInputStream in = new ObjectInputStream(fileIn);
+		Node node = (Node) in.readObject();
+		in.close();
+		fileIn.close();
 
-
-
+		return node;
+	}
 
 	/**
 	 * Methode, um aus einem ByteArray ein Knoten/Node wiederherzustellen
@@ -90,7 +104,6 @@ public class Serialization {
 		return node;
 
 	}
-
 
 
 	/**

@@ -41,6 +41,7 @@ public class Node {
     private Socket socket;
     private Client client = new Client();
     //Da keine DB
+
     private List<Neighbour> neighbourList = new ArrayList<>();
     private List<PeerMemo> peerMemoList = new ArrayList<>();
     private List<OwnDataMemo> ownDataMemoList;
@@ -182,7 +183,7 @@ public class Node {
     private Node routingCheckZone(RoutHelper rh) {
         if(getMyZone().checkIfInMyZone(rh.getX(),rh.getY())){
             //hier noch statt 3 getUID von OnlineDB
-            Node newNode = new Node(rh.getID(), rh.getX(), rh.getY(), rh.getIP(), 0, getMyZone());
+            Node newNode = new Node(rh.getID(), rh.getX(), rh.getY(), rh.getIP(), getCountPeers(), getMyZone());
             countPeers++;
             if(checkIfMaxPeersCount()){
 
@@ -432,7 +433,7 @@ public class Node {
     }
 
 
-    private boolean checkIfMaxPeersCount(){
+    public boolean checkIfMaxPeersCount(){
         if (countPeers == maxPeers){
             return true;
         }else{
@@ -516,6 +517,10 @@ public class Node {
 
     public void setMyZone(Zone zone){
         this.ownZone = zone;
+    }
+
+    public void increaseCountPeers(){
+        countPeers++;
     }
 
 
