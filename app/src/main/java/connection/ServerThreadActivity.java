@@ -115,19 +115,11 @@ public class ServerThreadActivity extends Activity{
                     case ROUTING: {
                         Log.d("Routing: ","");
 
-                        Corner corner  = new Corner(0,1);
-                        Corner corner1 = new Corner(1,1);
-                        Corner corner2 = new Corner(0,0);
-                        Corner corner3 = new Corner(1,0);
-
                         RoutHelper rh = server.getRoutHelper(buffer);
-
-                        Zone zone = new Zone(corner,corner1,corner2,corner3);
-
-                        Node oldNode = new Node(01l, 0.1, 0.1, "192.168.2.110", 2, zone);
-
-                        Node nodeNew = oldNode.routing(rh);
-
+                        Node nodeNew = serialization.getSerialzedNode().routing(rh);
+                        if(nodeNew != null){
+                            //starte node transfer
+                        }
                         Log.d("nodeNew ",nodeNew.toString());
 
                     }
@@ -135,10 +127,6 @@ public class ServerThreadActivity extends Activity{
 
                 ss.close();
             }catch (Exception e){
-                e.printStackTrace();
-            } catch (YMustBeLargerThanZeroException e) {
-                e.printStackTrace();
-            } catch (XMustBeLargerThanZeroException e) {
                 e.printStackTrace();
             } finally{
                 try{
@@ -153,28 +141,6 @@ public class ServerThreadActivity extends Activity{
         }
     }
 
-    private void startHashX() throws JSONException {
-        new HashXTask(new HashXTask.AsyncResponse(){
-            @Override
-            public void processFinish(double d){
-                Log.d("HashX in processFinish ", "d"+d);
-            }
-        }).execute("123.142.0.1");
-    }
-
-    private void startHashY() throws JSONException {
-        new HashYTask(new HashYTask.AsyncResponse(){
-            @Override
-            public void processFinish(double d){
-                Log.d("HashY in processFinish ", "d"+d);
-            }
-        }).execute("123.142.0.1");
-    }
-
-
-    private void startRouting(String ip, double x, double y, int id){
-        new RoutingTask().execute(ip,Double.toString(x),Double.toString(y),Integer.toString(id));
-    }
 
     @Override
     protected void onDestroy() {
