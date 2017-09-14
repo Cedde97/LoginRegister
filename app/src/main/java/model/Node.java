@@ -172,6 +172,7 @@ public class Node {
                 //setzte die PeerList des neuen Knoten auf seinsy;
                 PeerMemo pm = new PeerMemo((int)getUid(),getIP());
                 newNode.getPeerMemoList().add(pm);
+                newNode.setCountPeers(getPeerMemoList().size());
             }
         }
     }
@@ -181,7 +182,7 @@ public class Node {
     private Node routingCheckZone(RoutHelper rh) {
         if(getMyZone().checkIfInMyZone(rh.getX(),rh.getY())){
             //hier noch statt 3 getUID von OnlineDB
-            Node newNode = new Node(rh.getID(), rh.getX(), rh.getY(), rh.getIP(), 3, getMyZone());
+            Node newNode = new Node(rh.getID(), rh.getX(), rh.getY(), rh.getIP(), 0, getMyZone());
             countPeers++;
             if(checkIfMaxPeersCount()){
 
