@@ -171,9 +171,9 @@ public class Zone {
 
             double midX = getLengthX(nodeArray[0]) / 2.0;
             // set peers und neigbour und update Corner
-
+            Log.d("TEST_BOTTOMRight_Vorher", "NODE1: " + nodeArray[0].getMyZone().toString());
             nodeArray[0].getBottomRight().setX(midX);
-            Log.d("TEST_BOTTOMRight", "NODE1: " + nodeArray[0].getMyZone().toString());
+            Log.d("TEST_BOTTOMRight_Nach", "NODE1: " + nodeArray[0].getMyZone().toString());
 
             nodeArray[0].getTopRight().setX(midX);
             Log.d("TEST_TOPRight", "NODE1: " + nodeArray[0].getMyZone().toString());
@@ -188,10 +188,10 @@ public class Zone {
             nodeArray[3].getTopLeft().setX(midX);
             nodeArray[3].getBottomLeft().setX(midX);
 
-            /*Log.d("TEST_NACHhER", "ARRAY: " + nodeArray[0].getMyZone().toString() + "\n" +
+            Log.d("TEST_NACHhER", "ARRAY: " + nodeArray[0].getMyZone().toString() + "\n" +
                     nodeArray[1].getMyZone().toString() + "\n" +
                     nodeArray[2].getMyZone().toString() + "\n" +
-                    nodeArray[3].getMyZone().toString() + "\n");*/
+                    nodeArray[3].getMyZone().toString() + "\n");
 
         } else {
             Node[] nodeArray = determineLocationY(bottomLeftNode,topLeftNode,bottomRightNode,topRightNode);
@@ -241,7 +241,7 @@ public class Zone {
         return nodeArray;
     }
         public  void sortiere(Node x[]) {
-                qSort(x, 0, x.length-1);
+            qSort(x, 0, x.length-1);
             }
 
             public  void qSort(Node x[], int links, int rechts) {
@@ -259,7 +259,7 @@ public class Zone {
                 i     = links;
                 j     = rechts-1;
                 while(i<=j) {
-                    if (x[i].getPunktX() > pivot.getPunktX()) {
+                    if (x[i].getPunktY() > pivot.getPunktY()) {
                         // tausche x[i] und x[j]
                         help = x[i];
                         x[i] = x[j];
