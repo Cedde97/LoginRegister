@@ -160,15 +160,6 @@ public class Zone {
 
             Node[] nodeArray = determineLocationX(bottomLeftNode,topLeftNode,bottomRightNode,topRightNode);
 
-            Log.d("TEST_VORHER", "ARRAY: " + "\n" + "PunktX " + nodeArray[0].getPunktX() + " PunktY " + nodeArray[0].getPunktY() + "\n" +
-                    nodeArray[0].getMyZone().toString() + "\n" +
-                    "PunktX " + nodeArray[1].getPunktX() + " PunktY " + nodeArray[1].getPunktY() + "\n" +
-                    nodeArray[1].getMyZone().toString() + "\n" +
-                    "PunktX " + nodeArray[2].getPunktX() + " PunktY " + nodeArray[2].getPunktY() + "\n" +
-                    nodeArray[2].getMyZone().toString() + "\n" +
-                    "PunktX " + nodeArray[3].getPunktX() + " PunktY " + nodeArray[3].getPunktY() + "\n" +
-                    nodeArray[3].getMyZone().toString() + "\n");
-
             double midX = getLengthX(nodeArray[0]) / 2.0;
             // set peers und neigbour und update Corner
 

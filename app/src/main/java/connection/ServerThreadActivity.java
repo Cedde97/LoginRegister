@@ -32,8 +32,8 @@ import task.RoutingTask;
 
 public class ServerThreadActivity extends Activity{
     private static final int PORTNR       = 9797;
-    private static final int FILETRANSFER =  1;
-    private static final int NODETRANSFER =  2;
+    private static final int FILETRANSFER = 1;
+    private static final int NODETRANSFER = 2;
     private static final int NEIGHTRANSFER= 4;
     private static final int PEERTRANSFER = 5;
     private static final int FOREIGNTRANS = 6;

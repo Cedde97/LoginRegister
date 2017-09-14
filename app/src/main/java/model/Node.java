@@ -149,12 +149,12 @@ public class Node {
             }
             int index = compareValues(distance);
 
-            //socket = new Socket(neighbourList.get(index).getUIP(), PORTNR);
+            socket = new Socket(neighbourList.get(index).getUIP(), PORTNR);
         }
         //berechne die Distanz von den Neighbourn zu den x,y-Werten und liefere den Index an welcher Stelle der Neighbour steht der am nächsten an den x,y-Werten ist
 
 
-        //client.sendRoutHelperAsByteArray(socket,rh);
+        client.sendRoutHelperAsByteArray(socket,rh);
         return nodeNew;
 
     }
@@ -543,10 +543,6 @@ public class Node {
         if(neighbourList != null && peerMemoList != null) {
             sb.append("Node: " + "\nUserId: " + uid + " PunktX: " + punktX + " PunktY: " + punktY + " IP: " + iP +
                     " countPeers: " + countPeers + " Own Zone: " + ownZone.toString() +
-                    "topLeft: " + ownZone.getTopLeft().toString() +
-                    "\ntop right: " + ownZone.getTopRight().toString() +
-                    "\nbottom left: " + ownZone.getBottomLeft().toString() +
-                    "\nbottom right: " + ownZone.getBottomRight().toString() +
                     "\n\nNeighbourList: " + neighbourList.toString() + "\n\nPeerList: " + peerMemoList.toString() + "\n");
 
             return sb.toString();
