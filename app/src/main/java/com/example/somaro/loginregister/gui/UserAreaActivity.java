@@ -18,16 +18,15 @@ import android.widget.Toast;
 
 import com.example.somaro.loginregister.R;
 
-<<<<<<< HEAD
 import org.json.JSONException;
 
-=======
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.util.Iterator;
 import java.io.BufferedReader;
->>>>>>> origin/somar
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -37,13 +36,10 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.Socket;
-<<<<<<< HEAD
-=======
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
->>>>>>> origin/somar
 
 import activity.FileTransferActivity;
 import activity.SendRoutActivity;
@@ -52,22 +48,19 @@ import bootstrap.InsertOwnIPActivity;
 import connection.Client;
 import connection.RoutHelper;
 import connection.ServerThreadActivity;
-import model.Node;
-import model.Zone;
+import model.*;
 import source.OwnDataDbSource;
 
 
 public class UserAreaActivity extends Activity {
-    private static final int CAM_REQUEST = 1;
     private static final int IMAGE_GALLERY_REQUEST = 20;
     private static final int PORT = 9797;
 
     private ImageView imageView;
-<<<<<<< HEAD
+
     private Client client;
     private static String bootsIp = null;
 
-=======
     static final int CAM_REQUEST = 1;
     int BildAnzahl;
     String singleParsed = "";
@@ -77,23 +70,18 @@ public class UserAreaActivity extends Activity {
     String data = null;
 
    // UserSeeionManager session ;
->>>>>>> origin/somar
 
     Button routRequest, fileTransferRequest, neighbourTransfer, startServer;
     
 
-public String photoId( ){
+public String getPhotoId( ){
 
-<<<<<<< HEAD
-
-=======
  String data = "";
 
-    data = "" + id + getBildAnzahl() ;
+    data = "" + getId() + getBildAnzahl() ;
     return data;
 
 }
->>>>>>> origin/somar
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -134,26 +122,13 @@ public String photoId( ){
         String name = intent.getStringExtra("name");
         id = intent.getIntExtra("id",0);
        // String phototID = photoId(id);
-        String message = id + " " + photoId() + name + " welcome to your user area";
+        String message = id + " " + getPhotoId() + name + " welcome to your user area";
 
         welcomeMsg.setText(message);
 
-
-<<<<<<< HEAD
-=======
     }
 
-    View.OnClickListener StartServerListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
 
-            Intent i = new Intent(getApplicationContext(), ServerThreadActivity.class);
-            Log.d("Started Server", i.toString());
-            startActivity(i);
-        }
-    };
-
->>>>>>> origin/somar
 
     /**
      * Button Test für Routing
@@ -309,6 +284,7 @@ public String photoId( ){
      * @return der Dateiname
      */
     private String saveImageFile(Bitmap bitmap) {
+        OwnDataMemo ownDataMemo = new OwnDataMemo();
         FileOutputStream out = null;
         String filename = getFilename();
         try {
@@ -317,11 +293,20 @@ public String photoId( ){
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+
+        ownDataMemo.setUid(getId());
+        ownDataMemo.setFileId(Integer.valueOf(getPhotoId()));
         BildAnzahl = BildAnzahl +1 ;
 
-        Toast.makeText(UserAreaActivity.this, photoId() , Toast.LENGTH_SHORT).show();
+        Toast.makeText(UserAreaActivity.this, getPhotoId() , Toast.LENGTH_SHORT).show();
 
         return filename;
+    }
+
+
+    public int getId()
+    {
+        return id;
     }
 
     public int getBildAnzahl(){
@@ -350,8 +335,8 @@ public String photoId( ){
         }*/
 
         dir.mkdirs();
-        String uriString = (dir.getAbsolutePath() +"/"
-                + photoId() + ".jpg");
+        String uriString = (dir.getAbsolutePath() +"/" + "#"
+                + getPhotoId() + "#" + ".jpg");
         return uriString;
     }
 
