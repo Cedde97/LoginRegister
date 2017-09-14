@@ -61,17 +61,17 @@ public class UserAreaActivity extends Activity {
     private Client client;
     private static String bootsIp = null;
 
-    static final int CAM_REQUEST = 1;
-    int BildAnzahl;
-    String singleParsed = "";
-    String dataParsed = "";
-    int id ;
+    private static final int CAM_REQUEST = 1;
+    private int bildAnzahl;
+    private String singleParsed = "";
+    private String dataParsed = "";
+    private int id ;
 
-    String data = null;
+    private String data = null;
 
    // UserSeeionManager session ;
 
-    Button routRequest, fileTransferRequest, neighbourTransfer, startServer;
+    private Button routRequest, fileTransferRequest, neighbourTransfer, startServer;
     
 
 public String getPhotoId( ){
@@ -284,7 +284,7 @@ public String getPhotoId( ){
      * @return der Dateiname
      */
     private String saveImageFile(Bitmap bitmap) {
-        OwnDataMemo ownDataMemo = new OwnDataMemo();
+        OwnDataMemo ownDataMemo = new OwnDataMemo(getId(),Integer.parseInt(getPhotoId()));
         FileOutputStream out = null;
         String filename = getFilename();
         try {
@@ -293,17 +293,20 @@ public String getPhotoId( ){
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-
-        ownDataMemo.setUid(getId());
-        ownDataMemo.setFileId(Integer.valueOf(getPhotoId()));
-        BildAnzahl = BildAnzahl +1 ;
+        bildAnzahl = bildAnzahl +1 ;
 
         Toast.makeText(UserAreaActivity.this, getPhotoId() , Toast.LENGTH_SHORT).show();
 
         return filename;
     }
 
-
+    /**
+     * @author Alexander Lukacs
+     *
+     * Liefert die ID des Knotens
+     *
+     * @return ID des Knoten
+     */
     public int getId()
     {
         return id;
@@ -311,7 +314,7 @@ public String getPhotoId( ){
 
     public int getBildAnzahl(){
 
-        return  BildAnzahl;
+        return  bildAnzahl;
     }
 
     /**

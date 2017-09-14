@@ -35,7 +35,7 @@ public class OwnDataDbSource {
 
 
     public OwnDataDbSource(){
-        ownDataMemo = new OwnDataMemo();
+       // ownDataMemo = new OwnDataMemo();
     }
 
 
@@ -278,7 +278,7 @@ public class OwnDataDbSource {
         OwnDataMemo ownDataMemo = null;
         if (cursor.moveToFirst()) {
             do {
-                ownDataMemo = new OwnDataMemo();
+                //ownDataMemo = new OwnDataMemo();
                 ownDataMemo.setUid(cursor.getLong(cursor.getColumnIndex(dbHelper.COLUMN_OID)));
                 //ownDataMemo.setChecked(isChecked);
                 ownDataMemo.setFileId(cursor.getInt(cursor.getColumnIndex(dbHelper.COLUMN_FILEID)));
@@ -312,7 +312,7 @@ public class OwnDataDbSource {
         OwnDataMemo ownDataMemo = null;
         if (cursor.moveToFirst()) {
             do {
-                ownDataMemo = new OwnDataMemo();
+                //ownDataMemo = new OwnDataMemo();
                 ownDataMemo.setUid(cursor.getLong(cursor.getColumnIndex(dbHelper.COLUMN_OID)));
                 //ownDataMemo.setChecked(isChecked);
                 ownDataMemo.setFileId(cursor.getInt(cursor.getColumnIndex(dbHelper.COLUMN_FILEID)));

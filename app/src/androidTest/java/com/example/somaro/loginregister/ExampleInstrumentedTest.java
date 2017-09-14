@@ -24,6 +24,9 @@ import static org.junit.Assert.*;
 @SuppressWarnings("deprecation")
 @RunWith(AndroidJUnit4.class)
 public class ExampleInstrumentedTest {
+    /**
+     * @author Alexander Lukacs
+     */
     @Test
     public void useAppContext() throws Exception {
         // Context of the app under test.
@@ -33,16 +36,15 @@ public class ExampleInstrumentedTest {
     }
 
 
-
+    /**
+     * @author Alexander Lukacs
+     */
     @Test
     public void test()
     {
-
         Context appContext = InstrumentationRegistry.getTargetContext();
-
         DateiMemoDbHelper dateiMemoDbHelper = new DateiMemoDbHelper(appContext);
         DatabaseManager.initializeInstance(dateiMemoDbHelper);
-
         SQLiteDatabase database;
         database = DatabaseManager.getInstance().openDatabase();
 
@@ -56,7 +58,6 @@ public class ExampleInstrumentedTest {
         Node dateiMemo = new Node();
         PeerMemo peerMemo = new PeerMemo();
 
-
         Corner cornerBottomLeft;
         Corner cornerBottomRight;
         Corner cornerTopLeft;
@@ -67,9 +68,6 @@ public class ExampleInstrumentedTest {
             cornerBottomRight = new Corner(1.0,0.0);
             cornerTopLeft = new Corner(0.0,1.0);
             cornerTopRight = new Corner(1.0,1.0);
-
-            //dateiMemoDbSource.deleteDateiMemo();
-
 
             zone = new Zone(cornerTopLeft,cornerTopRight,cornerBottomLeft,cornerBottomRight);
 
@@ -87,7 +85,6 @@ public class ExampleInstrumentedTest {
 
             peerMemo.setPeerIp("1.1.1.1");
             peerMemo.setUid(dateiMemoDbSource.getUid());
-            //peerMemo.setPeerId(3);
             peerDbSource.createPeerMemo(peerMemo);
 
             String  p = peerDbSource.getPeerIp(peerDbSource.getUidPeer());
@@ -95,9 +92,6 @@ public class ExampleInstrumentedTest {
             Log.d("HALLO", "AAAAAAAAAAAAAAAAAA: PEER_ID " + p);
 
             dateiMemoDbSource.deleteDateiMemo();
-            //foreignData.deleteForeignData();
-            //neighborDbSource.deleteNeighbormemo();
-            //ownDataDbSource.deleteOwnData();
             peerDbSource.deletePeerMemo();
 
         }
@@ -116,15 +110,11 @@ public class ExampleInstrumentedTest {
         peerMemo.setPeerIp("277.0.0.1");
         peerDbSource.createPeerMemo(peerMemo);
 
-
-        //dateiMemoDbSource.deleteDateiMemo();
-        //foreignData.deleteForeignData();
-        //neighborDbSource.deleteNeighbormemo();
-        //ownDataDbSource.deleteOwnData();
-        //peerDbSource.deletePeerMemo();
-
     }
 
+    /**
+     * @author Alexander Lukacs
+     */
     @Test
     public void TestUpdateCorner() {
 
@@ -202,6 +192,9 @@ public class ExampleInstrumentedTest {
 
     }
 
+    /**
+     * @author Alexander Lukacs
+     */
     @Test
     public void testSplit_Vertical()
     {
@@ -272,6 +265,9 @@ public class ExampleInstrumentedTest {
 
     }
 
+    /**
+     * @author Alexander Lukacs
+     */
     @Test
     public void testSplit_Horizontal()
     {
@@ -337,5 +333,29 @@ public class ExampleInstrumentedTest {
             Log.d("Exception", e.getMessage());
         }
 
+    }
+
+    /**
+     * @author Alexander Lukacs
+     */
+    @Test
+    public void ownDataHash()
+    {
+        OwnDataMemo ownDataMemo = new OwnDataMemo(0,0);
+        long uid = ownDataMemo.getUid();
+        int fotoId = ownDataMemo.getFileId();
+        boolean istDrin = false;
+
+        double hashX = ownDataMemo.hashX(uid,fotoId);
+        double hashY = ownDataMemo.hashY(uid,fotoId);
+
+        Log.d("TEST", "HASH_X " + hashX + ", " + "HASH_Y " + hashY);
+
+        if (hashX <= 1 && hashX >= 0 && hashY <= 1 && hashY >= 0)
+        {
+            istDrin = true;
+        }
+
+        assertEquals(true, istDrin);
     }
 }

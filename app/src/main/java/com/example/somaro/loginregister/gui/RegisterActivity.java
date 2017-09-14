@@ -47,6 +47,18 @@ public class RegisterActivity extends AppCompatActivity {
                             if (success){
                                 //start routing/ Abfrage ob das dies der erste Knoten ist der sich anmeldet
                                 // Nach dem erfolgreichen Registrieren öffnet sich die Login Seite
+
+                                /*if(//wenn nichts auf der Datenbank ist );
+                                {
+                                    //Die IP vom ersten Knoten muss zum Bootstrap Server
+                                    //Zone auf Eckpunkte setzen
+                                    //Knoten serialisieren
+                                }else
+                                {
+                                    //IP vom Bootstrap Server holen
+                                    //Join-Request an diese IP senden
+                                }*/
+
                                 Intent intent = new Intent(RegisterActivity.this,LoginActivity.class);
                                 RegisterActivity.this.startActivity(intent);
                             }

@@ -12,11 +12,30 @@ public class OwnDataMemo {
 
 
 
-//    public OwnDataMemo(long uid, boolean checked, int fileId){
-//        this.uid = uid;
-//        this.checked = checked;
-//        this.fileId = fileId;
-//    }
+    public OwnDataMemo(long uid, int fileId){
+        this.uid = uid;
+        this.fileId = fileId;
+   }
+
+   public double hashX(long uid , int fotoId)
+   {
+       String xWert =  " " + uid + fotoId ;
+       double hashX = Double.parseDouble("0." + hash(xWert));
+       return hashX;
+   }
+
+    public double hashY(long uid , int fotoId)
+    {
+        String yWert =  uid + fotoId + " ";
+        double hashY = Double.parseDouble("0." + hash(yWert));
+        return hashY;
+    }
+
+   private int hash(String hashWert)
+   {
+       return Math.abs(hashWert.hashCode());
+   }
+
 
     public long getUid() {
         return uid;
