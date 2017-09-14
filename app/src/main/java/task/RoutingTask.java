@@ -29,48 +29,11 @@ public class RoutingTask extends AsyncTask<String, String , String> {
     //wie mache ich das mit routing und receiveRoutingRequest also wie rufe ich sie jeweils auf? da sie sich gegenseitig aufrufen
     @Override
     protected String doInBackground(String... params) {
-        double neighbourX, neighbourY;
-        double [] distances = new double[4];
-
         String ip = params[0];
         double x = Double.parseDouble(params[1]);
         double y = Double.parseDouble(params[2]);
         int id   = Integer.parseInt(params[3]);
 
-        //bricht routing ab falls richtige zone gefunden wurde
-        routingCheckZone(ip,x,y,id);
-
-
-        //bei 1 anfangen?
-        for(int i=0; i<=distances.length ; i++){
-
-            //Die x und y Werte des Nachbarn von der DB holen
-            neighbourX = nDB.getPunktXNeighbor(i);
-            neighbourY = nDB.getPunktYNeighbor(i);
-            // Nun diese Distanzen berechnen und die am nächsten an dem Punkt zu dem gerouted werden soll.
-            distances[i] = computeDistance(x,y,neighbourX,neighbourY);
-
-        }
-        int index = compareValues(distances);
-        String connectIP = nDB.getUip(index);
-
-        //getNeighbour(index).getIP(); in dem socket eintragen
-        try {
-            socket = new Socket(connectIP,PORTNR);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-        RoutHelper rh = new RoutHelper(ip,x,y,id);
-        //routing request
-        try {
-            client.sendRoutHelperAsByteArray(socket,rh);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        //// TODO: 07.09.2017 sende ein receiveRoutingRequest  an ip
-        //// TODO: 14.08.2017 Verbindungsaufbau zu dem Neighbour der an Stelle == Index steht und IP und x,y-Werte übertragen so das dieser weiter routen kann, bzw recreive routing request bei ihm aufrufen
         return null;
     }
 
