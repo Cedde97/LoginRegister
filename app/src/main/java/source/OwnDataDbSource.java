@@ -115,7 +115,7 @@ public class OwnDataDbSource {
         ContentValues values = new ContentValues();
         values.put(DateiMemoDbHelper.COLUMN_OID, ownDataMemo.getUid());
         //automatisch
-        //values.put(DateiMemoDbHelper.COLUMN_FILEID, ownDataMemo.getFileId());
+        values.put(DateiMemoDbHelper.COLUMN_FILEID, ownDataMemo.getFileId());
 
         //
         //insert row
@@ -206,23 +206,23 @@ public class OwnDataDbSource {
      */
     public long getUID(int index){
         database = DatabaseManager.getInstance().openDatabase();
-        String selectQuery = "SELECT "+ DateiMemoDbHelper.COLUMN_UID+" FROM " + DateiMemoDbHelper.TABLE_OWNDATA_LIST + " WHERE "
+        String selectQuery = "SELECT "+ DateiMemoDbHelper.COLUMN_OID +" FROM " + DateiMemoDbHelper.TABLE_OWNDATA_LIST + " WHERE "
                 + DateiMemoDbHelper.COLUMN_FILEID + " = " + index;
 
         Cursor cursor = database.rawQuery(selectQuery,null);
-
-        if(cursor != null){
-            long uID = cursor.getLong(cursor.getColumnIndex(DateiMemoDbHelper.COLUMN_UID));
-            if(uID >= 0){
+        cursor.moveToFirst();
+        //if(cursor != null){
+            long uID = cursor.getInt(cursor.getColumnIndex(DateiMemoDbHelper.COLUMN_OID));
+            //if(uID >= 0){
                 cursor.close();
                 DatabaseManager.getInstance().closeDatabase();
                 return uID;
-            }
+            //}
 
-        }
-        cursor.close();
-        DatabaseManager.getInstance().closeDatabase();
-        return -1;
+        //}
+        //cursor.close();
+        //DatabaseManager.getInstance().closeDatabase();
+        //return -1;
     }
     /*
    *
@@ -235,7 +235,7 @@ public class OwnDataDbSource {
         database = DatabaseManager.getInstance().openDatabase();
         //List<long> UidList = new ArrayList<>();
         String selectQuery = "SELECT "+ DateiMemoDbHelper.COLUMN_FILEID + " FROM " + DateiMemoDbHelper.TABLE_OWNDATA_LIST+ " WHERE "
-                + DateiMemoDbHelper.COLUMN_FILEID + " = " + uid;
+                + DateiMemoDbHelper.COLUMN_OID + " = " + uid;
 
         Cursor cursor = database.rawQuery(selectQuery, null);
 
@@ -275,7 +275,7 @@ public class OwnDataDbSource {
 
 
         //3. Durchführen Zeile und füge in List hinzu
-        OwnDataMemo ownDataMemo = null;
+        OwnDataMemo ownDataMemo = new OwnDataMemo();
         if (cursor.moveToFirst()) {
             do {
                 //ownDataMemo = new OwnDataMemo();

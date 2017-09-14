@@ -730,6 +730,27 @@ public class DateiMemoDbSource {
     // ================================================================================================================================
     //
 
+
+    public int getCountPeers() {
+        database = DatabaseManager.getInstance().openDatabase();
+        String selectQuery = "SELECT "+ DateiMemoDbHelper.COLUMN_COUNTPEERS +" FROM " + DateiMemoDbHelper.TABLE_DATEI_LIST;
+
+        Log.e(LOG_TAG, selectQuery);
+
+        Cursor c = database.rawQuery(selectQuery, null);
+
+        if (c != null)
+            c.moveToFirst();
+        int count;
+        count = c.getInt(c.getColumnIndex(DateiMemoDbHelper.COLUMN_COUNTPEERS));
+        DatabaseManager.getInstance().closeDatabase();
+        return count;
+    }
+
+
+    //
+    // ================================================================================================================================
+    //
     public List<Node> getAllDateiMemos() {
         List<Node> DateiMemoList = new LinkedList<Node>();
 

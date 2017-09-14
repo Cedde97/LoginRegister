@@ -27,7 +27,7 @@ public class ForeignDataDbSource {
 
     private SQLiteDatabase database;
     private DateiMemoDbHelper dbHelper;
-    private DateiMemoDbSource dateiMemoDbSource;
+    private DateiMemoDbSource dateiMemoDbSource = new DateiMemoDbSource();
     private ForeignData foreignData;
 
     //Array
@@ -176,7 +176,7 @@ public class ForeignDataDbSource {
     public double getPunktXForeign(long uid) {
         database = DatabaseManager.getInstance().openDatabase();
         String selectQuery = "SELECT "+ DateiMemoDbHelper.COLUMN_PUNKTX +" FROM " + DateiMemoDbHelper.TABLE_FOREIGNDATA_LIST + " WHERE "
-                + DateiMemoDbHelper.COLUMN_FOTOID + " = " + uid;
+                + DateiMemoDbHelper.COLUMN_FID + " = " + uid;
 
         Log.e(LOG_TAG, selectQuery);
 
@@ -206,7 +206,7 @@ public class ForeignDataDbSource {
     public double getPunktYForeign(long uid) {
         database = DatabaseManager.getInstance().openDatabase();
         String selectQuery = "SELECT "+ DateiMemoDbHelper.COLUMN_PUNKTY +" FROM " + DateiMemoDbHelper.TABLE_FOREIGNDATA_LIST + " WHERE "
-                + DateiMemoDbHelper.COLUMN_FOTOID + " = " + uid;
+                + DateiMemoDbHelper.COLUMN_FID + " = " + uid;
 
         Log.e(LOG_TAG, selectQuery);
 
@@ -230,10 +230,11 @@ public class ForeignDataDbSource {
     *
     *
     * */
-    public int getFotoId() {
+    public int getFotoId(long uid) {
         database = DatabaseManager.getInstance().openDatabase();
         //List<long> UidList = new ArrayList<>();
-        String selectQuery = "SELECT "+ DateiMemoDbHelper.COLUMN_FOTOID + " FROM " + DateiMemoDbHelper.TABLE_FOREIGNDATA_LIST;
+        String selectQuery = "SELECT "+ DateiMemoDbHelper.COLUMN_FOTOID + " FROM " + DateiMemoDbHelper.TABLE_FOREIGNDATA_LIST + " WHERE "
+                + DateiMemoDbHelper.COLUMN_FID + " = " + uid;
 
         Cursor cursor = database.rawQuery(selectQuery, null);
 
@@ -254,7 +255,7 @@ public class ForeignDataDbSource {
     *           Get UID
     *
     * */
-    public double getUidForeign() {
+    public long getUidForeign() {
         database = DatabaseManager.getInstance().openDatabase();
         DatabaseManager.getInstance().closeDatabase();
         return dateiMemoDbSource.getUid();
@@ -275,7 +276,7 @@ public class ForeignDataDbSource {
     public String getforeignIp(long uid) {
         database = DatabaseManager.getInstance().openDatabase();
         String selectQuery = "SELECT "+ DateiMemoDbHelper.COLUMN_IP +" FROM " + DateiMemoDbHelper.TABLE_FOREIGNDATA_LIST + " WHERE "
-                + DateiMemoDbHelper.COLUMN_FOTOID + " = " + uid;
+                + DateiMemoDbHelper.COLUMN_FID + " = " + uid;
 
         Log.e(LOG_TAG, selectQuery);
 

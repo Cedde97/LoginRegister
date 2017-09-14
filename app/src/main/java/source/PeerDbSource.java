@@ -290,7 +290,7 @@ public class PeerDbSource {
     public String getPeerIp(long index) {
         //List<Integer> PeerIdList = new ArrayList<>();
         String selectQuery = "SELECT "+ DateiMemoDbHelper.COLUMN_PEERIP + " FROM " + DateiMemoDbHelper.TABLE_PEER_LIST + " WHERE "
-                + DateiMemoDbHelper.COLUMN_PEERID + " = " + index;
+                + DateiMemoDbHelper.COLUMN_PID + " = " + index;
 
         database = DatabaseManager.getInstance().openDatabase();
 

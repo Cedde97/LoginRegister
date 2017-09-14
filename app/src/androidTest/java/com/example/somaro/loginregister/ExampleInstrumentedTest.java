@@ -46,8 +46,13 @@ public class ExampleInstrumentedTest {
         SQLiteDatabase database;
         database = DatabaseManager.getInstance().openDatabase();
 
-        dateiMemoDbHelper.onCreate(database);
-        dateiMemoDbHelper.onUpgrade(database,0,dateiMemoDbHelper.DB_VERSION);
+        if(database == null)
+        {
+            dateiMemoDbHelper.onCreate(database);
+        }
+        //dateiMemoDbHelper.onCreate(database);
+
+        //dateiMemoDbHelper.onUpgrade(database,0,dateiMemoDbHelper.DB_VERSION);
 
         DateiMemoDbSource dateiMemoDbSource = new DateiMemoDbSource();
         ForeignDataDbSource foreignDataDbSource = new ForeignDataDbSource();
@@ -72,6 +77,7 @@ public class ExampleInstrumentedTest {
         Corner cornerTopLeftNeighbour;
         Corner cornerTopRightNeighbour;
         Zone zoneNeighbour;
+
         try {
             cornerBottomLeft = new Corner(0.0,0.0);
             cornerBottomRight = new Corner(1.0,0.0);
@@ -95,17 +101,33 @@ public class ExampleInstrumentedTest {
             dateiMemo.setMyZone(zone);
             dateiMemoDbSource.createDateiMemo(dateiMemo);
 
+            Log.d("TEST", "DATEIMEMO_UID " + dateiMemoDbSource.getUid() );
+            Log.d("TEST", "DATEIMEMO_TOPRIGHT " + dateiMemoDbSource.getCornerTopRightX() + ", " + dateiMemoDbSource.getCornerTopRightY());
+            Log.d("TEST", "DATEIMEMO_BOTTOMRIGHT " + dateiMemoDbSource.getCornerBottomRightX() + ", " + dateiMemoDbSource.getCornerBottomRightY());
+            Log.d("TEST", "DATEIMEMO_TOPLEFT " + dateiMemoDbSource.getCornerTopLeftX() + ", " + dateiMemoDbSource.getCornerTopLeftY());
+            Log.d("TEST", "DATEIMEMO_BOTTOMLEFT " + dateiMemoDbSource.getCornerBottomLeftX() + ", " + dateiMemoDbSource.getCornerBottomLeftY());
+            Log.d("TEST", "DATEIMEMO_PUNKTX " + dateiMemoDbSource.getPunktX());
+            Log.d("TEST", "DATEIMEMO_PUNKTY " + dateiMemoDbSource.getPunktY());
+            Log.d("TEST", "DATEIMEMO_IP " + dateiMemoDbSource.getIp(dateiMemo.getUid()));
+            Log.d("TEST", "DATEIMEMO_COUNTPEERS " + dateiMemoDbSource.getCountPeers());
+            //Log.d("TEST", "DATEIMEMO_ZONE " + dateiMemoDbSource.getZone());
+
+            assertEquals(7872, dateiMemoDbSource.getUid());
             assertEquals(0.3, dateiMemoDbSource.getPunktX(), 0);
             assertEquals(0.4, dateiMemoDbSource.getPunktY(), 0);
 
-
             //create Peer
             peerMemo.setPeerIp("1.1.1.1");
-            peerMemo.setUid(dateiMemoDbSource.getUid());
+            peerMemo.setUid(dateiMemo.getUid());
             //peerMemo.setPeerId(3);
+
             peerDbSource.createPeerMemo(peerMemo);
 
             String  p = peerDbSource.getPeerIp(peerDbSource.getUidPeer());
+
+            assertEquals("1.1.1.1", p);
+
+            Log.d("TEST", "PEER_UID " + peerDbSource.getUidPeer());
 
             Log.d("HALLO", "AAAAAAAAAAAAAAAAAA: String_IP " + p);
 
@@ -119,16 +141,33 @@ public class ExampleInstrumentedTest {
             foreignData.setForeignIp("277.0.0.1");
             foreignDataDbSource.createForeignData(foreignData);
 
-            double x = foreignDataDbSource.getPunktXForeign(foreignDataDbSource.getFotoId());
+            double x = foreignDataDbSource.getPunktXForeign(foreignData.getUid());
 
+            Log.d("TEST", "FOREIGNDATADB_ID " + foreignDataDbSource.getUidForeign());
+            Log.d("TEST", "FOREIGNDATADB_FOTOID " + foreignDataDbSource.getFotoId(foreignData.getUid()));
+            Log.d("TEST", "FOREIGNDATADB_PUNKTY " + foreignDataDbSource.getPunktYForeign(foreignData.getUid()));
+            Log.d("TEST", "FOREIGNDATADB_IP " + foreignDataDbSource.getforeignIp(foreignData.getUid()));
+
+            assertEquals(0.5,x,0);
             Log.d("HALLO", "AAAAAAAAAAAAAAAAAA: double_punktX " + x);
 
             //create own Data
             //foreign key
+            Log.d("TEST", "OWNDATA_UID " + ownDataMemo.getUid());
+
             ownDataMemo.setUid(dateiMemo.getUid());
+            ownDataMemo.setFileId(3);
             //ownDataMemo.setChecked(true);
+            Log.d("TEST", "OWNDATA_UID " + ownDataMemo.getUid());
+            Log.d("TEST", "OWNDATA_FILEID " + ownDataMemo.getFileId());
+
             ownDataDbSource.createOwnData(ownDataMemo);
 
+            Log.d("TEST", "OWNDATADB_FILEID " + ownDataDbSource.getFileId(ownDataMemo.getUid()));
+
+            Log.d("TEST", "OWNDATADB_UID " + ownDataDbSource.getUID(ownDataMemo.getFileId()));
+
+            Log.d("TEST", "OWNDATADB " + ownDataDbSource.getAllOwnData());
             //create neighbour
             //foreign key
             neighborMemo.setUid(dateiMemo.getUid());
@@ -148,12 +187,22 @@ public class ExampleInstrumentedTest {
             //neighborMemo.setNeighbour_id(2);
             neighborDbSource.createNeighborMemo(neighborMemo);
 
+            Log.d("TEST", "NEIGHBOUR_ID " + neighborDbSource.getNID(1));
+            Log.d("TEST", "NEIGHBOUR_TOPRIGHT " + neighborDbSource.getCornerTopRightXNeighbor(1) + ", " + neighborDbSource.getCornerTopRightYNeighbor(1));
+            Log.d("TEST", "NEIGHBOUR_BOTTOMRIGHT " + neighborDbSource.getCornerBottomRightXNeighbor(1) + ", " + neighborDbSource.getCornerBottomRightYNeighbor(1));
+            Log.d("TEST", "NEIGHBOUR_TOPLEFT " + neighborDbSource.getCornerTopLeftXNeighbor(1) + ", " + neighborDbSource.getCornerTopLeftYNeighbor(1));
+            Log.d("TEST", "NEIGHBOUR_BOTTOMLEFT " + neighborDbSource.getCornerBottomLeftXNeighbor(1) + ", " + neighborDbSource.getCornerBottomLeftYNeighbor(1));
+            Log.d("TEST", "NEIGHBOUR_PUNKT_X " + neighborDbSource.getPunktXNeighbor(1));
+            Log.d("TEST", "NEIGHBOUR_PUNKT_Y " + neighborDbSource.getPunktYNeighbor(1));
+            Log.d("TEST", "NEIGHBOUR_IP " + neighborDbSource.getUip(1));
             double r = neighborDbSource.getRTT(1);
 
             Log.d("HALLO", "AAAAAAAAAAAAAAAAAA: double_RTT " + r);
 
 
-
+            assertEquals(7872,neighborDbSource.getNID(1));
+            assertEquals(0.5, neighborDbSource.getCornerTopRightXNeighbor(1), 0);
+            assertEquals(0.6, neighborDbSource.getCornerTopRightYNeighbor(1), 0);
 
             //dateiMemoDbSource.deleteDateiMemo();
             //foreignData.deleteForeignData();
