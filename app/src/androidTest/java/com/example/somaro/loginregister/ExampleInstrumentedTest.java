@@ -107,7 +107,7 @@ public class ExampleInstrumentedTest {
 
             String  p = peerDbSource.getPeerIp(peerDbSource.getUidPeer());
 
-            Log.d("HALLO", "AAAAAAAAAAAAAAAAAA: PEER_ID " + p);
+            Log.d("HALLO", "AAAAAAAAAAAAAAAAAA: String_IP " + p);
 
             //create Foreign
             //foreign key
@@ -121,7 +121,7 @@ public class ExampleInstrumentedTest {
 
             double x = foreignDataDbSource.getPunktXForeign(foreignDataDbSource.getFotoId());
 
-            Log.d("HALLO", "AAAAAAAAAAAAAAAAAA: PEER_ID " + x);
+            Log.d("HALLO", "AAAAAAAAAAAAAAAAAA: double_punktX " + x);
 
             //create own Data
             //foreign key
@@ -150,7 +150,7 @@ public class ExampleInstrumentedTest {
 
             double r = neighborDbSource.getRTT(1);
 
-            Log.d("HALLO", "AAAAAAAAAAAAAAAAAA: PEER_ID " + r);
+            Log.d("HALLO", "AAAAAAAAAAAAAAAAAA: double_RTT " + r);
 
 
 
