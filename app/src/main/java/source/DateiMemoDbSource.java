@@ -115,7 +115,7 @@ public class DateiMemoDbSource {
     public int createDateiMemo(Node dateiMemo) {
         database = DatabaseManager.getInstance().openDatabase();
         ContentValues values = new ContentValues();
-        //values.put(DateiMemoDbHelper.COLUMN_UID, dateiMemo.getUid());
+        values.put(DateiMemoDbHelper.COLUMN_UID, dateiMemo.getUid());
         //values.put(DateiMemoDbHelper.COLUMN_CHECKED, dateiMemo.isChecked());
         values.put(DateiMemoDbHelper.COLUMN_CORNERTOPLEFTX, dateiMemo.getTopLeft().getX());
         values.put(DateiMemoDbHelper.COLUMN_CORNERTOPLEFTY, dateiMemo.getTopLeft().getY());
@@ -653,10 +653,9 @@ public class DateiMemoDbSource {
     *
     *
     * */
-    public double getPunktX(long dateiMemo_Id) {
+    public double getPunktX() {
         database = DatabaseManager.getInstance().openDatabase();
-        String selectQuery = "SELECT "+ DateiMemoDbHelper.COLUMN_PUNKTX +" FROM " + DateiMemoDbHelper.TABLE_DATEI_LIST + " WHERE "
-                + DateiMemoDbHelper.COLUMN_UID + " = " + dateiMemo_Id;
+        String selectQuery = "SELECT "+ DateiMemoDbHelper.COLUMN_PUNKTX +" FROM " + DateiMemoDbHelper.TABLE_DATEI_LIST;
 
         Log.e(LOG_TAG, selectQuery);
 
@@ -683,10 +682,9 @@ public class DateiMemoDbSource {
     *
     *
     * */
-    public double getPunktY(long dateiMemo_Id) {
+    public double getPunktY() {
         database = DatabaseManager.getInstance().openDatabase();
-        String selectQuery = "SELECT "+ DateiMemoDbHelper.COLUMN_PUNKTY +" FROM " + DateiMemoDbHelper.TABLE_DATEI_LIST + " WHERE "
-                + DateiMemoDbHelper.COLUMN_UID + " = " + dateiMemo_Id;
+        String selectQuery = "SELECT "+ DateiMemoDbHelper.COLUMN_PUNKTY +" FROM " + DateiMemoDbHelper.TABLE_DATEI_LIST;
 
         Log.e(LOG_TAG, selectQuery);
 

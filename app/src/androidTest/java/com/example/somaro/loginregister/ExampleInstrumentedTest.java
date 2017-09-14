@@ -46,7 +46,8 @@ public class ExampleInstrumentedTest {
         SQLiteDatabase database;
         database = DatabaseManager.getInstance().openDatabase();
 
-        dateiMemoDbHelper.onUpgrade(database,0,1);
+        dateiMemoDbHelper.onCreate(database);
+        dateiMemoDbHelper.onUpgrade(database,0,dateiMemoDbHelper.DB_VERSION);
 
         DateiMemoDbSource dateiMemoDbSource = new DateiMemoDbSource();
         ForeignDataDbSource foreignDataDbSource = new ForeignDataDbSource();
@@ -93,6 +94,10 @@ public class ExampleInstrumentedTest {
             dateiMemo.setCountPeers(2);
             dateiMemo.setMyZone(zone);
             dateiMemoDbSource.createDateiMemo(dateiMemo);
+
+            assertEquals(0.3, dateiMemoDbSource.getPunktX(), 0);
+            assertEquals(0.4, dateiMemoDbSource.getPunktY(), 0);
+
 
             //create Peer
             peerMemo.setPeerIp("1.1.1.1");
