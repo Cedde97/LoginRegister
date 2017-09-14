@@ -11,6 +11,7 @@ public class OwnDataMemo {
     public int fileId;
 
 
+    public OwnDataMemo(){}
 
     public OwnDataMemo(long uid, int fileId){
         this.uid = uid;
