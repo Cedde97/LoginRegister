@@ -96,7 +96,7 @@ public class RoutingTask extends AsyncTask<String, Void, Void> {
                     Socket socket = new Socket(rh.getIP(), PORTNR);
                     client.sendNodeAsByteArray(socket, newNode);
                     client.sendListAsByteArray(socket, (ArrayList) pDB.getAllPeer());
-                    client.sendListAsByteArrayNeighbour(socket, (ArrayList) nDB.getEachNeigbourMemo());
+                    client.sendListAsByteArrayNeighbour(socket, (ArrayList) nDB.getAllNeighborMemo());
 
                     //hier ein remote aufruf von updateNeighbourAndPeerForeign an die rh.getIp() senden
                     //testen ob geht

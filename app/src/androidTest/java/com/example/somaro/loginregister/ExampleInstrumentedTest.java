@@ -131,12 +131,12 @@ public class ExampleInstrumentedTest {
             peerDbSource.createPeerMemo(peerMemo);
 
             peerMemo.setPeerIp("1.1.1.0");
-            peerMemo.setUid(1001);
+            peerMemo.setUid(dateiMemo.getUid());
             peerDbSource.createPeerMemo(peerMemo);
 
             //getEachPeer-Test
             //
-            List<PeerMemo> peerMemoList= peerDbSource.getEachPeer(1);
+            List<PeerMemo> peerMemoList= peerDbSource.getEachPeer(2);
             Log.d("Test getEachPeer","=============================================================");
 
             for(int i= 0; i < peerMemoList.size(); i++){
@@ -213,7 +213,7 @@ public class ExampleInstrumentedTest {
             //foreign key
 
             Neighbour n = new Neighbour();
-            n.setUid(10000);
+            n.setUid(dateiMemo.getUid());
             //neighborMemo.setChecked(true);
             n.setCornerTopRightX(0.5);
             n.setCornerTopRightY(0.6);
@@ -225,7 +225,7 @@ public class ExampleInstrumentedTest {
             n.setCornerBottomRightY(0.8);
             n.setPunktX(0.2);
             n.setPunktY(0.4);
-            n.setUIP("277.0.0.0/8");
+            n.setUIP("0.0.0.0/8");
             n.setRTT(25.89);
             neighborDbSource.createNeighborMemo(n);
 
@@ -247,7 +247,7 @@ public class ExampleInstrumentedTest {
             neighborDbSource.createNeighborMemo(neighborMemo);
 
 
-            neighborDbSource.createNeighborMemo(n);
+            //neighborDbSource.createNeighborMemo(n);
 
             //getEachNeighbor Test
             List<Neighbour> neighborMemoList= neighborDbSource.getEachNeighbour(1);
