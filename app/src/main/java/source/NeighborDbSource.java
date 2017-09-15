@@ -912,7 +912,7 @@ public class NeighborDbSource {
         Neighbour neighborMemo = null;
         if (cursor.moveToFirst()) {
             do {
-                //neighborMemo = new Neighbour();
+                neighborMemo = new Neighbour();
                 neighborMemo.setUid(cursor.getLong(cursor.getColumnIndex(dbHelper.COLUMN_NID)));
                 //neighborMemo.setChecked(isChecked);
                 neighborMemo.setCornerTopLeftX(cursor.getDouble(cursor.getColumnIndex(dbHelper.COLUMN_CORNERTOPLEFTX)));
