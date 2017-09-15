@@ -370,6 +370,53 @@ public class DateiMemoDbSource {
         //4. Schliess Database
         DatabaseManager.getInstance().closeDatabase();
     }
+
+       /*
+  *               Update Punkt X und Y
+  *
+  *
+  *
+  *
+  *
+  *
+  * */
+       public void updatePunktX(double newPunktX) {
+           //1. Öffne Database
+           database = DatabaseManager.getInstance().openDatabase();
+
+           //2. Erstell neue Wert
+           ContentValues values = new ContentValues();
+           values.put(DateiMemoDbHelper.COLUMN_PUNKTX, newPunktX);
+
+           //3. Update Database
+           database.update(DateiMemoDbHelper.TABLE_DATEI_LIST, //UPDATE which TABLE
+                   values, // SET query
+                   null, // should be WHERE query
+                   null  // should be Array
+           );
+
+           //4. Schliess Database
+           DatabaseManager.getInstance().closeDatabase();
+       }
+
+    public void updatePunktY(double newPunktY) {
+        //1. Öffne Database
+        database = DatabaseManager.getInstance().openDatabase();
+
+        //2. Erstell neue Wert
+        ContentValues values = new ContentValues();
+        values.put(DateiMemoDbHelper.COLUMN_PUNKTY, newPunktY);
+
+        //3. Update Database
+        database.update(DateiMemoDbHelper.TABLE_DATEI_LIST, //UPDATE which TABLE
+                values, // SET query
+                null, // should be WHERE query
+                null  // should be Array
+        );
+
+        //4. Schliess Database
+        DatabaseManager.getInstance().closeDatabase();
+    }
     /*
     *  ================================================================================================================================
     */
