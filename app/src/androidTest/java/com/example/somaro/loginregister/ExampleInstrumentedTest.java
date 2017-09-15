@@ -128,7 +128,10 @@ public class ExampleInstrumentedTest {
             peerMemo.setPeerIp("1.1.1.1");
             peerMemo.setUid(dateiMemo.getUid());
             //peerMemo.setPeerId(3);
+            peerDbSource.createPeerMemo(peerMemo);
 
+            peerMemo.setPeerIp("1.1.1.0");
+            peerMemo.setUid(1001);
             peerDbSource.createPeerMemo(peerMemo);
 
             List<PeerMemo> peerMemoList= peerDbSource.getEachPeer(1);
