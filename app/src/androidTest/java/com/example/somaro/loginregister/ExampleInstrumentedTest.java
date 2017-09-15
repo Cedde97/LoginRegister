@@ -134,6 +134,8 @@ public class ExampleInstrumentedTest {
             peerMemo.setUid(1001);
             peerDbSource.createPeerMemo(peerMemo);
 
+            //getEachPeer-Test
+            //
             List<PeerMemo> peerMemoList= peerDbSource.getEachPeer(1);
             Log.d("Test getEachPeer","=============================================================");
 
@@ -146,6 +148,21 @@ public class ExampleInstrumentedTest {
                 Log.d("Result", output);
             }
             Log.d("Test getEachPeer","=============================================================");
+
+            //getAllPeer-Test
+            //
+            List<PeerMemo> peerMemoListAll= peerDbSource.getAllPeer();
+            Log.d("Test getAllPeer","=============================================================");
+
+            for(int i= 0; i < peerMemoList.size(); i++){
+                String output = "Node_Peer_ID: "+ peerMemoList.get(i).getUid() +
+                        //"\n Status: "+ peerMemoList.get(i).isChecked() +
+                        "\nPeer ID: "+ peerMemoList.get(i).getPeerId() +
+                        "\n IP: "+ peerMemoList.get(i).getPeerIp();
+
+                Log.d("Result", output);
+            }
+            Log.d("Test getAllPeer","=============================================================");
 
             String  p = peerDbSource.getPeerIp(peerDbSource.getUidPeer());
 
