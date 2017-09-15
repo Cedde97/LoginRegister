@@ -48,10 +48,10 @@ public class ExampleInstrumentedTest {
         SQLiteDatabase database;
         database = DatabaseManager.getInstance().openDatabase();
 
-        /*if(database == null)
+        if(database == null)
         {
             dateiMemoDbHelper.onCreate(database);
-        }*/
+        }
         //dateiMemoDbHelper.onCreate(database);
 
         dateiMemoDbHelper.onUpgrade(database,0,dateiMemoDbHelper.DB_VERSION);
@@ -62,7 +62,7 @@ public class ExampleInstrumentedTest {
         OwnDataDbSource ownDataDbSource = new OwnDataDbSource();
         PeerDbSource peerDbSource = new PeerDbSource();
         Node dateiMemo = new Node();
-        PeerMemo peerMemo = new PeerMemo();
+        //PeerMemo peerMemo = new PeerMemo();
         ForeignData foreignData = new ForeignData();
         OwnDataMemo ownDataMemo = new OwnDataMemo();
         Neighbour neighborMemo = new Neighbour();
@@ -91,7 +91,7 @@ public class ExampleInstrumentedTest {
 
             zone = new Zone(cornerTopLeft,cornerTopRight,cornerBottomLeft,cornerBottomRight);
 
-            //dateiMemo.setUid(7872);
+            dateiMemo.setUid(7872);
             dateiMemo.setTopRight(cornerTopRight);
             dateiMemo.setBottomLeft(cornerBottomLeft);
             dateiMemo.setTopLeft(cornerTopLeft);
@@ -125,13 +125,19 @@ public class ExampleInstrumentedTest {
             assertEquals(0.4, dateiMemoDbSource.getPunktY(), 0);
 
             //create Peer
+            PeerMemo peerMemo = new PeerMemo();
             peerMemo.setPeerIp("1.1.1.1");
-            peerMemo.setUid(dateiMemo.getUid());
+            peerMemo.setUid(dateiMemoDbSource.getUid());
             //peerMemo.setPeerId(3);
-
             peerDbSource.createPeerMemo(peerMemo);
 
-            List<PeerMemo> peerMemoList= peerDbSource.getEachPeer(1);
+            peerMemo.setPeerIp("1.1.1.0");
+            peerMemo.setUid(dateiMemoDbSource.getUid());
+            peerDbSource.createPeerMemo(peerMemo);
+
+            //getEachPeer-Test
+            //
+            List<PeerMemo> peerMemoList= peerDbSource.getEachPeer(0);
             Log.d("Test getEachPeer","=============================================================");
 
             for(int i= 0; i < peerMemoList.size(); i++){
@@ -143,6 +149,21 @@ public class ExampleInstrumentedTest {
                 Log.d("Result", output);
             }
             Log.d("Test getEachPeer","=============================================================");
+
+            //getAllPeer-Test
+            //
+            List<PeerMemo> peerMemoListAll= peerDbSource.getAllPeer();
+            Log.d("Test getAllPeer","=============================================================");
+
+            for(int i= 0; i < peerMemoListAll.size(); i++){
+                String output = "Node_Peer_ID: "+ peerMemoListAll.get(i).getUid() +
+                        //"\n Status: "+ peerMemoList.get(i).isChecked() +
+                        "\nPeer ID: "+ peerMemoListAll.get(i).getPeerId() +
+                        "\n IP: "+ peerMemoListAll.get(i).getPeerIp();
+
+                Log.d("Result", output);
+            }
+            Log.d("Test getAllPeer","=============================================================");
 
             String  p = peerDbSource.getPeerIp(peerDbSource.getUidPeer());
 
@@ -193,7 +214,7 @@ public class ExampleInstrumentedTest {
             //foreign key
 
             Neighbour n = new Neighbour();
-            n.setUid(10000);
+            n.setUid(dateiMemoDbSource.getUid());
             //neighborMemo.setChecked(true);
             n.setCornerTopRightX(0.5);
             n.setCornerTopRightY(0.6);
@@ -207,8 +228,9 @@ public class ExampleInstrumentedTest {
             n.setPunktY(0.4);
             n.setUIP("277.0.0.0/8");
             n.setRTT(25.89);
+            neighborDbSource.createNeighborMemo(n);
 
-            neighborMemo.setUid(dateiMemo.getUid());
+            neighborMemo.setUid(dateiMemoDbSource.getUid());
             //neighborMemo.setChecked(true);
             neighborMemo.setCornerTopRightX(0.5);
             neighborMemo.setCornerTopRightY(0.6);
@@ -225,12 +247,48 @@ public class ExampleInstrumentedTest {
             //neighborMemo.setNeighbour_id(2);
             neighborDbSource.createNeighborMemo(neighborMemo);
 
+            neighborMemo.setUid(dateiMemoDbSource.getUid());
+            //neighborMemo.setChecked(true);
+            neighborMemo.setCornerTopRightX(0.3);
+            neighborMemo.setCornerTopRightY(0.4);
+            neighborMemo.setCornerTopLeftX(0.1);
+            neighborMemo.setCornerTopLeftY(0.5);
+            neighborMemo.setCornerBottomLeftX(0.1);
+            neighborMemo.setCornerBottomLeftY(0.9);
+            neighborMemo.setCornerBottomRightX(0.4);
+            neighborMemo.setCornerBottomRightY(0.2);
+            neighborMemo.setPunktX(0.3);
+            neighborMemo.setPunktY(0.4);
+            neighborMemo.setUIP("277.0.0.0/8");
+            neighborMemo.setRTT(25.82);
+            //neighborMemo.setNeighbour_id(2);
+            neighborDbSource.createNeighborMemo(neighborMemo);
+
+            neighborMemo.setUid(dateiMemoDbSource.getUid());
+            //neighborMemo.setChecked(true);
+            neighborMemo.setCornerTopRightX(0.2);
+            neighborMemo.setCornerTopRightY(0.1);
+            neighborMemo.setCornerTopLeftX(0.6);
+            neighborMemo.setCornerTopLeftY(0.8);
+            neighborMemo.setCornerBottomLeftX(0.3);
+            neighborMemo.setCornerBottomLeftY(0.5);
+            neighborMemo.setCornerBottomRightX(0.3);
+            neighborMemo.setCornerBottomRightY(0.1);
+            neighborMemo.setPunktX(0.6);
+            neighborMemo.setPunktY(0.4);
+            neighborMemo.setUIP("277.0.0.0/8");
+            neighborMemo.setRTT(25.86);
+            //neighborMemo.setNeighbour_id(2);
+            neighborDbSource.createNeighborMemo(neighborMemo);
+
 
             neighborDbSource.createNeighborMemo(n);
 
-            List<Neighbour> neighborMemoList= neighborDbSource.getEachNeigbourMemo();
+            //getEachNeighbor Test
+            List<Neighbour> neighborMemoList= neighborDbSource.getEachNeighbour(0);
             Log.d("Test getEachNeighbor","=============================================================");
-
+            //double cornerTopRightX1 = neighborMemoList.get(1).getCornerTopRightX();
+           // Log.d("TEST", "REsult" + cornerTopRightX1);
             for (int i= 0; i < neighborMemoList.size(); i++) {
                 String output = "Neighbor_ID: "+ neighborMemoList.get(i).getNeighbour_id() +
                         "\n Neighbor_ID_Foreign: "+ neighborMemoList.get(i).getUid() +
@@ -251,6 +309,36 @@ public class ExampleInstrumentedTest {
                 Log.d("Result", output);
             }
             Log.d("Test getEachNeighbor","=============================================================");
+
+            //getAllNeighbor test
+            //
+            List<Neighbour> neighbourMemoListAll= neighborDbSource.getAllNeighborMemo();
+            Log.d("Test getAll","=============================================================");
+//            double cornerTopRightX1All = neighbourMemoListAll.get(1).getCornerTopRightX();
+//            double cornerTopRightX2All = neighbourMemoListAll.get(2).getCornerTopRightX();
+//            Log.d("TEST", "BBBBBBBBB" + cornerTopRightX1All);
+//            Log.d("TEST", "BBBBBBBBB" + cornerTopRightX2All);
+            for (int i= 0; i < neighbourMemoListAll.size(); i++) {
+                String output = "Neighbor_ID: "+ neighbourMemoListAll.get(i).getNeighbour_id() +
+                        "\n Neighbor_ID_Foreign: "+ neighbourMemoListAll.get(i).getUid() +
+                        //"\n Status: "+ neighborMemoList.get(i).isChecked() +
+                        "\n Corner Top Right X: "+ neighbourMemoListAll.get(i).getCornerTopRightX() +
+                        "\n Corner Top Right Y: "+ neighbourMemoListAll.get(i).getCornerTopRightY() +
+                        "\n Corner Top Left X: "+ neighbourMemoListAll.get(i).getCornerTopLeftX() +
+                        "\n Corner Top Left Y: "+ neighbourMemoListAll.get(i).getCornerTopLeftY() +
+                        "\n Corner Bottom Right X: "+ neighbourMemoListAll.get(i).getCornerBottomRightX() +
+                        "\n Corner Bottom Right Y: "+ neighbourMemoListAll.get(i).getCornerBottomRightY() +
+                        "\n Corner Bottom Left X: "+ neighbourMemoListAll.get(i).getCornerBottomLeftX() +
+                        "\n Corner Bottom Left Y: "+ neighbourMemoListAll.get(i).getCornerBottomLeftY() +
+                        "\n Punkt X: "+ neighbourMemoListAll.get(i).getPunktX() +
+                        "\n Punkt Y: "+ neighbourMemoListAll.get(i).getPunktY() +
+                        "\n IP: "+ neighbourMemoListAll.get(i).getUIP() +
+                        "\n RTT: "+ neighbourMemoListAll.get(i).getRTT();
+
+                Log.d("Result", output);
+            }
+
+            Log.d("Test getAll","=============================================================");
 
 
             Log.d("TEST", "NEIGHBOUR_ID " + neighborDbSource.getNID(1));
@@ -285,19 +373,19 @@ public class ExampleInstrumentedTest {
             Log.d("", "222222");
         }catch( Exception e)
         {
-            Log.d("", "333333 " + e.getMessage());
+            Log.d("", "333336 " + e.getMessage());
         }
         //foreign key
 //        peerMemo.setUid(dateiMemoDbSource.getUid());
 //        peerMemo.setPeerIp("277.0.0.1");
 //        peerDbSource.createPeerMemo(peerMemo);
-
-
-        //dateiMemoDbSource.deleteDateiMemo();
-        //foreignData.deleteForeignData();
-        //neighborDbSource.deleteNeighbormemo();
-        //ownDataDbSource.deleteOwnData();
-        //peerDbSource.deletePeerMemo();
+//
+//
+//        dateiMemoDbSource.deleteDateiMemo();
+//        foreignData.deleteForeignData();
+//        neighborDbSource.deleteNeighbormemo();
+//        ownDataDbSource.deleteOwnData();
+//        peerDbSource.deletePeerMemo();
 
     }
 
@@ -391,7 +479,7 @@ public class ExampleInstrumentedTest {
             Log.d("TEST", "DATEIMEMO_IP " + dateiMemoDbSource.getIp(dateiMemo.getUid()));
             Log.d("TEST", "DATEIMEMO_COUNTPEERS " + dateiMemoDbSource.getCountPeers());
 
-            assertEquals(7872, dateiMemoDbSource.getUid());
+            assertEquals(7872, dateiMemoDbSource.getUid(), 0);
             assertEquals(0.4, dateiMemoDbSource.getPunktX(), 0);
             assertEquals(0.5, dateiMemoDbSource.getPunktY(), 0);
 

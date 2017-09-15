@@ -319,6 +319,10 @@ public class PeerDbSource {
 
         Cursor cursor = database.rawQuery(query, null);
 
+//        int idChecked = cursor.getColumnIndex(DateiMemoDbHelper.COLUMN_CHECKED);
+//        int intValueChecked = cursor.getInt(idChecked);
+//        boolean isChecked = (intValueChecked != 0);
+
 
         //3. Durchführen Zeile und füge in List hinzu
         PeerMemo peerMemo = null;
@@ -331,7 +335,7 @@ public class PeerDbSource {
                 peerMemo.setPeerId(cursor.getLong(cursor.getColumnIndex(dbHelper.COLUMN_PEERID)));
 
 
-                // Add peer to peer List
+                // Add book to books
                 PeerMemoList.add(peerMemo);
             } while (cursor.moveToNext());
         }

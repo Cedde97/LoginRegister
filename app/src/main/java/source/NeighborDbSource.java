@@ -842,7 +842,7 @@ public class NeighborDbSource {
                 neighborMemo.setNeighbour_id(cursor.getLong(cursor.getColumnIndex(dbHelper.COLUMN_NEIGHBOUR_ID)));
 
 
-                // Add book to books
+                // Add Neighbor to NeighborList
                 NeighborMemoList.add(neighborMemo);
             } while (cursor.moveToNext());
         }
@@ -895,11 +895,12 @@ public class NeighborDbSource {
 //        return n;
 //    }
 
-    public List<Neighbour> getEachNeigbourMemo() {
+    public List<Neighbour> getEachNeighbour(int neighbour_id) {
         List<Neighbour> NeighborMemoList = new LinkedList<Neighbour>();
 
         //1. query
-        String query = "SELECT * FROM " + dbHelper.TABLE_NEIGHBOR_LIST;
+        String query = "SELECT * FROM " + dbHelper.TABLE_NEIGHBOR_LIST+ " WHERE "
+                + DateiMemoDbHelper.COLUMN_NEIGHBOUR_ID + " = " + neighbour_id;
 
         //2. open Database
         database = DatabaseManager.getInstance().openDatabase();
@@ -911,7 +912,7 @@ public class NeighborDbSource {
         Neighbour neighborMemo = null;
         if (cursor.moveToFirst()) {
             do {
-                //neighborMemo = new Neighbour();
+                neighborMemo = new Neighbour();
                 neighborMemo.setUid(cursor.getLong(cursor.getColumnIndex(dbHelper.COLUMN_NID)));
                 //neighborMemo.setChecked(isChecked);
                 neighborMemo.setCornerTopLeftX(cursor.getDouble(cursor.getColumnIndex(dbHelper.COLUMN_CORNERTOPLEFTX)));
@@ -939,4 +940,6 @@ public class NeighborDbSource {
 
         return NeighborMemoList;
     }
+
+
 }
