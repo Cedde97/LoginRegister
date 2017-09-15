@@ -113,8 +113,8 @@ public class ExampleInstrumentedTest {
             //Log.d("TEST", "DATEIMEMO_ZONE " + dateiMemoDbSource.getZone());
 
             assertEquals(7872, dateiMemoDbSource.getUid());
-            assertEquals(0.3, dateiMemoDbSource.getPunktX(), 0);
-            assertEquals(0.4, dateiMemoDbSource.getPunktY(), 0);
+            assertEquals(0.4, dateiMemoDbSource.getPunktX(), 0);
+            assertEquals(0.5, dateiMemoDbSource.getPunktY(), 0);
 
             //create Peer
             peerMemo.setPeerIp("1.1.1.1");
@@ -235,6 +235,163 @@ public class ExampleInstrumentedTest {
 
     }
 
+    @Test
+    public void TestUpdateCorner() {
+        Context appContext = InstrumentationRegistry.getTargetContext();
+
+        DateiMemoDbHelper dateiMemoDbHelper = new DateiMemoDbHelper(appContext);
+        DatabaseManager.initializeInstance(dateiMemoDbHelper);
+
+        SQLiteDatabase database;
+        database = DatabaseManager.getInstance().openDatabase();
+
+        if(database == null)
+        {
+            dateiMemoDbHelper.onCreate(database);
+        }
+        //dateiMemoDbHelper.onCreate(database);
+
+        //dateiMemoDbHelper.onUpgrade(database,0,dateiMemoDbHelper.DB_VERSION);
+
+        DateiMemoDbSource dateiMemoDbSource = new DateiMemoDbSource();
+        ForeignDataDbSource foreignDataDbSource = new ForeignDataDbSource();
+        NeighborDbSource neighborDbSource = new NeighborDbSource();
+        OwnDataDbSource ownDataDbSource = new OwnDataDbSource();
+        PeerDbSource peerDbSource = new PeerDbSource();
+        Node dateiMemo = new Node();
+        PeerMemo peerMemo = new PeerMemo();
+        ForeignData foreignData = new ForeignData();
+        OwnDataMemo ownDataMemo = new OwnDataMemo();
+        Neighbour neighborMemo = new Neighbour();
+
+
+        Corner cornerBottomLeft;
+        Corner cornerBottomRight;
+        Corner cornerTopLeft;
+        Corner cornerTopRight;
+        Zone zone;
+
+        Corner cornerBottomLeftNeighbour;
+        Corner cornerBottomRightNeighbour;
+        Corner cornerTopLeftNeighbour;
+        Corner cornerTopRightNeighbour;
+        Zone zoneNeighbour;
+
+        try{
+            cornerBottomLeft = new Corner(0.0,0.0);
+            cornerBottomRight = new Corner(1.0,0.0);
+            cornerTopLeft = new Corner(0.0,1.0);
+            cornerTopRight = new Corner(1.0,1.0);
+
+            //dateiMemoDbSource.deleteDateiMemo();
+
+
+            zone = new Zone(cornerTopLeft,cornerTopRight,cornerBottomLeft,cornerBottomRight);
+
+            dateiMemo.setUid(7872);
+            dateiMemo.setTopRight(cornerTopRight);
+            dateiMemo.setBottomLeft(cornerBottomLeft);
+            dateiMemo.setTopLeft(cornerTopLeft);
+            dateiMemo.setBottomRight(cornerBottomRight);
+            dateiMemo.setPunktX(0.3);
+            dateiMemo.setPunktY(0.4);
+            dateiMemo.setIP("227.0.0.0/8");
+            dateiMemo.setCountPeers(2);
+            dateiMemo.setMyZone(zone);
+            dateiMemoDbSource.createDateiMemo(dateiMemo);
+
+            Log.d("TEST", "DATEIMEMO_UID " + dateiMemoDbSource.getUid() );
+            Log.d("TEST", "DATEIMEMO_TOPRIGHT " + dateiMemoDbSource.getCornerTopRightX() + ", " + dateiMemoDbSource.getCornerTopRightY());
+            Log.d("TEST", "DATEIMEMO_BOTTOMRIGHT " + dateiMemoDbSource.getCornerBottomRightX() + ", " + dateiMemoDbSource.getCornerBottomRightY());
+            Log.d("TEST", "DATEIMEMO_TOPLEFT " + dateiMemoDbSource.getCornerTopLeftX() + ", " + dateiMemoDbSource.getCornerTopLeftY());
+            Log.d("TEST", "DATEIMEMO_BOTTOMLEFT " + dateiMemoDbSource.getCornerBottomLeftX() + ", " + dateiMemoDbSource.getCornerBottomLeftY());
+            Log.d("TEST", "DATEIMEMO_PUNKTX " + dateiMemoDbSource.getPunktX());
+            Log.d("TEST", "DATEIMEMO_PUNKTY " + dateiMemoDbSource.getPunktY());
+            Log.d("TEST", "DATEIMEMO_IP " + dateiMemoDbSource.getIp(dateiMemo.getUid()));
+            Log.d("TEST", "DATEIMEMO_COUNTPEERS " + dateiMemoDbSource.getCountPeers());
+
+            Log.d("Test", "UPDATE PUNKT X und Y");
+
+            dateiMemoDbSource.updatePunktX(0.4);
+            dateiMemoDbSource.updatePunktY(0.5);
+
+            Log.d("TEST", "DATEIMEMO_UID " + dateiMemoDbSource.getUid() );
+            Log.d("TEST", "DATEIMEMO_TOPRIGHT " + dateiMemoDbSource.getCornerTopRightX() + ", " + dateiMemoDbSource.getCornerTopRightY());
+            Log.d("TEST", "DATEIMEMO_BOTTOMRIGHT " + dateiMemoDbSource.getCornerBottomRightX() + ", " + dateiMemoDbSource.getCornerBottomRightY());
+            Log.d("TEST", "DATEIMEMO_TOPLEFT " + dateiMemoDbSource.getCornerTopLeftX() + ", " + dateiMemoDbSource.getCornerTopLeftY());
+            Log.d("TEST", "DATEIMEMO_BOTTOMLEFT " + dateiMemoDbSource.getCornerBottomLeftX() + ", " + dateiMemoDbSource.getCornerBottomLeftY());
+            Log.d("TEST", "DATEIMEMO_PUNKTX " + dateiMemoDbSource.getPunktX());
+            Log.d("TEST", "DATEIMEMO_PUNKTY " + dateiMemoDbSource.getPunktY());
+            Log.d("TEST", "DATEIMEMO_IP " + dateiMemoDbSource.getIp(dateiMemo.getUid()));
+            Log.d("TEST", "DATEIMEMO_COUNTPEERS " + dateiMemoDbSource.getCountPeers());
+
+            assertEquals(7872, dateiMemoDbSource.getUid());
+            assertEquals(0.4, dateiMemoDbSource.getPunktX(), 0);
+            assertEquals(0.5, dateiMemoDbSource.getPunktY(), 0);
+
+            //create neighbour
+            //foreign key
+            neighborMemo.setUid(dateiMemo.getUid());
+            //neighborMemo.setChecked(true);
+            neighborMemo.setCornerTopRightX(0.5);
+            neighborMemo.setCornerTopRightY(0.6);
+            neighborMemo.setCornerTopLeftX(0.2);
+            neighborMemo.setCornerTopLeftY(0.2);
+            neighborMemo.setCornerBottomLeftX(0.4);
+            neighborMemo.setCornerBottomLeftY(0.6);
+            neighborMemo.setCornerBottomRightX(0.5);
+            neighborMemo.setCornerBottomRightY(0.8);
+            neighborMemo.setPunktX(0.2);
+            neighborMemo.setPunktY(0.4);
+            neighborMemo.setUIP("277.0.0.0/8");
+            neighborMemo.setRTT(25.89);
+            //neighborMemo.setNeighbour_id(2);
+            neighborDbSource.createNeighborMemo(neighborMemo);
+
+            Log.d("TEST", "NEIGHBOUR_ID " + neighborDbSource.getNID(1));
+            Log.d("TEST", "NEIGHBOUR_TOPRIGHT " + neighborDbSource.getCornerTopRightXNeighbor(1) + ", " + neighborDbSource.getCornerTopRightYNeighbor(1));
+            Log.d("TEST", "NEIGHBOUR_BOTTOMRIGHT " + neighborDbSource.getCornerBottomRightXNeighbor(1) + ", " + neighborDbSource.getCornerBottomRightYNeighbor(1));
+            Log.d("TEST", "NEIGHBOUR_TOPLEFT " + neighborDbSource.getCornerTopLeftXNeighbor(1) + ", " + neighborDbSource.getCornerTopLeftYNeighbor(1));
+            Log.d("TEST", "NEIGHBOUR_BOTTOMLEFT " + neighborDbSource.getCornerBottomLeftXNeighbor(1) + ", " + neighborDbSource.getCornerBottomLeftYNeighbor(1));
+            Log.d("TEST", "NEIGHBOUR_PUNKT_X " + neighborDbSource.getPunktXNeighbor(1));
+            Log.d("TEST", "NEIGHBOUR_PUNKT_Y " + neighborDbSource.getPunktYNeighbor(1));
+            Log.d("TEST", "NEIGHBOUR_IP " + neighborDbSource.getUip(1));
+
+            Log.d("TEST", "================================================================");
+            Log.d("TEST", "UPDATE CORNER");
+            Log.d("TEST", "================================================================");
+
+            neighborDbSource.updateCornerBottomLeftXNeighbor(1, 0.5);
+            neighborDbSource.updateCornerTopRightXNeighbor(1, 0.6);
+            neighborDbSource.updateCornerBottomRightYNeighbor(1, 0.3);
+            neighborDbSource.updateCornerTopLeftYNeighbor(1, 0.3);
+
+            Log.d("TEST", "NEIGHBOUR_ID " + neighborDbSource.getNID(1));
+            Log.d("TEST", "NEIGHBOUR_TOPRIGHT " + neighborDbSource.getCornerTopRightXNeighbor(1) + ", " + neighborDbSource.getCornerTopRightYNeighbor(1));
+            Log.d("TEST", "NEIGHBOUR_BOTTOMRIGHT " + neighborDbSource.getCornerBottomRightXNeighbor(1) + ", " + neighborDbSource.getCornerBottomRightYNeighbor(1));
+            Log.d("TEST", "NEIGHBOUR_TOPLEFT " + neighborDbSource.getCornerTopLeftXNeighbor(1) + ", " + neighborDbSource.getCornerTopLeftYNeighbor(1));
+            Log.d("TEST", "NEIGHBOUR_BOTTOMLEFT " + neighborDbSource.getCornerBottomLeftXNeighbor(1) + ", " + neighborDbSource.getCornerBottomLeftYNeighbor(1));
+            Log.d("TEST", "NEIGHBOUR_PUNKT_X " + neighborDbSource.getPunktXNeighbor(1));
+            Log.d("TEST", "NEIGHBOUR_PUNKT_Y " + neighborDbSource.getPunktYNeighbor(1));
+            Log.d("TEST", "NEIGHBOUR_IP " + neighborDbSource.getUip(1));
+
+            assertEquals(0.5, neighborDbSource.getCornerBottomLeftXNeighbor(1), 0);
+            assertEquals(0.6, neighborDbSource.getCornerTopRightXNeighbor(1), 0);
+            assertEquals(0.3, neighborDbSource.getCornerBottomRightYNeighbor(1), 0);
+            assertEquals(0.3, neighborDbSource.getCornerTopLeftYNeighbor(1), 0);
+
+
+        } catch(XMustBeLargerThanZeroException xMBLTZE)
+        {
+            Log.d("", "111111");
+        }catch(YMustBeLargerThanZeroException yMBLTZE)
+        {
+            Log.d("", "222222");
+        }catch( Exception e)
+        {
+            Log.d("", "333333 " + e.getMessage());
+        }
+    }
 //    @Test
 //    public void TestUpdateCorner() {
 //
