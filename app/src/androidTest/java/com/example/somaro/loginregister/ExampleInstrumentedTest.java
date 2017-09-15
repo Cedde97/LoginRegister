@@ -228,7 +228,7 @@ public class ExampleInstrumentedTest {
 
             neighborDbSource.createNeighborMemo(n);
 
-            List<Neighbour> neighborMemoList= neighborDbSource.getEachNeigbourMemo();
+            List<Neighbour> neighborMemoList= neighborDbSource.getEachNeighbour(1);
             Log.d("Test getEachNeighbor","=============================================================");
 
             for (int i= 0; i < neighborMemoList.size(); i++) {
@@ -251,6 +251,30 @@ public class ExampleInstrumentedTest {
                 Log.d("Result", output);
             }
             Log.d("Test getEachNeighbor","=============================================================");
+
+            List<Neighbour> neighbourMemoListAll= neighborDbSource.getAllNeighborMemo();
+            Log.d("Test getAll","=============================================================");
+
+            for (int i= 0; i < neighborMemoList.size(); i++) {
+                String output = "Neighbor_ID: "+ neighbourMemoListAll.get(i).getNeighbour_id() +
+                        "\n Neighbor_ID_Foreign: "+ neighbourMemoListAll.get(i).getUid() +
+                        //"\n Status: "+ neighborMemoList.get(i).isChecked() +
+                        "\n Corner Top Right X: "+ neighbourMemoListAll.get(i).getCornerTopRightX() +
+                        "\n Corner Top Right Y: "+ neighbourMemoListAll.get(i).getCornerTopRightY() +
+                        "\n Corner Top Left X: "+ neighbourMemoListAll.get(i).getCornerTopLeftX() +
+                        "\n Corner Top Left Y: "+ neighbourMemoListAll.get(i).getCornerTopLeftY() +
+                        "\n Corner Bottom Right X: "+ neighbourMemoListAll.get(i).getCornerBottomRightX() +
+                        "\n Corner Bottom Right Y: "+ neighbourMemoListAll.get(i).getCornerBottomRightY() +
+                        "\n Corner Bottom Left X: "+ neighbourMemoListAll.get(i).getCornerBottomLeftX() +
+                        "\n Corner Bottom Left Y: "+ neighbourMemoListAll.get(i).getCornerBottomLeftY() +
+                        "\n Punkt X: "+ neighbourMemoListAll.get(i).getPunktX() +
+                        "\n Punkt Y: "+ neighbourMemoListAll.get(i).getPunktY() +
+                        "\n IP: "+ neighbourMemoListAll.get(i).getUIP() +
+                        "\n RTT: "+ neighbourMemoListAll.get(i).getRTT();
+
+                Log.d("Result", output);
+            }
+            Log.d("Test getAll","=============================================================");
 
 
             Log.d("TEST", "NEIGHBOUR_ID " + neighborDbSource.getNID(1));
