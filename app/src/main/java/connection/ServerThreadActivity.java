@@ -10,9 +10,13 @@ import org.json.JSONException;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.List;
 
+import connection.RoutHelper;
+import connection.Server;
 import exception.XMustBeLargerThanZeroException;
 import exception.YMustBeLargerThanZeroException;
 import model.Corner;
@@ -37,10 +41,12 @@ public class ServerThreadActivity extends Activity{
     private static final int NEIGHTRANSFER= 4;
     private static final int PEERTRANSFER = 5;
     private static final int FOREIGNTRANS = 6;
-    private static final int ROUTING = 7;
+    private static final int ROUTING      = 7;
+    private static final int LISTTRANSFER = 9;
 
     private Socket socket = null;
     private Server server = new Server();
+    Serialization serialization = new Serialization();
 
 
     @Override
@@ -52,13 +58,15 @@ public class ServerThreadActivity extends Activity{
 
     class ServerThread extends AsyncTask<String, String, String> {
         protected String doInBackground(String... args) {
-            Serialization serialization = new Serialization();
+
             ServerSocket ss = null;
             Node node = null;
             RoutHelper routHelper = null;
             Neighbour neighbour = null;
             PeerMemo peerMemo = null;
             ForeignData foreignData = null;
+
+
 
             try{
                 Log.d("Server is started","In ServerThreadActivity");
@@ -122,6 +130,14 @@ public class ServerThreadActivity extends Activity{
                         }
                         Log.d("nodeNew ",nodeNew.toString());
 
+                    }
+
+                    case LISTTRANSFER: {
+                        Log.d("List: " , "");
+
+                        //List list = server.deserializeList(buffer);
+
+                       // Log.d("List: ", list.toString());
                     }
                 }
 

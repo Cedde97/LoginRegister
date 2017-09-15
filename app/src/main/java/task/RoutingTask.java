@@ -5,15 +5,20 @@ import android.util.Log;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.util.List;
 
 import connection.Client;
 import connection.RoutHelper;
 import connection.Serialization;
+import exception.XMustBeLargerThanZeroException;
+import exception.YMustBeLargerThanZeroException;
+import model.Neighbour;
 import model.Node;
 import model.PeerMemo;
 import source.DateiMemoDbSource;
 import source.NeighborDbSource;
 import source.PeerDbSource;
+import util.DBUtil;
 
 /**
  * Created by Joshi on 07.09.2017.
@@ -21,9 +26,18 @@ import source.PeerDbSource;
 public class RoutingTask extends AsyncTask<String, String , String> {
     private final static int PORTNR = 9797;
 
-    private Serialization serialization = new Serialization();
+    @Override
+    protected String doInBackground(String... params) {
+        return null;
+    }
+
+/*
+
     private Socket socket;
     private Client client;
+    private DBUtil dbu = new DBUtil();
+    private DateiMemoDbSource ownDb = new DateiMemoDbSource();
+    private NeighborDbSource nDB = new NeighborDbSource();
 
     //wie mache ich das mit routing und receiveRoutingRequest also wie rufe ich sie jeweils auf? da sie sich gegenseitig aufrufen
     @Override
@@ -31,14 +45,15 @@ public class RoutingTask extends AsyncTask<String, String , String> {
         String ip = params[0];
         double x = Double.parseDouble(params[1]);
         double y = Double.parseDouble(params[2]);
-        int id   = Integer.parseInt(params[3]);
+        int id = Integer.parseInt(params[3]);
 
-        RoutHelper rh = new RoutHelper(ip,x,y,id);
+        RoutHelper rh = new RoutHelper(ip, x, y, id);
         Node nodeNew = routingCheckZone(rh);
         double[] distance = new double[3];
 
         try {
-            if(serialization.getSerialzedNode().getNeighbourList() != null) {
+
+            if(.getNeighbourList() != null) {
                 for (int i = 0; i < serialization.getSerialzedNode().getNeighbourList().size(); i++) {
                     distance[i] = computeDistance(rh.getX(), rh.getY(),serialization.getSerialzedNode().getNeighbourList().get(i).getPunktX(),
                             serialization.getSerialzedNode().getNeighbourList().get(i).getPunktY());
@@ -55,15 +70,15 @@ public class RoutingTask extends AsyncTask<String, String , String> {
         //berechne die Distanz von den Neighbourn zu den x,y-Werten und liefere den Index an welcher Stelle der Neighbour steht der am nächsten an den x,y-Werten ist
 
 
-        try {
-            client.sendRoutHelperAsByteArray(socket,rh);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        //return nodeNew;
+            try {
+                client.sendRoutHelperAsByteArray(socket, rh);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            //return nodeNew;
 
-        return null;
-    }
+            return null;
+        }
 
 
     private double computeDistance(double x, double y, double neighbourX, double neighbourY) {
@@ -74,23 +89,30 @@ public class RoutingTask extends AsyncTask<String, String , String> {
 
 
 
-    /**
+    */
+/**
      * als wenn node.updateNeighbourAndPeer(newNode) so aufgerufen wird bekommt newNode die Listen von node
      * Methode um dem übergebenen Knoten seine eigene Neighbour und Peerlist zu übertragen
      * @param newNode dieser Knoten bekommt die Neighbour und Peerlist
-     */
-    public void updateNeighbourAndPeer(Node newNode)  {
+     *//*
+
+    private void updateNeighbourAndPeer(Node newNode)  {
         try {
-            if(serialization.getSerialzedNode().getNeighbourList() != null){
                 //setzte die NeighbourList des neuen Knoten auf seine eigene
-                newNode.getNeighbourList().addAll(serialization.getSerialzedNode().getNeighbourList());
-                if(serialization.getSerialzedNode().getPeerMemoList() != null){
+                //newNode.getNeighbourList().addAll(serialization.getSerialzedNode().getNeighbourList());
+            // EachNeighbourMemo anpassen sodass man keine id übergeben muss
+            List<Neighbour> neighbourList = nDB.getEachNeigbourMemo(1);
+            // noch die neighbourList dem newNode geben
+
                     //setzte die PeerList des neuen Knoten auf seinsy;
-                    PeerMemo pm = new PeerMemo((int)serialization.getSerialzedNode().getUid(),serialization.getSerialzedNode().getIP());
-                    newNode.getPeerMemoList().add(pm);
-                    newNode.setCountPeers(serialization.getSerialzedNode().getPeerMemoList().size());
-                }
-            }
+            PeerMemo pm = new PeerMemo((int) ownDb.getUid(), ownDb.getIp(1));
+
+
+
+            newNode.getPeerMemoList().add(pm);
+            newNode.setCountPeers(serialization.getSerialzedNode().getPeerMemoList().size());
+
+
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
@@ -102,23 +124,24 @@ public class RoutingTask extends AsyncTask<String, String , String> {
 
     private Node routingCheckZone(RoutHelper rh) {
         try {
-            if(serialization.getSerialzedNode().getMyZone().checkIfInMyZone(rh.getX(),rh.getY())){
+            if(dbu.initOwnZone().checkIfInMyZone(rh.getX(),rh.getY())){
                 //hier noch statt 3 getUID von OnlineDB
-                Node newNode = new Node(rh.getID(), rh.getX(), rh.getY(), rh.getIP(), serialization.getSerialzedNode().getCountPeers(), serialization.getSerialzedNode().getMyZone());
-                serialization.getSerialzedNode().increaseCountPeers();
-                if(serialization.getSerialzedNode().checkIfMaxPeersCount()){
+                Node newNode = new Node(rh.getID(), rh.getX(), rh.getY(), rh.getIP(), ownDb.getCountPeers(), dbu.initOwnZone());
+                ownDb.updateCountPeers();
+                if(ownDb.getAllDateiMemos().checkIfMaxPeersCount()){
 
 
                     //splitt
                 }else{
+                    //hier ein remote aufruf von updateNeighbourAndPeerForeign an die rh.getIp() senden
                     //testen ob geht
-                    updateNeighbourAndPeer(newNode);
+
                 }
                 return newNode;
             }
-        } catch (IOException e) {
+        } catch (YMustBeLargerThanZeroException e) {
             e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (XMustBeLargerThanZeroException e) {
             e.printStackTrace();
         }
         return null;
@@ -139,6 +162,7 @@ public class RoutingTask extends AsyncTask<String, String , String> {
         }
         return index;
     }
+*/
 
 
 

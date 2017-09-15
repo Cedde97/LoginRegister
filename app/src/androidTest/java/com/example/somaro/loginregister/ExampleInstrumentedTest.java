@@ -89,7 +89,7 @@ public class ExampleInstrumentedTest {
 
             zone = new Zone(cornerTopLeft,cornerTopRight,cornerBottomLeft,cornerBottomRight);
 
-            dateiMemo.setUid(7872);
+            //dateiMemo.setUid(7872);
             dateiMemo.setTopRight(cornerTopRight);
             dateiMemo.setBottomLeft(cornerBottomLeft);
             dateiMemo.setTopLeft(cornerTopLeft);
@@ -112,9 +112,9 @@ public class ExampleInstrumentedTest {
             Log.d("TEST", "DATEIMEMO_COUNTPEERS " + dateiMemoDbSource.getCountPeers());
             //Log.d("TEST", "DATEIMEMO_ZONE " + dateiMemoDbSource.getZone());
 
-            assertEquals(7872, dateiMemoDbSource.getUid());
-            assertEquals(0.4, dateiMemoDbSource.getPunktX(), 0);
-            assertEquals(0.5, dateiMemoDbSource.getPunktY(), 0);
+            //assertEquals(7872, dateiMemoDbSource.getUid());
+            assertEquals(0.3, dateiMemoDbSource.getPunktX(), 0);
+            assertEquals(0.4, dateiMemoDbSource.getPunktY(), 0);
 
             //create Peer
             peerMemo.setPeerIp("1.1.1.1");
