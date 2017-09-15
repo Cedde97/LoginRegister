@@ -30,6 +30,7 @@ public class Serialization {
 	protected static final int STR_SEND_FOREIGNDATA             = 6;
 	protected static final int RESERVED_BYTES_FOR_METHOD_CALL   = 1;
 	protected static final int STR_SEND_LIST                    = 9;
+	protected static final int STR_SEND_LIST_NEIGHBOUR          = 11;
 
 
 
@@ -342,7 +343,7 @@ public class Serialization {
 
 	}
 
-	private static byte[] serializeList(ArrayList list){
+	protected static byte[] serializeList(ArrayList list){
 
 
 		byte[] buffer = null;
@@ -363,7 +364,7 @@ public class Serialization {
 		return buffer;
 	}
 
-	private ArrayList deserializeList(byte[] buffer){
+	protected ArrayList deserializeList(byte[] buffer){
 
 		ArrayList list = null;
 		ByteArrayInputStream bis = new ByteArrayInputStream(buffer);
@@ -385,6 +386,22 @@ public class Serialization {
 	protected byte[] fillListByteArray(ArrayList list){
 
 		byte methodName = (byte) STR_SEND_LIST;
+		byte[] bufferHeader= new byte[1];
+		bufferHeader[0] = methodName;
+
+		byte[] bufferBody = serializeList(list);
+
+		byte[] bufferTarget = new byte[RESERVED_BYTES_FOR_METHOD_CALL + bufferBody.length];
+
+		System.arraycopy(bufferHeader, 0, bufferTarget, 0, 1);
+		System.arraycopy(bufferBody, 0, bufferTarget, 1, bufferBody.length -1);
+
+		return bufferTarget;
+	}
+
+	protected byte[] fillListByteArrayNeighbour(ArrayList list){
+
+		byte methodName = (byte) STR_SEND_LIST_NEIGHBOUR;
 		byte[] bufferHeader= new byte[1];
 		bufferHeader[0] = methodName;
 

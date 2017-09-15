@@ -113,6 +113,15 @@ public class Client {
 		sendByteArray(socket, buffer);
 	}
 
+	public void sendListAsByteArrayNeighbour(Socket socket, ArrayList list) throws UnknownHostException, IOException{
+
+		this.socket = socket;
+
+		byte[] buffer = serialization.fillListByteArrayNeighbour(list);
+
+		sendByteArray(socket, buffer);
+	}
+
 	public void sendRoutHelperAsByteArray(Socket socket, RoutHelper routhelper) throws UnknownHostException, IOException{
 
 		this.socket = socket;

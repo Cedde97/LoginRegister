@@ -14,6 +14,7 @@ import source.NeighborDbSource;
 public class UpdateNeighbourDbTask extends AsyncTask<Neighbour,Void,Void> {
     private NeighborDbSource nDB = new NeighborDbSource();
 
+
     public UpdateNeighbourDbTask(){
 
     }
@@ -37,6 +38,9 @@ public class UpdateNeighbourDbTask extends AsyncTask<Neighbour,Void,Void> {
 
         return null;
     }
+
+
+
 
 
 }

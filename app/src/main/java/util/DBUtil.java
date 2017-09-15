@@ -12,10 +12,9 @@ import source.NeighborDbSource;
  */
 
 public class DBUtil {
-    private NeighborDbSource nDB = new NeighborDbSource();
-    private DateiMemoDbSource ownDB = new DateiMemoDbSource();
 
-    public Zone initOwnZone() throws YMustBeLargerThanZeroException, XMustBeLargerThanZeroException {
+
+    public Zone initOwnZone(DateiMemoDbSource ownDB) throws YMustBeLargerThanZeroException, XMustBeLargerThanZeroException {
         double blx = ownDB.getCornerBottomLeftX();
         double bly = ownDB.getCornerBottomLeftY();
 
