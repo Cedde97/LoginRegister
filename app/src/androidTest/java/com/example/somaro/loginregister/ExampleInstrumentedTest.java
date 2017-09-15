@@ -62,7 +62,7 @@ public class ExampleInstrumentedTest {
         OwnDataDbSource ownDataDbSource = new OwnDataDbSource();
         PeerDbSource peerDbSource = new PeerDbSource();
         Node dateiMemo = new Node();
-        PeerMemo peerMemo = new PeerMemo();
+        //PeerMemo peerMemo = new PeerMemo();
         ForeignData foreignData = new ForeignData();
         OwnDataMemo ownDataMemo = new OwnDataMemo();
         Neighbour neighborMemo = new Neighbour();
@@ -125,11 +125,11 @@ public class ExampleInstrumentedTest {
             assertEquals(0.4, dateiMemoDbSource.getPunktY(), 0);
 
             //create Peer
-            PeerMemo peerMemo1 = new PeerMemo();
-            peerMemo1.setPeerIp("1.1.1.1");
-            peerMemo1.setUid(dateiMemoDbSource.getUid());
+            PeerMemo peerMemo = new PeerMemo();
+            peerMemo.setPeerIp("1.1.1.1");
+            peerMemo.setUid(dateiMemoDbSource.getUid());
             //peerMemo.setPeerId(3);
-            peerDbSource.createPeerMemo(peerMemo1);
+            peerDbSource.createPeerMemo(peerMemo);
 
             peerMemo.setPeerIp("1.1.1.0");
             peerMemo.setUid(dateiMemoDbSource.getUid());
@@ -281,11 +281,8 @@ public class ExampleInstrumentedTest {
             //neighborMemo.setNeighbour_id(2);
             neighborDbSource.createNeighborMemo(neighborMemo);
 
-
-            neighborDbSource.createNeighborMemo(n);
-
             //getEachNeighbor Test
-            List<Neighbour> neighborMemoList= neighborDbSource.getEachNeighbour(1);
+            List<Neighbour> neighborMemoList= neighborDbSource.getEachNeighbour(0);
             Log.d("Test getEachNeighbor","=============================================================");
             //double cornerTopRightX1 = neighborMemoList.get(1).getCornerTopRightX();
            // Log.d("TEST", "REsult" + cornerTopRightX1);

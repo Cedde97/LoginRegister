@@ -68,23 +68,23 @@ public class Neighbour {
 //        this.RTT = RTT;
 //    }
 
-    /**
-     * @author Joshua Zabel
-     * @param uid
-     * @param punktX
-     * @param punktY
-     * @param ip
-     * @param zone
-     * @param rtt
-     */
-    public Neighbour(long uid, double punktX, double punktY, String ip, Zone zone, double rtt){
-        this.uid = uid;
-        this.punktX = punktX;
-        this.punktY = punktY;
-        this.UIP    = ip;
-        this.zone   = zone;
-        this.RTT    = rtt;
-    }
+//    /**
+//     * @author Joshua Zabel
+//     * @param uid
+//     * @param punktX
+//     * @param punktY
+//     * @param ip
+//     * @param zone
+//     * @param rtt
+//     */
+//    public Neighbour(long uid, double punktX, double punktY, String ip, Zone zone, double rtt){
+//        this.uid = uid;
+//        this.punktX = punktX;
+//        this.punktY = punktY;
+//        this.UIP    = ip;
+//        this.zone   = zone;
+//        this.RTT    = rtt;
+//    }
 
     public double getCornerTopRightX() {
         return cornerTopRightX;

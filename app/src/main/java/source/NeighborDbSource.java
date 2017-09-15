@@ -842,7 +842,7 @@ public class NeighborDbSource {
                 neighborMemo.setNeighbour_id(cursor.getLong(cursor.getColumnIndex(dbHelper.COLUMN_NEIGHBOUR_ID)));
 
 
-                // Add book to books
+                // Add Neighbor to NeighborList
                 NeighborMemoList.add(neighborMemo);
             } while (cursor.moveToNext());
         }
