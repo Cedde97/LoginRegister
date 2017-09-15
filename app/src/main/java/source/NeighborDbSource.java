@@ -855,10 +855,23 @@ public class NeighborDbSource {
     }
 
 
+    public int getCount(){
+        database = DatabaseManager.getInstance().openDatabase();
+        String selectQuery = "SELECT "+ DateiMemoDbHelper.COLUMN_NEIGHBOUR_ID +" FROM " + DateiMemoDbHelper.TABLE_NEIGHBOR_LIST ;
+        Cursor c = database.rawQuery(selectQuery,null);
+
+        c.moveToLast();
+
+        int i = c.getInt(c.getColumnIndex(DateiMemoDbHelper.COLUMN_NEIGHBOUR_ID));
+
+        c.close();
+        DatabaseManager.getInstance().closeDatabase();
+        return i;
+    }
+
 
     /**
      * @author Joshua Zabel
-     * @param index
      * @return den Neighbour an der stelle index
      */
 //    public Neighbour getNeighbour(int index){
@@ -882,12 +895,11 @@ public class NeighborDbSource {
 //        return n;
 //    }
 
-    public List<Neighbour> getEachNeigbourMemo(int index) {
+    public List<Neighbour> getEachNeigbourMemo() {
         List<Neighbour> NeighborMemoList = new LinkedList<Neighbour>();
 
         //1. query
-        String query = "SELECT * FROM " + dbHelper.TABLE_NEIGHBOR_LIST + " WHERE "
-                + DateiMemoDbHelper.COLUMN_NEIGHBOUR_ID + " = " + index;
+        String query = "SELECT * FROM " + dbHelper.TABLE_NEIGHBOR_LIST;
 
         //2. open Database
         database = DatabaseManager.getInstance().openDatabase();

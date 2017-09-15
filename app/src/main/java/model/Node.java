@@ -14,6 +14,8 @@ import java.util.List;
 import bootstrap.AllIPsActivity;
 import connection.Client;
 import connection.RoutHelper;
+import source.NeighborDbSource;
+import source.PeerDbSource;
 
 /**
  * @author Joshua Zabel
@@ -28,6 +30,8 @@ public class Node {
     private static String bootsIp = null;
 
 
+    private NeighborDbSource nDB = new NeighborDbSource();
+    private PeerDbSource pDB     = new PeerDbSource();
     private long   uid;
     private double punktX;
     private double punktY;
@@ -159,6 +163,24 @@ public class Node {
         return nodeNew;
 
     }
+
+    /**
+     * Methode die remote aufgerufen wird um die Neighbour und Peer-Datenbank upzudaten
+     * @param neighbours
+     * @param peerMemos
+     */
+    public void updateNeighbourAndPeerForeign(List<Neighbour> neighbours, List<PeerMemo> peerMemos){
+        if(neighbours != null && peerMemos != null){
+            int i=0;
+            while(!neighbours.isEmpty()){
+                nDB.createNeighborMemo(neighbours.get(i++));
+                pDB.createPeerMemo(peerMemos.get(i++));
+
+            }
+            Log.d("updateNaP","Finished updating NaP");
+        }
+    }
+
 
     /**
      * als wenn node.updateNeighbourAndPeer(newNode) so aufgerufen wird bekommt newNode die Listen von node

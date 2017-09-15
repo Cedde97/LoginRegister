@@ -1,6 +1,7 @@
 package connection;
 import android.util.Log;
 
+import connection.RoutHelper;
 import model.*;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -9,7 +10,10 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.Enumeration;
+
+
 
 public class Client {
 
@@ -100,6 +104,23 @@ public class Client {
 	}
 
 
+	public void sendListAsByteArray(Socket socket, ArrayList list) throws UnknownHostException, IOException{
+
+		this.socket = socket;
+
+		byte[] buffer = serialization.fillListByteArray(list);
+
+		sendByteArray(socket, buffer);
+	}
+
+	public void sendListAsByteArrayNeighbour(Socket socket, ArrayList list) throws UnknownHostException, IOException{
+
+		this.socket = socket;
+
+		byte[] buffer = serialization.fillListByteArrayNeighbour(list);
+
+		sendByteArray(socket, buffer);
+	}
 
 	public void sendRoutHelperAsByteArray(Socket socket, RoutHelper routhelper) throws UnknownHostException, IOException{
 

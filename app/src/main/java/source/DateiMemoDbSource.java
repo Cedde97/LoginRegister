@@ -51,7 +51,7 @@ public class DateiMemoDbSource {
     };
 
     public DateiMemoDbSource(){
-        dateiMemo = new Node();
+
     }
 
     //
@@ -325,6 +325,23 @@ public class DateiMemoDbSource {
     // ================================================================================================================================
     //
 
+
+    /**
+     * Erhöt die Anzahl der Peers um Eins
+     * @author Joshua Zabel
+     *
+     */
+    public void updateCountPeers(){
+        database = DatabaseManager.getInstance().openDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put(DateiMemoDbHelper.COLUMN_COUNTPEERS, getCountPeers()+1);
+
+        database.update(DateiMemoDbHelper.TABLE_DATEI_LIST, values, null,null);
+
+        DatabaseManager.getInstance().closeDatabase();
+    }
     /*
   *               Update Corner Bottom Left X und Y
   *
@@ -798,7 +815,7 @@ public class DateiMemoDbSource {
     //
     // ================================================================================================================================
     //
-    public List<Node> getAllDateiMemos() {
+    public Node getAllDateiMemos() {
         List<Node> DateiMemoList = new LinkedList<Node>();
 
         //1. query
@@ -835,18 +852,20 @@ public class DateiMemoDbSource {
                 dateiMemo.setCountPeers(cursor.getInt(cursor.getColumnIndex(dbHelper.COLUMN_COUNTPEERS)));
 
 
-                // Add Node to DateiMemoList
+                // Add book to books
                 DateiMemoList.add(dateiMemo);
+
+
             } while (cursor.moveToNext());
         }
 
         cursor.close();
         DatabaseManager.getInstance().closeDatabase();
 
-        return DateiMemoList;
+        return dateiMemo;
     }
 
-    public List<Node> getEachNode(int uid) {
+    public Node getEachNode(int uid) {
         List<Node> DateiMemoList = new LinkedList<Node>();
 
         //1. query
@@ -882,13 +901,14 @@ public class DateiMemoDbSource {
 
                 // Add Node to DateiMemoList
                 DateiMemoList.add(dateiMemo);
+
             } while (cursor.moveToNext());
         }
 
         cursor.close();
         DatabaseManager.getInstance().closeDatabase();
-
-        return DateiMemoList;
+        return dateiMemo;
+        //return DateiMemoList;
     }
 
 }

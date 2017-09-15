@@ -12,6 +12,7 @@ import java.io.ObjectInputStream;
 import java.io.Writer;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 
 @SuppressWarnings("unused")
 public class Server {
@@ -120,6 +121,28 @@ public class Server {
 		foreignData = serialization.deserializdeForeignData(bufferBody);
 
 		return foreignData;
+	}
+
+	public ArrayList<PeerMemo> getListPeer(byte[] buffer){
+
+		ArrayList<PeerMemo> list;
+
+		byte[] bufferBody = serialization.getByteData(buffer);
+
+		list = serialization.deserializeList(bufferBody);
+
+		return list;
+	}
+
+	public ArrayList<Neighbour> getListNeighbour(byte[] buffer){
+
+		ArrayList<Neighbour> list;
+
+		byte[] bufferBody = serialization.getByteData(buffer);
+
+		list = serialization.deserializeList(bufferBody);
+
+		return list;
 	}
 
 }
