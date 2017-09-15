@@ -25,6 +25,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.io.BufferedReader;
 import java.io.File;
@@ -42,6 +43,7 @@ import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
 import activity.FileTransferActivity;
+import activity.SendNeighBourListActivity;
 import activity.SendRoutActivity;
 import bootstrap.AllIPsActivity;
 import bootstrap.InsertOwnIPActivity;
@@ -172,15 +174,6 @@ public String getPhotoId( ){
 
 
 
-    private View.OnClickListener StartServerListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-
-            Intent i = new Intent(getApplicationContext(), ServerThreadActivity.class);
-            Log.d("Started Server", i.toString());
-            startActivity(i);
-        }
-    };
 
 
     private View.OnClickListener NeighbourTransferListener = new View.OnClickListener() {
@@ -190,8 +183,24 @@ public String getPhotoId( ){
 
 
             try {
-                Socket socket = new Socket("192.168.2.115", PORT);
-                Zone zone = new Zone();
+                Socket socket = new Socket("192.168.2.102", PORT);
+                ArrayList<Neighbour> arrayList= new ArrayList<>();
+                Neighbour n = new Neighbour();
+                n.setUid(10000);
+                n.setCornerTopRightX(0.5);
+                n.setCornerTopRightY(0.6);
+                n.setCornerTopLeftX(0.2);
+                n.setCornerTopLeftY(0.2);
+                n.setCornerBottomLeftX(0.4);
+                n.setCornerBottomLeftY(0.6);
+                n.setCornerBottomRightX(0.5);
+                n.setCornerBottomRightY(0.8);
+                n.setPunktX(0.2);
+                n.setPunktY(0.4);
+                n.setUIP("277.0.0.0/8");
+                n.setRTT(25.89);
+                arrayList.add(n);
+                SendNeighBourListActivity snl =new SendNeighBourListActivity(socket,arrayList);
                 //Neighbour neighbour = new Neighbour(01l, 0.0, 0.1, "192.33.2.12", 12.3);
 
                 //NeighbourTransferActivity nft = new NeighbourTransferActivity(socket, neighbour);
@@ -202,6 +211,15 @@ public String getPhotoId( ){
         }
     };
 
+    private View.OnClickListener StartServerListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            Intent i = new Intent(getApplicationContext(), ServerThreadActivity.class);
+            Log.d("Started Server", i.toString());
+            startActivity(i);
+        }
+    };
 
 
     /**

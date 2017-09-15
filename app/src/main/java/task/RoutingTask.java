@@ -14,6 +14,7 @@ import connection.RoutHelper;
 import exception.XMustBeLargerThanZeroException;
 import exception.YMustBeLargerThanZeroException;
 import model.Node;
+import model.PeerMemo;
 import source.DateiMemoDbSource;
 import source.NeighborDbSource;
 import source.PeerDbSource;

@@ -25,6 +25,7 @@ import model.Node;
 import model.PeerMemo;
 import model.Zone;
 import source.NeighborDbSource;
+import source.PeerDbSource;
 import task.HashXTask;
 import task.HashYTask;
 import task.RoutingTask;
@@ -49,6 +50,7 @@ public class ServerThreadActivity extends Activity {
     private Socket socket = null;
     private Server server = new Server();
     private NeighborDbSource nDB = new NeighborDbSource();
+    private PeerDbSource pDB = new PeerDbSource();
 
 
     @Override
@@ -136,32 +138,51 @@ public class ServerThreadActivity extends Activity {
                         Log.d("List: ", "");
 
                         ArrayList<PeerMemo> list = server.getListPeer(buffer);
+                        PeerMemo p = null, p1 =null, p2 = null;
+                        int i = list.size();
 
+                        if(i == 1){
+                            p = list.get(i--);
+                        }else if(i>1){
+                            p1 = list.get(i--);
+                            if (i >= 1) {
+                                p2 = list.get(i--);
 
+                            }
+                        }else{
+
+                        }
+
+                        startUpdatePeers(p,p1,p2);
                         Log.d("List: ", list.toString());
+                        Log.d("PEEEEEEEEEEEERS", pDB.getAllPeer().toString());
                     }
 
                     case NEIGHBOURLIST: {
                         Log.d("NeighbourList:", "");
                         int i, count = 0;
                         ArrayList<Neighbour> list = server.getListNeighbour(buffer);
-                        Neighbour n, n1, n2, n3;
-                        Neighbour[] array = new Neighbour[list.size()];
-                        for (i = 0; i <= list.size(); i++) {
+                        Neighbour n = null, n1 = null, n2 = null, n3 = null;
+                        i = list.size();
 
-                            array[i] = list.get(i);
 
+                        if(i == 1){
+                            n = list.get(i--);
+                        }else if(i>1){
+                            n1 = list.get(i--);
+                            if (i > 1) {
+                                n2 = list.get(i--);
+                                if(i>=1){
+                                    n3 = list.get(i);
+                                }
+                            }
+                        }else{
 
                         }
-
-
-                        n = array[0];
-                        n1 = array[1];
-                        //n2 = list.get(2);
-                        //n3 = list.get(3);
-
-                        //startUpdateNeighbours(n,n1,n2,n3);
+                        Log.d("NeighBOUUUUUUUR", ""+nDB.getAllNeighborMemo().toString());
+                        startUpdateNeighbours(n,n1,n2,n3);
                         //Log.d("List: ",  list.toString());
+
                     }
 
                 }
@@ -185,6 +206,21 @@ public class ServerThreadActivity extends Activity {
 
 
 
+    private void startUpdatePeers(PeerMemo p, PeerMemo p1, PeerMemo p2){
+        new AsyncTask<PeerMemo,Void,Void>(){
+
+            @Override
+            protected Void doInBackground(PeerMemo... params) {
+                int i;
+                for(i=0; i<params.length; i++){
+                    pDB.createPeerMemo(params[i]);
+                }
+                return null;
+            }
+            // vieleicht noch Pram zu execute
+        }.execute();
+    }
+
 
     private void startUpdateNeighbours(Neighbour n, Neighbour n1, Neighbour n2, Neighbour n3) {
 
@@ -192,25 +228,15 @@ public class ServerThreadActivity extends Activity {
 
             @Override
             protected Void doInBackground(Neighbour... params) {
-                Neighbour n = params[0];
-                Neighbour n1 = params[1];
-                Neighbour n2 = params[2];
-                Neighbour n3 = params[3];
-                List<Neighbour> nList = new ArrayList<Neighbour>();
-
-
-                nList.add(n);
-                nList.add(n1);
-                nList.add(n2);
-                nList.add(n3);
-                int i = 0;
-                while (!nList.isEmpty()) {
-                    nDB.createNeighborMemo(nList.get(i++));
+                int i;
+                for(i=0; i<params.length; i++){
+                    nDB.createNeighborMemo(params[i]);
                 }
+
 
                 return null;
             }
-        }.execute(n, n1, n2, n3);
+        }.execute();
     }
 
     @Override

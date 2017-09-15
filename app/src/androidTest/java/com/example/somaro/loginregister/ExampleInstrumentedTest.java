@@ -103,7 +103,7 @@ public class ExampleInstrumentedTest {
             dateiMemo.setMyZone(zone);
             dateiMemoDbSource.createDateiMemo(dateiMemo);
 
-          
+
 
             Log.d("TEST", "DATEIMEMO_UID " + dateiMemoDbSource.getUid() );
             Log.d("TEST", "DATEIMEMO_TOPRIGHT " + dateiMemoDbSource.getCornerTopRightX() + ", " + dateiMemoDbSource.getCornerTopRightY());
