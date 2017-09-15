@@ -318,7 +318,7 @@ public class ExampleInstrumentedTest {
 //            double cornerTopRightX2All = neighbourMemoListAll.get(2).getCornerTopRightX();
 //            Log.d("TEST", "BBBBBBBBB" + cornerTopRightX1All);
 //            Log.d("TEST", "BBBBBBBBB" + cornerTopRightX2All);
-            for (int i= 0; i < neighborMemoList.size(); i++) {
+            for (int i= 0; i < neighbourMemoListAll.size(); i++) {
                 String output = "Neighbor_ID: "+ neighbourMemoListAll.get(i).getNeighbour_id() +
                         "\n Neighbor_ID_Foreign: "+ neighbourMemoListAll.get(i).getUid() +
                         //"\n Status: "+ neighborMemoList.get(i).isChecked() +
