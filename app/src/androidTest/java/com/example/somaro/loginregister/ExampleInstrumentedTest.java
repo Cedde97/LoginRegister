@@ -136,7 +136,7 @@ public class ExampleInstrumentedTest {
 
             //getEachPeer-Test
             //
-            List<PeerMemo> peerMemoList= peerDbSource.getEachPeer(1);
+            List<PeerMemo> peerMemoList= peerDbSource.getEachPeer(0);
             Log.d("Test getEachPeer","=============================================================");
 
             for(int i= 0; i < peerMemoList.size(); i++){
@@ -155,10 +155,10 @@ public class ExampleInstrumentedTest {
             Log.d("Test getAllPeer","=============================================================");
 
             for(int i= 0; i < peerMemoList.size(); i++){
-                String output = "Node_Peer_ID: "+ peerMemoList.get(i).getUid() +
+                String output = "Node_Peer_ID: "+ peerMemoListAll.get(i).getUid() +
                         //"\n Status: "+ peerMemoList.get(i).isChecked() +
-                        "\nPeer ID: "+ peerMemoList.get(i).getPeerId() +
-                        "\n IP: "+ peerMemoList.get(i).getPeerIp();
+                        "\nPeer ID: "+ peerMemoListAll.get(i).getPeerId() +
+                        "\n IP: "+ peerMemoListAll.get(i).getPeerIp();
 
                 Log.d("Result", output);
             }
