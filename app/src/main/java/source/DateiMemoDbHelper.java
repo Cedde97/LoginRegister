@@ -126,8 +126,8 @@ public class DateiMemoDbHelper extends SQLiteOpenHelper{
 
     public static final String SQL_CREATE_TABLE_OWNDATAS =
             "CREATE TABLE " + TABLE_OWNDATA_LIST +
-                    " ( " + COLUMN_OID + " INTEGER PRIMARY KEY," +
-                    COLUMN_FILEID + " INTEGER NOT NULL," + // );";
+                    " ( " + COLUMN_FILEID + " INTEGER PRIMARY KEY," +
+                    COLUMN_OID + " INTEGER NOT NULL," + // );";
                     " FOREIGN KEY ("+ COLUMN_OID +") REFERENCES "+ TABLE_DATEI_LIST +"("+ COLUMN_UID + "));";
 
     public static final String SQL_CREATE_TABLE_FOREIGNDATAS =
@@ -190,11 +190,12 @@ public class DateiMemoDbHelper extends SQLiteOpenHelper{
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         Log.d(LOG_TAG, "Die Tabelle mit Versionsnummer " + oldVersion + " wird entfernt.");
-        db.execSQL(SQL_DROP_DATEI);
+
         db.execSQL(SQL_DROP_PEERS);
         db.execSQL(SQL_DROP_NEIGHBORS);
         db.execSQL(SQL_DROP_OWNDATAS);
         db.execSQL(SQL_DROP_FOREIGNDATAS);
+        db.execSQL(SQL_DROP_DATEI);
         onCreate(db);
     }
 }

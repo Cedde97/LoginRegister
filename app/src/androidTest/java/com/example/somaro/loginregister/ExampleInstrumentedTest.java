@@ -46,13 +46,13 @@ public class ExampleInstrumentedTest {
         SQLiteDatabase database;
         database = DatabaseManager.getInstance().openDatabase();
 
-        if(database == null)
+        /*if(database == null)
         {
             dateiMemoDbHelper.onCreate(database);
-        }
+        }*/
         //dateiMemoDbHelper.onCreate(database);
 
-        //dateiMemoDbHelper.onUpgrade(database,0,dateiMemoDbHelper.DB_VERSION);
+        dateiMemoDbHelper.onUpgrade(database,0,dateiMemoDbHelper.DB_VERSION);
 
         DateiMemoDbSource dateiMemoDbSource = new DateiMemoDbSource();
         ForeignDataDbSource foreignDataDbSource = new ForeignDataDbSource();
@@ -112,7 +112,11 @@ public class ExampleInstrumentedTest {
             Log.d("TEST", "DATEIMEMO_COUNTPEERS " + dateiMemoDbSource.getCountPeers());
             //Log.d("TEST", "DATEIMEMO_ZONE " + dateiMemoDbSource.getZone());
 
+
             //assertEquals(7872, dateiMemoDbSource.getUid());
+
+            assertEquals(7872, dateiMemoDbSource.getUid());
+
             assertEquals(0.3, dateiMemoDbSource.getPunktX(), 0);
             assertEquals(0.4, dateiMemoDbSource.getPunktY(), 0);
 
