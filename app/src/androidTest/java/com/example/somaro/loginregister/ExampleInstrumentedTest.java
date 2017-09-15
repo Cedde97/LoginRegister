@@ -155,7 +155,7 @@ public class ExampleInstrumentedTest {
             List<PeerMemo> peerMemoListAll= peerDbSource.getAllPeer();
             Log.d("Test getAllPeer","=============================================================");
 
-            for(int i= 0; i < peerMemoList.size(); i++){
+            for(int i= 0; i < peerMemoListAll.size(); i++){
                 String output = "Node_Peer_ID: "+ peerMemoListAll.get(i).getUid() +
                         //"\n Status: "+ peerMemoList.get(i).isChecked() +
                         "\nPeer ID: "+ peerMemoListAll.get(i).getPeerId() +
