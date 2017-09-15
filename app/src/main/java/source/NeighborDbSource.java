@@ -895,11 +895,12 @@ public class NeighborDbSource {
 //        return n;
 //    }
 
-    public List<Neighbour> getEachNeigbourMemo() {
+    public List<Neighbour> getEachNeighbour(int neighbour_id) {
         List<Neighbour> NeighborMemoList = new LinkedList<Neighbour>();
 
         //1. query
-        String query = "SELECT * FROM " + dbHelper.TABLE_NEIGHBOR_LIST;
+        String query = "SELECT * FROM " + dbHelper.TABLE_NEIGHBOR_LIST+ " WHERE "
+                + DateiMemoDbHelper.COLUMN_NEIGHBOUR_ID + " = " + neighbour_id;
 
         //2. open Database
         database = DatabaseManager.getInstance().openDatabase();
@@ -939,4 +940,6 @@ public class NeighborDbSource {
 
         return NeighborMemoList;
     }
+
+
 }
