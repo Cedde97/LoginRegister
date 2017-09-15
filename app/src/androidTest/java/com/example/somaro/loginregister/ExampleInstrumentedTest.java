@@ -207,6 +207,7 @@ public class ExampleInstrumentedTest {
             n.setPunktY(0.4);
             n.setUIP("277.0.0.0/8");
             n.setRTT(25.89);
+            neighborDbSource.createNeighborMemo(n);
 
             neighborMemo.setUid(dateiMemo.getUid());
             //neighborMemo.setChecked(true);
