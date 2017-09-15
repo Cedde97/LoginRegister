@@ -62,7 +62,7 @@ public class ExampleInstrumentedTest {
         OwnDataDbSource ownDataDbSource = new OwnDataDbSource();
         PeerDbSource peerDbSource = new PeerDbSource();
         Node dateiMemo = new Node();
-        PeerMemo peerMemo = new PeerMemo();
+        //PeerMemo peerMemo = new PeerMemo();
         ForeignData foreignData = new ForeignData();
         OwnDataMemo ownDataMemo = new OwnDataMemo();
         Neighbour neighborMemo = new Neighbour();
