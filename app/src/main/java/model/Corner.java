@@ -12,6 +12,10 @@ public class Corner {
     private double x;
     private double y;
 
+    public Corner()
+    {
+
+    }
     public Corner(double x,double y) throws XMustBeLargerThanZeroException, YMustBeLargerThanZeroException {
 
         if(x < 0){

@@ -67,7 +67,7 @@ public class PeerMemo {
 
     @Override
     public String toString() {
-        String output = "UserID: " +uid + ", PeerID: " + peerId + ", IP: "+ peerIp+"\n";
+        String output = "\n\nUserID: " +uid + ",\nPeerID: " + peerId + ",\nIP: "+ peerIp;
         return output;
     }
 }

@@ -56,7 +56,7 @@ public class OwnDataMemo {
 
     @Override
     public String toString() {
-        String output = uid + " -- " + fileId;
+        String output = "\n\nUID " + uid + "\nFOTO_ID " +  fileId;
         return output;
     }
 }

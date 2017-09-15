@@ -568,8 +568,8 @@ public class Node {
     public String toString() {
         StringBuffer sb = new StringBuffer();
         if(neighbourList != null && peerMemoList != null) {
-            sb.append("Node: " + "\nUserId: " + uid + " PunktX: " + punktX + " PunktY: " + punktY + " IP: " + iP +
-                    " countPeers: " + countPeers + " Own Zone: " + ownZone.toString() +
+            sb.append("\n\nNode: " + "\nUserId: " + uid + "\nPunktX: " + punktX + "\nPunktY: " + punktY + "\nIP: " + iP +
+                    "\ncountPeers: " + countPeers + "\nOwn Zone: " + getMyZone().toString() +
                     "\n\nNeighbourList: " + neighbourList.toString() + "\n\nPeerList: " + peerMemoList.toString() + "\n");
 
             return sb.toString();
