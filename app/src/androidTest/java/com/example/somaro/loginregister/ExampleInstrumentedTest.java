@@ -228,6 +228,7 @@ public class ExampleInstrumentedTest {
 
             neighborDbSource.createNeighborMemo(n);
 
+            //getEachNeighbor Test
             List<Neighbour> neighborMemoList= neighborDbSource.getEachNeighbour(1);
             Log.d("Test getEachNeighbor","=============================================================");
 
@@ -252,6 +253,8 @@ public class ExampleInstrumentedTest {
             }
             Log.d("Test getEachNeighbor","=============================================================");
 
+            //getAllNeighbor test
+            //
             List<Neighbour> neighbourMemoListAll= neighborDbSource.getAllNeighborMemo();
             Log.d("Test getAll","=============================================================");
 
