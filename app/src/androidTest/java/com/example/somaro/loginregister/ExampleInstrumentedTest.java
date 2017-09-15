@@ -125,10 +125,11 @@ public class ExampleInstrumentedTest {
             assertEquals(0.4, dateiMemoDbSource.getPunktY(), 0);
 
             //create Peer
-            peerMemo.setPeerIp("1.1.1.1");
-            peerMemo.setUid(dateiMemoDbSource.getUid());
+            PeerMemo peerMemo1 = new PeerMemo();
+            peerMemo1.setPeerIp("1.1.1.1");
+            peerMemo1.setUid(dateiMemoDbSource.getUid());
             //peerMemo.setPeerId(3);
-            peerDbSource.createPeerMemo(peerMemo);
+            peerDbSource.createPeerMemo(peerMemo1);
 
             peerMemo.setPeerIp("1.1.1.0");
             peerMemo.setUid(dateiMemoDbSource.getUid());
@@ -372,7 +373,7 @@ public class ExampleInstrumentedTest {
             Log.d("", "222222");
         }catch( Exception e)
         {
-            Log.d("", "333333 " + e.getMessage());
+            Log.d("", "333336 " + e.getMessage());
         }
         //foreign key
 //        peerMemo.setUid(dateiMemoDbSource.getUid());
@@ -478,7 +479,7 @@ public class ExampleInstrumentedTest {
             Log.d("TEST", "DATEIMEMO_IP " + dateiMemoDbSource.getIp(dateiMemo.getUid()));
             Log.d("TEST", "DATEIMEMO_COUNTPEERS " + dateiMemoDbSource.getCountPeers());
 
-            assertEquals(7872, dateiMemoDbSource.getUid(), 7872);
+            assertEquals(7872, dateiMemoDbSource.getUid(), 0);
             assertEquals(0.4, dateiMemoDbSource.getPunktX(), 0);
             assertEquals(0.5, dateiMemoDbSource.getPunktY(), 0);
 
