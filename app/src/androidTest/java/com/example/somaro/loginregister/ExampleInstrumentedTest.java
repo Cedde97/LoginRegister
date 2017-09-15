@@ -137,7 +137,7 @@ public class ExampleInstrumentedTest {
 
             //getEachPeer-Test
             //
-            List<PeerMemo> peerMemoList= peerDbSource.getEachPeer(0);
+            List<PeerMemo> peerMemoList= peerDbSource.getEachPeer(1);
             Log.d("Test getEachPeer","=============================================================");
 
             for(int i= 0; i < peerMemoList.size(); i++){
@@ -281,11 +281,8 @@ public class ExampleInstrumentedTest {
             //neighborMemo.setNeighbour_id(2);
             neighborDbSource.createNeighborMemo(neighborMemo);
 
-
-            neighborDbSource.createNeighborMemo(n);
-
             //getEachNeighbor Test
-            List<Neighbour> neighborMemoList= neighborDbSource.getEachNeighbour(0);
+            List<Neighbour> neighborMemoList= neighborDbSource.getEachNeighbour(1);
             Log.d("Test getEachNeighbor","=============================================================");
             //double cornerTopRightX1 = neighborMemoList.get(1).getCornerTopRightX();
            // Log.d("TEST", "REsult" + cornerTopRightX1);
