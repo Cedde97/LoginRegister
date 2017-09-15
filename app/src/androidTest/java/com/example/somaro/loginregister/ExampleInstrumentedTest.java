@@ -62,7 +62,7 @@ public class ExampleInstrumentedTest {
         OwnDataDbSource ownDataDbSource = new OwnDataDbSource();
         PeerDbSource peerDbSource = new PeerDbSource();
         Node dateiMemo = new Node();
-        //PeerMemo peerMemo = new PeerMemo();
+        PeerMemo peerMemo = new PeerMemo();
         ForeignData foreignData = new ForeignData();
         OwnDataMemo ownDataMemo = new OwnDataMemo();
         Neighbour neighborMemo = new Neighbour();
@@ -280,6 +280,9 @@ public class ExampleInstrumentedTest {
             neighborMemo.setRTT(25.86);
             //neighborMemo.setNeighbour_id(2);
             neighborDbSource.createNeighborMemo(neighborMemo);
+
+
+            neighborDbSource.createNeighborMemo(n);
 
             //getEachNeighbor Test
             List<Neighbour> neighborMemoList= neighborDbSource.getEachNeighbour(0);
