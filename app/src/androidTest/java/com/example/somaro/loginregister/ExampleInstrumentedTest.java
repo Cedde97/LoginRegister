@@ -246,6 +246,40 @@ public class ExampleInstrumentedTest {
             //neighborMemo.setNeighbour_id(2);
             neighborDbSource.createNeighborMemo(neighborMemo);
 
+            neighborMemo.setUid(200);
+            //neighborMemo.setChecked(true);
+            neighborMemo.setCornerTopRightX(0.3);
+            neighborMemo.setCornerTopRightY(0.4);
+            neighborMemo.setCornerTopLeftX(0.1);
+            neighborMemo.setCornerTopLeftY(0.5);
+            neighborMemo.setCornerBottomLeftX(0.1);
+            neighborMemo.setCornerBottomLeftY(0.9);
+            neighborMemo.setCornerBottomRightX(0.4);
+            neighborMemo.setCornerBottomRightY(0.2);
+            neighborMemo.setPunktX(0.3);
+            neighborMemo.setPunktY(0.4);
+            neighborMemo.setUIP("277.0.0.0/8");
+            neighborMemo.setRTT(25.82);
+            //neighborMemo.setNeighbour_id(2);
+            neighborDbSource.createNeighborMemo(neighborMemo);
+
+            neighborMemo.setUid(201);
+            //neighborMemo.setChecked(true);
+            neighborMemo.setCornerTopRightX(0.2);
+            neighborMemo.setCornerTopRightY(0.1);
+            neighborMemo.setCornerTopLeftX(0.6);
+            neighborMemo.setCornerTopLeftY(0.8);
+            neighborMemo.setCornerBottomLeftX(0.3);
+            neighborMemo.setCornerBottomLeftY(0.5);
+            neighborMemo.setCornerBottomRightX(0.3);
+            neighborMemo.setCornerBottomRightY(0.1);
+            neighborMemo.setPunktX(0.6);
+            neighborMemo.setPunktY(0.4);
+            neighborMemo.setUIP("277.0.0.0/8");
+            neighborMemo.setRTT(25.86);
+            //neighborMemo.setNeighbour_id(2);
+            neighborDbSource.createNeighborMemo(neighborMemo);
+
 
             neighborDbSource.createNeighborMemo(n);
 
