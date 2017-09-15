@@ -104,7 +104,7 @@ public class Client {
 	}
 
 
-	public void sendListAsByteArray(Socket socket, ArrayList list) throws UnknownHostException, IOException{
+	public void sendListAsByteArray(Socket socket, ArrayList<PeerMemo> list) throws UnknownHostException, IOException{
 
 		this.socket = socket;
 
@@ -113,7 +113,7 @@ public class Client {
 		sendByteArray(socket, buffer);
 	}
 
-	public void sendListAsByteArrayNeighbour(Socket socket, ArrayList list) throws UnknownHostException, IOException{
+	public void sendListAsByteArrayNeighbour(Socket socket, ArrayList<Neighbour> list) throws UnknownHostException, IOException{
 
 		this.socket = socket;
 

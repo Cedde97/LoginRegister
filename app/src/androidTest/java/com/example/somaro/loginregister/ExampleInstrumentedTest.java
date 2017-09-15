@@ -295,7 +295,7 @@ public class ExampleInstrumentedTest {
             neighborMemo.setRTT(25.86);
             //neighborMemo.setNeighbour_id(2);
             neighborDbSource.createNeighborMemo(neighborMemo);
-
+            
 
             neighborDbSource.updateCornerBottomLeftYNeighbor(1,0.6666666);
             neighborDbSource.updateCornerBottomLeftXNeighbor(1,0.4444444);

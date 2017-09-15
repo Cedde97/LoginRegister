@@ -383,7 +383,7 @@ public class Serialization {
 		return list;
 	}
 
-	protected byte[] fillListByteArray(ArrayList list){
+	protected byte[] fillListByteArray(ArrayList<PeerMemo> list){
 
 		byte methodName = (byte) STR_SEND_LIST;
 		byte[] bufferHeader= new byte[1];
@@ -399,7 +399,7 @@ public class Serialization {
 		return bufferTarget;
 	}
 
-	protected byte[] fillListByteArrayNeighbour(ArrayList list){
+	protected byte[] fillListByteArrayNeighbour(ArrayList<Neighbour> list){
 
 		byte methodName = (byte) STR_SEND_LIST_NEIGHBOUR;
 		byte[] bufferHeader= new byte[1];

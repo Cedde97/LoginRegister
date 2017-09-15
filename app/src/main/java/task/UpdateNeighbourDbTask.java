@@ -32,9 +32,9 @@ public class UpdateNeighbourDbTask extends AsyncTask<Neighbour,Void,Void> {
         nList.add(n2);
         nList.add(n3);
         int i= 0;
-        while(!nList.isEmpty()){
+        //while(!nList.isEmpty()){
             nDB.createNeighborMemo(nList.get(i++));
-        }
+        //}
 
         return null;
     }
