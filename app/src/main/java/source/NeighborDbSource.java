@@ -804,6 +804,56 @@ public class NeighborDbSource {
         return uID;
     }
 
+    public List<Neighbour> getAllNeighborMemo() {
+        List<Neighbour> NeighborMemoList = new LinkedList<Neighbour>();
+
+        //1. query
+        String query = "SELECT * FROM " + dbHelper.TABLE_NEIGHBOR_LIST;
+
+        //2. open Database
+        database = DatabaseManager.getInstance().openDatabase();
+
+        Cursor cursor = database.rawQuery(query, null);
+
+//        int idChecked = cursor.getColumnIndex(DateiMemoDbHelper.COLUMN_CHECKED);
+//        int intValueChecked = cursor.getInt(idChecked);
+//        boolean isChecked = (intValueChecked != 0);
+
+
+        //3. Durchführen Zeile und füge in List hinzu
+        Neighbour neighborMemo = null;
+        if (cursor.moveToFirst()) {
+            do {
+                neighborMemo = new Neighbour();
+                neighborMemo.setUid(cursor.getLong(cursor.getColumnIndex(dbHelper.COLUMN_NID)));
+                //neighborMemo.setChecked(isChecked);
+                neighborMemo.setCornerTopLeftX(cursor.getDouble(cursor.getColumnIndex(dbHelper.COLUMN_CORNERTOPLEFTX)));
+                neighborMemo.setCornerTopLeftY(cursor.getDouble(cursor.getColumnIndex(dbHelper.COLUMN_CORNERTOPLEFTY)));
+                neighborMemo.setCornerTopRightX(cursor.getDouble(cursor.getColumnIndex(dbHelper.COLUMN_CORNERTOPRIGHTX)));
+                neighborMemo.setCornerTopRightY(cursor.getDouble(cursor.getColumnIndex(dbHelper.COLUMN_CORNERTOPRIGHTY)));
+                neighborMemo.setCornerBottomLeftX(cursor.getDouble(cursor.getColumnIndex(dbHelper.COLUMN_CORNERBOTTOMLEFTX)));
+                neighborMemo.setCornerBottomLeftY(cursor.getDouble(cursor.getColumnIndex(dbHelper.COLUMN_CORNERBOTTOMLEFTY)));
+                neighborMemo.setCornerBottomRightX(cursor.getDouble(cursor.getColumnIndex(dbHelper.COLUMN_CORNERBOTTOMRIGHTX)));
+                neighborMemo.setCornerBottomRightY(cursor.getDouble(cursor.getColumnIndex(dbHelper.COLUMN_CORNERBOTTOMRIGHTY)));
+                neighborMemo.setPunktX(cursor.getDouble(cursor.getColumnIndex(dbHelper.COLUMN_PUNKTX)));
+                neighborMemo.setPunktY(cursor.getDouble(cursor.getColumnIndex(dbHelper.COLUMN_PUNKTY)));
+                neighborMemo.setUIP(cursor.getString(cursor.getColumnIndex(dbHelper.COLUMN_UIP)));
+                neighborMemo.setRTT(cursor.getDouble(cursor.getColumnIndex(dbHelper.COLUMN_RTT)));
+                neighborMemo.setNeighbour_id(cursor.getLong(cursor.getColumnIndex(dbHelper.COLUMN_NEIGHBOUR_ID)));
+
+
+                // Add book to books
+                NeighborMemoList.add(neighborMemo);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+
+        DatabaseManager.getInstance().closeDatabase();
+
+        return NeighborMemoList;
+    }
+
 
     public int getCount(){
         database = DatabaseManager.getInstance().openDatabase();
