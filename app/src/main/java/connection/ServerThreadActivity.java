@@ -159,7 +159,7 @@ public class ServerThreadActivity extends Activity {
                         Neighbour n = null, n1 = null, n2 = null, n3 = null;
                         i = list.size();
                         Log.d("NeighbourList filled", " "+list.toString());
-
+/*
                         if (i == 1) {
                             n = list.get(i--);
                         } else if (i > 1) {
@@ -172,7 +172,7 @@ public class ServerThreadActivity extends Activity {
                             }
                         } else {
 
-                        }
+                        }*/
                         startUpdateNeighbours(n, n1, n2, n3);
                         Log.d("NeighBOUUUUUUUR", "" + nDB.getAllNeighborMemo().toString());
 

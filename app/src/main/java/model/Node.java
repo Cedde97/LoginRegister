@@ -20,8 +20,9 @@ import source.PeerDbSource;
 /**
  * @author Joshua Zabel
  */
-public class Node {
+public class Node implements java.io.Serializable{
     //vielleicht in eigene Klasse
+    private static final long serialVersionUID = -5141596970718880337L;
     private static final int    maxPeers= 3;
     private static final long   DIVIDER=2552552552l;
     private static final int    PORTNR = 9797;

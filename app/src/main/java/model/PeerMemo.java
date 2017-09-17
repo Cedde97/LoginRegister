@@ -1,9 +1,9 @@
 package model;
 
 
-public class PeerMemo {
+public class PeerMemo implements java.io.Serializable{
     //DateiMemo dateiMemo;
-
+    private static final long serialVersionUID = -3454312037450492244L;
     private long uid;
     private long peerId;
     private String peerIp;

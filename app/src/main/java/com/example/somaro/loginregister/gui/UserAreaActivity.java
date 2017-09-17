@@ -187,6 +187,7 @@ public class UserAreaActivity extends Activity {
                 Socket socket = new Socket("192.168.2.102", PORT);
                 ArrayList<Neighbour> arrayList= new ArrayList<>();
                 Neighbour n = new Neighbour();
+                Neighbour n1 = new Neighbour();
                 n.setUid(10000);
                 n.setCornerTopRightX(0.5);
                 n.setCornerTopRightY(0.6);
@@ -201,6 +202,7 @@ public class UserAreaActivity extends Activity {
                 n.setUIP("277.0.0.0/8");
                 n.setRTT(25.89);
                 arrayList.add(n);
+
                 SendNeighBourListActivity snl =new SendNeighBourListActivity(socket,arrayList);
                 snl.execute();
                 //Neighbour neighbour = new Neighbour(01l, 0.0, 0.1, "192.33.2.12", 12.3);

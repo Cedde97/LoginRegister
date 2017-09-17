@@ -5,9 +5,9 @@ package model;
  * Class Foreign Data
  */
 
-public class ForeignData {
+public class ForeignData implements java.io.Serializable{
     //DateiMemo dateiMemo;
-
+    private static final long serialVersionUID = -3180520592609573364L;
     private long uid;
     private int fotoId;
     private double punktX;
@@ -21,6 +21,12 @@ public class ForeignData {
         this.punktY = punktY;
         this.foreignIp = foreignIp;
     }
+
+
+    public ForeignData(){
+
+    }
+
 
     public long getUid() {
         return uid;

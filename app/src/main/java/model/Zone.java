@@ -6,7 +6,8 @@ import android.util.Log;
 /**
  * Created by gyorgyi on 22/08/17.
  */
-public class Zone {
+public class Zone implements java.io.Serializable {
+    private static final long serialVersionUID = 10617473022291464L;
     private Corner topLeft = new Corner();
     private Corner topRight= new Corner();
     private Corner bottomLeft= new Corner();

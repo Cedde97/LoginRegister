@@ -8,7 +8,8 @@ import source.DateiMemoDbSource;
  * Created by Joshi on 11.08.2017.
  */
 
-public class Corner {
+public class Corner implements java.io.Serializable{
+    private static final long serialVersionUID = -2456693840393632121L;
     private double x;
     private double y;
 

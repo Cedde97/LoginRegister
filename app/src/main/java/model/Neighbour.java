@@ -6,8 +6,8 @@ package model;
 /**
  * @author Eridho
  * */
-public class Neighbour {
-
+public class Neighbour implements java.io.Serializable{
+    private static final long serialVersionUID = -4668388398681616091L;
     //DateiMemo dateiMemo;
 
 
