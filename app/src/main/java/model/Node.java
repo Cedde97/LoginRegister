@@ -136,7 +136,19 @@ public class Node {
      * @param y Y-Wert des zu routenden Bildes
      * @param FotoId Foto-ID
      */
-    private void picRouting(String ip, double x, double y, int FotoId, int uid) throws IOException {
+    private void picRouting(String ip, double x, double y, int fotoId, int uid) throws IOException {
+        double[] distance = new double[3];
+        ForeignData fd = new ForeignData(ip,x,y,fotoId,uid);
+        if(nDB.getAllNeighborMemo() != null){
+            for(int i =0; i< nDB.getCount(); i++){
+                //vielleicht bei 1 statt 0 anfangen
+                distance[i] = computeDistance(x,y, nDB.getPunktXNeighbor(i),nDB.getPunktYNeighbor(i));
+            }
+            int index = compareValues(distance);
+            socket = new Socket(nDB.getUip(index),PORTNR);
+        }
+
+        client.sendForeignDataAsByteArray(socket,fd);
         //// TODO: 15.08.2017 Verbindungsaufbau zu der ip um Bild herunterzuladen und dann zu speichern
         /// TODO: 15.08.2017 verbindungsaufbau zu Peers und diesen werden die Informationen zum Bild Ã¼bermittelt und nun laden sie sich das Bild von zuletzt gerouteten Node herunter
         //fortsetzung des routing

@@ -25,6 +25,7 @@ public class SendNeighBourListActivity extends AsyncTask<Void,Void,Void> {
     }
     @Override
     protected Void doInBackground(Void... params) {
+        Log.d("Vor Try ArrayNeighbour","");
         try {
             Log.d("SendArrayNeighbour",""+ nList.toString());
             client.sendListAsByteArrayNeighbour(socket,nList);

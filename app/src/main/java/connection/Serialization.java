@@ -473,7 +473,7 @@ public class Serialization {
 		byte[] bufferTarget = new byte[RESERVED_BYTES_FOR_METHOD_CALL + bufferBody.length];
 
 		System.arraycopy(bufferHeader, 0, bufferTarget, 0, 1);
-		System.arraycopy(bufferBody, 0, bufferTarget, 1, bufferBody.length -1);
+		System.arraycopy(bufferBody, 0, bufferTarget, 1, bufferBody.length);
 
 		return bufferTarget;
 	}

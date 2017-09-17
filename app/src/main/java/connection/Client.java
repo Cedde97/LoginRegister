@@ -108,7 +108,7 @@ public class Client {
 
 		this.socket = socket;
 
-		byte[] buffer = serialization.serializePeerMemoList(list);
+		byte[] buffer = serialization.fillPeerMemoListByteArray(list);
 
 		sendByteArray(socket, buffer);
 	}
@@ -117,7 +117,7 @@ public class Client {
 
 		this.socket = socket;
 
-		byte[] buffer = serialization.serializeNeighbourList(list);
+		byte[] buffer = serialization.fillNeighbourListByteArray(list);
 
 		sendByteArray(socket, buffer);
 	}

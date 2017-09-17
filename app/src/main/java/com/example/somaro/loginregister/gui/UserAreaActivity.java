@@ -145,7 +145,8 @@ public class UserAreaActivity extends Activity {
                 //ip des "simulierten" Knoten der bereits in CAN ist
 
                 Log.d("Globale BootsIP", bootsIp);
-                Socket socket = new Socket(bootsIp, PORT);
+                //Socket socket = new Socket(bootsIp, PORT);
+                Socket socket = new Socket("192.168.2.102",PORT);
 
 
                 Log.d("Socket: ", socket.toString());
@@ -201,6 +202,7 @@ public class UserAreaActivity extends Activity {
                 n.setRTT(25.89);
                 arrayList.add(n);
                 SendNeighBourListActivity snl =new SendNeighBourListActivity(socket,arrayList);
+                snl.execute();
                 //Neighbour neighbour = new Neighbour(01l, 0.0, 0.1, "192.33.2.12", 12.3);
 
                 //NeighbourTransferActivity nft = new NeighbourTransferActivity(socket, neighbour);

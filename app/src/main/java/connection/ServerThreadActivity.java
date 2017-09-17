@@ -4,32 +4,23 @@ package connection;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
-
-import org.json.JSONException;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.List;
 
-import exception.XMustBeLargerThanZeroException;
-import exception.YMustBeLargerThanZeroException;
-import model.Corner;
 import model.ForeignData;
 import model.Neighbour;
 import model.Node;
 import model.PeerMemo;
-import model.Zone;
+
+import source.ForeignDataDbSource;
 import source.NeighborDbSource;
 import source.PeerDbSource;
-import task.HashXTask;
-import task.HashYTask;
-import task.RoutingTask;
-import task.UpdateNeighbourDbTask;
+
 
 /**
  * Created by Cedric on 06.09.2017.
@@ -51,6 +42,7 @@ public class ServerThreadActivity extends Activity {
     private Server server = new Server();
     private NeighborDbSource nDB = new NeighborDbSource();
     private PeerDbSource pDB = new PeerDbSource();
+    private ForeignDataDbSource fDB = new ForeignDataDbSource();
 
 
     @Override
@@ -129,11 +121,9 @@ public class ServerThreadActivity extends Activity {
                         Log.d("Routing: ", "");
 
                         RoutHelper rh = server.getRoutHelper(buffer);
-                        Node nodeNew = serialization.getSerialzedNode().routing(rh);
-                        if (nodeNew != null) {
-                            //starte node transfer
-                        }
-                        Log.d("nodeNew ", nodeNew.toString());
+
+
+                        Log.d("nodeNew ", " "+ rh.toString());
 
                     }
 
@@ -189,6 +179,16 @@ public class ServerThreadActivity extends Activity {
                         //Log.d("List: ",  list.toString());
 
                     }
+
+                    case FOREIGNTRANS: {
+                        Log.d("ForeignTransfer","");
+                        int i;
+                        ForeignData fd = server.getForeignData(buffer);
+                        fDB.createForeignData(fd);
+                        Log.d("ForeignTransfer","after Create");
+
+                    }
+
                 }
 
                 ss.close();
