@@ -25,6 +25,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <activity android:name="activity.SplittActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+
         <activity android:name="com.example.somaro.loginregister.gui.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

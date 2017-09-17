@@ -73,9 +73,9 @@ public class ForeignData {
 
     @Override
     public String toString() {
-        String output = uid + " -- " + fotoId +
-                "\nCorner Punkt : x -> "+ punktX + " -- y -> "+ punktY +
-                "\n Foreign IP : "+ foreignIp;
+        String output = "\n\nUID " + uid + "\nFOTO_ID " + fotoId +
+                "\nPunkt : x -> "+ punktX + "\nPunkt : y -> "+ punktY +
+                "\nForeign IP : "+ foreignIp;
         return output;
     }
 }

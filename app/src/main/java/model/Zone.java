@@ -7,10 +7,10 @@ import android.util.Log;
  * Created by gyorgyi on 22/08/17.
  */
 public class Zone {
-    private Corner topLeft;
-    private Corner topRight;
-    private Corner bottomLeft;
-    private Corner bottomRight;
+    private Corner topLeft = new Corner();
+    private Corner topRight= new Corner();
+    private Corner bottomLeft= new Corner();
+    private Corner bottomRight= new Corner();
 
 
 
@@ -204,7 +204,7 @@ public class Zone {
 
     }
 
-    private Node[] determineLocationX(Node node1, Node node2, Node node3, Node node4)
+    public Node[] determineLocationX(Node node1, Node node2, Node node3, Node node4)
     {
         Node[] nodeArray = new Node[4];
 
@@ -218,7 +218,7 @@ public class Zone {
         return nodeArray;
     }
 
-    private Node[] determineLocationY(Node node1, Node node2, Node node3, Node node4)
+    public Node[] determineLocationY(Node node1, Node node2, Node node3, Node node4)
     {
         Node[] nodeArray = new Node[4];
 
@@ -390,14 +390,14 @@ public class Zone {
     /**
      * Get the length of the Y side of the zone
      */
-    private double getLengthY(Node node) {
+    public double getLengthY(Node node) {
         return   node.getTopLeft().getY() - node.getBottomLeft().getY();
     }
 
     /**
      * Get the length of the X side of the zone
      */
-    private double getLengthX(Node node) {
+    public double getLengthX(Node node) {
         return  node.getBottomRight().getX() - node.getBottomLeft().getX();
     }
 
@@ -455,10 +455,10 @@ public class Zone {
     public String toString(){
         StringBuffer sb = new StringBuffer();
 
-        sb.append("TopRight " + topRight.toString()+", ")
-                .append("TopLeft " + topLeft.toString()+", ")
-                .append("BottomRight " + bottomRight.toString()+", ")
-                .append("BottomLeft " + bottomLeft.toString()+", \n");
+        sb.append("\n\tTopRight " + topRight.toString()+", \n")
+                .append("\tTopLeft " + topLeft.toString()+", \n")
+                .append("\tBottomRight " + bottomRight.toString()+", \n")
+                .append("\tBottomLeft " + bottomLeft.toString()+", \n");
 
         return sb.toString();
     }

@@ -26,13 +26,13 @@ public class Neighbour {
     private String UIP;
     private double RTT;
 
-    private Zone   ownZone;
+    private Zone   ownZone = new Zone();
 
     private Corner topRight;
     private Corner topLeft;
     private Corner bottomRight;
     private Corner bottomLeft;
-    private Zone zone;
+    private Zone zone = new Zone();
     //private boolean checked;
     private long uid;
     private long neighbour_id;
@@ -223,10 +223,10 @@ public class Neighbour {
 
     @Override
     public String toString() {
-        String output = "Neighbour: " + "\nUserID: " + uid + ", IP: " + UIP + "\n" +
-                "Zone: "+ zone.toString()+
-                "PunktX :"+ punktX + ", PunktY: "+ punktY +
-                "\nRTT : "+ RTT+ "\n\n";
+        String output = "\n\nNeighbour: "+ getNeighbour_id() + "\nUserID: " + uid + ",\nIP: " + UIP + "\n" +
+                "Zone: "+ getMyZone().toString()+
+                "PunktX :"+ punktX + ",\nPunktY :"+ punktY +
+                "\nRTT :"+ RTT;
         return output;
     }
 

@@ -10,6 +10,9 @@ import android.util.Log;
 import android.content.ContentValues;
 import android.database.Cursor;
 
+import exception.XMustBeLargerThanZeroException;
+import exception.YMustBeLargerThanZeroException;
+import model.Corner;
 import source.DateiMemoDbHelper;
 import model.Node;
 import source.DatabaseManager;
@@ -833,19 +836,34 @@ public class DateiMemoDbSource {
 
         //3. Durchführen Zeile und füge in List hinzu
         Node dateiMemo = null;
+        Corner topLeft = null;
+        Corner topRight = null;
+        Corner bottomLeft = null;
+        Corner bottomRight = null;
         if (cursor.moveToFirst()) {
             do {
+                // DIESER NODE HAT KEINE CORNER DESHALB NULL POINTER
                 dateiMemo = new Node();
+                try {
+                    topLeft = new Corner(cursor.getDouble(cursor.getColumnIndex(dbHelper.COLUMN_CORNERTOPLEFTX)),
+                            cursor.getDouble(cursor.getColumnIndex(dbHelper.COLUMN_CORNERTOPLEFTY)));
+                    topRight = new Corner(cursor.getDouble(cursor.getColumnIndex(dbHelper.COLUMN_CORNERTOPRIGHTX)),
+                            cursor.getDouble(cursor.getColumnIndex(dbHelper.COLUMN_CORNERTOPRIGHTY)));
+                    bottomLeft = new Corner(cursor.getDouble(cursor.getColumnIndex(dbHelper.COLUMN_CORNERBOTTOMLEFTX)),
+                            cursor.getDouble(cursor.getColumnIndex(dbHelper.COLUMN_CORNERBOTTOMLEFTY)));
+                    bottomRight = new Corner(cursor.getDouble(cursor.getColumnIndex(dbHelper.COLUMN_CORNERBOTTOMRIGHTX)),
+                            cursor.getDouble(cursor.getColumnIndex(dbHelper.COLUMN_CORNERBOTTOMRIGHTY)));
+                } catch (XMustBeLargerThanZeroException e) {
+                    e.printStackTrace();
+                } catch (YMustBeLargerThanZeroException e) {
+                    e.printStackTrace();
+                }
                 dateiMemo.setUid(cursor.getLong(cursor.getColumnIndex(dbHelper.COLUMN_UID)));
                 //dateiMemo.setChecked(isChecked);
-                dateiMemo.getTopLeft().setX(cursor.getDouble(cursor.getColumnIndex(dbHelper.COLUMN_CORNERTOPLEFTX)));
-                dateiMemo.getTopLeft().setY(cursor.getDouble(cursor.getColumnIndex(dbHelper.COLUMN_CORNERTOPLEFTY)));
-                dateiMemo.getTopRight().setX(cursor.getDouble(cursor.getColumnIndex(dbHelper.COLUMN_CORNERTOPRIGHTX)));
-                dateiMemo.getTopRight().setY(cursor.getDouble(cursor.getColumnIndex(dbHelper.COLUMN_CORNERTOPRIGHTY)));
-                dateiMemo.getBottomLeft().setX(cursor.getDouble(cursor.getColumnIndex(dbHelper.COLUMN_CORNERBOTTOMLEFTX)));
-                dateiMemo.getBottomLeft().setY(cursor.getDouble(cursor.getColumnIndex(dbHelper.COLUMN_CORNERBOTTOMLEFTY)));
-                dateiMemo.getBottomRight().setX(cursor.getDouble(cursor.getColumnIndex(dbHelper.COLUMN_CORNERBOTTOMRIGHTX)));
-                dateiMemo.getBottomRight().setY(cursor.getDouble(cursor.getColumnIndex(dbHelper.COLUMN_CORNERBOTTOMRIGHTY)));
+                dateiMemo.setTopLeft(topLeft);
+                dateiMemo.setTopRight(topRight);
+                dateiMemo.setBottomLeft(bottomLeft);
+                dateiMemo.setBottomRight(bottomRight);
                 dateiMemo.setPunktX(cursor.getDouble(cursor.getColumnIndex(dbHelper.COLUMN_PUNKTX)));
                 dateiMemo.setPunktY(cursor.getDouble(cursor.getColumnIndex(dbHelper.COLUMN_PUNKTY)));
                 dateiMemo.setIP(cursor.getString(cursor.getColumnIndex(dbHelper.COLUMN_IP)));
