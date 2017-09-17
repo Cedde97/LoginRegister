@@ -76,14 +76,14 @@ public class UserAreaActivity extends Activity {
     private Button routRequest, fileTransferRequest, neighbourTransfer, startServer;
     
 
-public String getPhotoId( ){
+    public String getPhotoId( ){
 
- String data = "";
+        String data = "";
 
-    data = "" + getId() + getBildAnzahl() ;
+        data = "" + getId() + getBildAnzahl() ;
     return data;
 
-}
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

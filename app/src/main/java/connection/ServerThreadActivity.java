@@ -61,7 +61,10 @@ public class ServerThreadActivity extends Activity {
 
 
     class ServerThread extends AsyncTask<String, String, String> {
+
+
         protected String doInBackground(String... args) {
+
             Serialization serialization = new Serialization();
             ServerSocket ss = null;
             Node node = null;
@@ -140,6 +143,7 @@ public class ServerThreadActivity extends Activity {
                         ArrayList<PeerMemo> list = server.getListPeer(buffer);
                         PeerMemo p = null, p1 =null, p2 = null;
                         int i = list.size();
+                        Log.d("PeerList filled", " "+list.toString());
 
                         if(i == 1){
                             p = list.get(i--);
@@ -160,49 +164,52 @@ public class ServerThreadActivity extends Activity {
 
                     case NEIGHBOURLIST: {
                         Log.d("NeighbourList:", "");
-                        int i, count = 0;
+                        int i;
                         ArrayList<Neighbour> list = server.getListNeighbour(buffer);
                         Neighbour n = null, n1 = null, n2 = null, n3 = null;
                         i = list.size();
+                        Log.d("NeighbourList filled", " "+list.toString());
 
-
-                        if(i == 1){
+                        if (i == 1) {
                             n = list.get(i--);
-                        }else if(i>1){
+                        } else if (i > 1) {
                             n1 = list.get(i--);
                             if (i > 1) {
                                 n2 = list.get(i--);
-                                if(i>=1){
+                                if (i >= 1) {
                                     n3 = list.get(i);
                                 }
                             }
-                        }else{
+                        } else {
 
                         }
-                        Log.d("NeighBOUUUUUUUR", ""+nDB.getAllNeighborMemo().toString());
-                        startUpdateNeighbours(n,n1,n2,n3);
+                        startUpdateNeighbours(n, n1, n2, n3);
+                        Log.d("NeighBOUUUUUUUR", "" + nDB.getAllNeighborMemo().toString());
+
                         //Log.d("List: ",  list.toString());
 
                     }
-
                 }
 
-            ss.close();
-        }catch(Exception e){
-            e.printStackTrace();
-        } finally{
-            try {
-                if (ss != null)
-                    ss.close();
-                Log.d("ServerSocket closed", "");
-            } catch (IOException e) {
+                ss.close();
+            }catch(Exception e){
                 e.printStackTrace();
-            }
-        }
-            return null;
-    }
+            } finally{
+                try {
+                    if (ss != null)
+                        ss.close();
+                    Log.d("ServerSocket closed", "");
 
-}
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            return null;
+        }
+
+    }
 
 
 
