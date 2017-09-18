@@ -14,12 +14,12 @@ import model.Neighbour;
  * Created by Joshi on 15.09.2017.
  */
 
-public class SendNeighBourListActivity extends AsyncTask<Void,Void,Void> {
+public class SendNeighBourListTask extends AsyncTask<Void,Void,Void> {
     private Client client = new Client();
     private Socket socket;
     private ArrayList<Neighbour> nList;
 
-    public SendNeighBourListActivity(Socket socket, ArrayList<Neighbour> nList){
+    public SendNeighBourListTask(Socket socket, ArrayList<Neighbour> nList){
         this.socket = socket;
         this.nList  = nList;
     }
@@ -28,7 +28,7 @@ public class SendNeighBourListActivity extends AsyncTask<Void,Void,Void> {
         Log.d("Vor Try ArrayNeighbour","");
         try {
             Log.d("SendArrayNeighbour",""+ nList.toString());
-            client.sendListAsByteArrayNeighbour(socket,nList);
+            client.sendNeighbourListAsByteArray(socket,nList);
         } catch (IOException e) {
             e.printStackTrace();
         }

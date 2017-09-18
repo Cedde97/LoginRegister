@@ -78,11 +78,11 @@ public class Neighbour implements java.io.Serializable{
      * @param rtt
      */
     public Neighbour(long uid, double punktX, double punktY, String ip, Zone zone, double rtt){
-        this.uid = uid;
+        this.uid    = uid;
         this.punktX = punktX;
         this.punktY = punktY;
         this.UIP    = ip;
-        this.ownZone   = new Zone(zone.getTopLeft(),zone.getTopRight(), zone.getBottomLeft(), zone.getBottomRight());
+        this.ownZone= new Zone(zone.getTopLeft(),zone.getTopRight(), zone.getBottomLeft(), zone.getBottomRight());
         this.RTT    = rtt;
     }
 

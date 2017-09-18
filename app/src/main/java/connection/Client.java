@@ -3,9 +3,6 @@ import android.util.Log;
 
 import connection.RoutHelper;
 import model.*;
-import source.DatabaseManager;
-import source.DateiMemoDbHelper;
-
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -16,8 +13,9 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 
-public class Client {
 
+
+public class Client {
 
 	protected static final int portNr = 9797;
 	Serialization serialization = new Serialization();
@@ -106,7 +104,7 @@ public class Client {
 	}
 
 
-	public void sendListAsByteArray(Socket socket, ArrayList<PeerMemo> list) throws UnknownHostException, IOException{
+	public void sendPeerMemoListAsByteArray(Socket socket, ArrayList<PeerMemo> list) throws UnknownHostException, IOException{
 
 		this.socket = socket;
 
@@ -115,7 +113,7 @@ public class Client {
 		sendByteArray(socket, buffer);
 	}
 
-	public void sendListAsByteArrayNeighbour(Socket socket, ArrayList<Neighbour> list) throws UnknownHostException, IOException{
+	public void sendNeighbourListAsByteArray(Socket socket, ArrayList<Neighbour> list) throws UnknownHostException, IOException{
 
 		this.socket = socket;
 

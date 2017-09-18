@@ -20,30 +20,15 @@ import com.example.somaro.loginregister.R;
 
 import org.json.JSONException;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.Socket;
-import java.net.URL;
-import java.net.UnknownHostException;
-import java.util.HashMap;
-import java.util.concurrent.ExecutionException;
 
 import activity.FileTransferActivity;
-import activity.SendNeighBourListActivity;
+import activity.SendNeighBourListTask;
 import activity.SendRoutActivity;
 import bootstrap.AllIPsActivity;
 import bootstrap.InsertOwnIPActivity;
@@ -51,7 +36,6 @@ import connection.Client;
 import connection.RoutHelper;
 import connection.ServerThreadActivity;
 import model.*;
-import source.OwnDataDbSource;
 
 
 public class UserAreaActivity extends Activity {
@@ -203,7 +187,7 @@ public class UserAreaActivity extends Activity {
                 n.setRTT(25.89);
                 arrayList.add(n);
 
-                SendNeighBourListActivity snl =new SendNeighBourListActivity(socket,arrayList);
+                SendNeighBourListTask snl =new SendNeighBourListTask(socket,arrayList);
                 snl.execute();
                 //Neighbour neighbour = new Neighbour(01l, 0.0, 0.1, "192.33.2.12", 12.3);
 
