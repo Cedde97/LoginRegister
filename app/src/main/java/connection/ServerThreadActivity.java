@@ -2,9 +2,11 @@ package connection;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+
 
 import java.io.File;
 import java.io.IOException;
@@ -17,6 +19,8 @@ import model.Neighbour;
 import model.Node;
 import model.PeerMemo;
 
+import source.DatabaseManager;
+import source.DateiMemoDbHelper;
 import source.ForeignDataDbSource;
 import source.NeighborDbSource;
 import source.PeerDbSource;
@@ -40,6 +44,10 @@ public class ServerThreadActivity extends Activity {
 
     private Socket socket = null;
     private Server server = new Server();
+
+    private static Context appContext;
+    private static DateiMemoDbHelper dbHelper;
+
     private NeighborDbSource nDB = new NeighborDbSource();
     private PeerDbSource pDB = new PeerDbSource();
     private ForeignDataDbSource fDB = new ForeignDataDbSource();
@@ -49,6 +57,13 @@ public class ServerThreadActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         new ServerThread().execute();
+
+        //===============================================
+        appContext = this.getApplicationContext();
+        dbHelper = new DateiMemoDbHelper(appContext);
+        DatabaseManager.initializeInstance(dbHelper);
+        //===============================================
+
     }
 
 
