@@ -3,6 +3,14 @@ package model;
 
 import android.util.Log;
 
+import java.util.ArrayList;
+
+import exception.XMustBeLargerThanZeroException;
+import exception.YMustBeLargerThanZeroException;
+import source.DateiMemoDbSource;
+import source.NeighborDbSource;
+import source.PeerDbSource;
+
 /**
  * Created by gyorgyi on 22/08/17.
  */
@@ -12,6 +20,9 @@ public class Zone {
     private Corner bottomLeft= new Corner();
     private Corner bottomRight= new Corner();
 
+    private DateiMemoDbSource dateiMemoDbSource = new DateiMemoDbSource() ;
+    private NeighborDbSource neighborDbSource = new NeighborDbSource();
+    private PeerDbSource peerDbSource = new PeerDbSource();
 
 
     public Zone()
@@ -151,56 +162,277 @@ public class Zone {
      * @return the new pair of zones created by splitting this zone
      */
 
-    public void split(Node bottomLeftNode, Node topLeftNode, Node bottomRightNode, Node topRightNode) {
-
-
+    public void split(Node node1, Node node2, Node node3, Node node4) {
 
         // we split the zone along the longest side
-        if (getLengthX(bottomLeftNode) >= getLengthY(bottomLeftNode)) {
+        if (getLengthX(node1) >= getLengthY(node1)) {
 
-            Node[] nodeArray = determineLocationX(bottomLeftNode,topLeftNode,bottomRightNode,topRightNode);
+            Node[] nodeArray = determineLocationX(node1,node2,node3,node4);
 
             double midX = getLengthX(nodeArray[0]) / 2.0;
-            // set peers und neigbour und update Corner
-            Log.d("TEST_BOTTOMRight_Vorher", "NODE1: " + nodeArray[0].getMyZone().toString());
-            nodeArray[0].getBottomRight().setX(midX);
-            Log.d("TEST_BOTTOMRight_Nach", "NODE1: " + nodeArray[0].getMyZone().toString());
+            // set peers und neighbor und update Corner
 
-            nodeArray[0].getTopRight().setX(midX);
-            Log.d("TEST_TOPRight", "NODE1: " + nodeArray[0].getMyZone().toString());
+            try {
+//--------------------------------------NODE1-----------------------------------------------------------------------------------
+                Corner bottomRight1 = new Corner(midX,nodeArray[0].getMyZone().getBottomRight().getY());
+                Corner topRight1 = new Corner(midX,nodeArray[0].getMyZone().getTopRight().getY());
 
-            nodeArray[1].getTopRight().setX(midX);
-            Log.d("TEST_TOPRight", "NODE4: " + nodeArray[3].getMyZone().toString());
-            nodeArray[1].getBottomRight().setX(midX);
+                nodeArray[0].getMyZone().setBottomRight(bottomRight1);
 
-            nodeArray[2].getBottomLeft().setX(midX);
-            nodeArray[2].getTopLeft().setX(midX);
+                nodeArray[0].getMyZone().setTopRight(topRight1);
 
-            nodeArray[3].getTopLeft().setX(midX);
-            nodeArray[3].getBottomLeft().setX(midX);
+                ArrayList<PeerMemo> peerMemos1 = new ArrayList<PeerMemo>();
 
-            Log.d("TEST_NACHhER", "ARRAY: " + nodeArray[0].getMyZone().toString() + "\n" +
-                    nodeArray[1].getMyZone().toString() + "\n" +
-                    nodeArray[2].getMyZone().toString() + "\n" +
-                    nodeArray[3].getMyZone().toString() + "\n");
+                peerMemos1.clear();
+                PeerMemo peerMemo1 = new PeerMemo(nodeArray[1].getUid(),1,nodeArray[1].getIP());
 
+                peerMemos1.add(peerMemo1);
+
+                nodeArray[0].setPeerMemoList(peerMemos1);
+                nodeArray[0].setCountPeers(1);
+
+                ArrayList<Neighbour> neighbours1 = new ArrayList<Neighbour>();
+//--------------------------------------NODE2-----------------------------------------------------------------------------------
+
+                Corner bottomRight2 = new Corner(midX,nodeArray[1].getMyZone().getBottomRight().getY());
+                Corner topRight2 = new Corner(midX,nodeArray[1].getMyZone().getTopRight().getY());
+
+                nodeArray[1].getMyZone().setBottomRight(bottomRight2);
+
+                nodeArray[1].getMyZone().setTopRight(topRight2);
+
+                ArrayList<PeerMemo> peerMemos2 = new ArrayList<PeerMemo>();
+                peerMemos2.clear();
+                PeerMemo peerMemo2 = new PeerMemo(nodeArray[0].getUid(),1,nodeArray[0].getIP());
+                peerMemos2.add(peerMemo2);
+
+                nodeArray[1].setPeerMemoList(peerMemos2);
+
+                nodeArray[1].setCountPeers(1);
+
+                ArrayList<Neighbour> neighbours2 = new ArrayList<Neighbour>();
+//---------------------------------------NODE3----------------------------------------------------------------------------------
+
+                Corner bottomLeft1 = new Corner(midX,nodeArray[2].getMyZone().getBottomLeft().getY());
+                Corner topLeft1 = new Corner(midX,nodeArray[2].getMyZone().getTopLeft().getY());
+
+                nodeArray[2].getMyZone().setBottomLeft(bottomLeft1);
+
+                nodeArray[2].getMyZone().setTopLeft(topLeft1);
+
+                ArrayList<PeerMemo> peerMemos3 = new ArrayList<PeerMemo>();
+                peerMemos3.clear();
+                PeerMemo peerMemo3 = new PeerMemo(nodeArray[3].getUid(),1,nodeArray[3].getIP());
+                peerMemos3.add(peerMemo3);
+
+                nodeArray[2].setPeerMemoList(peerMemos3);
+
+                nodeArray[2].setCountPeers(1);
+
+                ArrayList<Neighbour> neighbours3 = new ArrayList<Neighbour>();
+//---------------------------------------NODE4----------------------------------------------------------------------------------
+
+                Corner bottomLeft2 = new Corner(midX,nodeArray[3].getMyZone().getBottomLeft().getY());
+                Corner topLeft2 = new Corner(midX,nodeArray[3].getMyZone().getTopLeft().getY());
+
+                nodeArray[3].getMyZone().setBottomLeft(bottomLeft2);
+
+                nodeArray[3].getMyZone().setTopLeft(topLeft2);
+
+                ArrayList<PeerMemo> peerMemos4 = new ArrayList<PeerMemo>();
+                peerMemos4.clear();
+                PeerMemo peerMemo4 = new PeerMemo(nodeArray[2].getUid(),1,nodeArray[2].getIP());
+                peerMemos4.add(peerMemo4);
+
+                nodeArray[3].setPeerMemoList(peerMemos4);
+
+                nodeArray[3].setCountPeers(1);
+
+                ArrayList<Neighbour> neighbours4 = new ArrayList<Neighbour>();
+//----------------------------------------SET-NEIGHBORS-------------------------------------------------------------------------------------
+                Neighbour neighbour1 = new Neighbour(nodeArray[2].getUid(),nodeArray[2].getPunktX(),nodeArray[2].getPunktY(),
+                        nodeArray[2].getIP(),nodeArray[2].getMyZone(),1);
+
+                neighbours1.add(neighbour1);
+                nodeArray[0].setNeighbourList(neighbours1);
+
+                neighborDbSource.createNeighborMemo(neighbour1);
+
+                Neighbour neighbour2 = new Neighbour(nodeArray[3].getUid(),nodeArray[3].getPunktX(),nodeArray[3].getPunktY(),
+                        nodeArray[3].getIP(),nodeArray[3].getMyZone(),1);
+
+                neighbours2.add(neighbour2);
+                nodeArray[1].setNeighbourList(neighbours2);
+
+                neighborDbSource.createNeighborMemo(neighbour2);
+
+                Neighbour neighbour3 = new Neighbour(nodeArray[1].getUid(),nodeArray[1].getPunktX(),nodeArray[1].getPunktY(),
+                        nodeArray[1].getIP(),nodeArray[1].getMyZone(),1);
+
+                neighbours3.add(neighbour3);
+                nodeArray[2].setNeighbourList(neighbours3);
+
+                neighborDbSource.createNeighborMemo(neighbour3);
+
+                Neighbour neighbour4 = new Neighbour(nodeArray[0].getUid(),nodeArray[0].getPunktX(),nodeArray[0].getPunktY(),
+                        nodeArray[0].getIP(),nodeArray[0].getMyZone(),1);
+
+                neighbours4.add(neighbour4);
+                nodeArray[3].setNeighbourList(neighbours4);
+
+                neighborDbSource.createNeighborMemo(neighbour4);
+
+            } catch (XMustBeLargerThanZeroException e) {
+                e.printStackTrace();
+            } catch (YMustBeLargerThanZeroException e) {
+                e.printStackTrace();
+            }catch (Exception e)
+            {
+                Log.d("EXCEPTION", "NODE4 " + e.getMessage());
+            }
         } else {
-            Node[] nodeArray = determineLocationY(bottomLeftNode,topLeftNode,bottomRightNode,topRightNode);
+            Node[] nodeArray = determineLocationY(node1,node2,node3,node4);
             double midY =  getLengthY(nodeArray[0]) / 2.0;
             // set peers und neigbour und update Corner
 
-            nodeArray[0].getTopRight().setY(midY);
-            nodeArray[0].getTopLeft().setY(midY);
+            try {
+                Corner topRight = new Corner(nodeArray[0].getMyZone().getTopRight().getX(),midY);
+                Corner topLeft = new Corner(nodeArray[0].getMyZone().getTopLeft().getX(),midY);
 
-            nodeArray[1].getBottomLeft().setY(midY);
-            nodeArray[1].getBottomRight().setY(midY);
+                nodeArray[0].getMyZone().setTopRight(topRight);
 
-            nodeArray[2].getTopRight().setY(midY);
-            nodeArray[2].getTopLeft().setY(midY);
+                nodeArray[0].getMyZone().setTopLeft(topLeft);
 
-            nodeArray[3].getBottomRight().setY(midY);
-            nodeArray[3].getBottomLeft().setY(midY);
+                ArrayList<PeerMemo> peerMemos = new ArrayList<PeerMemo>();
+                peerMemos.clear();
+                PeerMemo peerMemo = new PeerMemo(nodeArray[2].getUid(),1,nodeArray[2].getIP());
+                peerMemos.add(peerMemo);
+
+                nodeArray[0].setPeerMemoList(peerMemos);
+
+                nodeArray[0].setCountPeers(1);
+
+                ArrayList<Neighbour> neighbours = new ArrayList<Neighbour>();
+
+                Neighbour neighbour = new Neighbour(nodeArray[1].getUid(),nodeArray[1].getPunktX(),nodeArray[1].getPunktY(),
+                        nodeArray[1].getIP(),nodeArray[1].getMyZone(),1);
+                neighbours.add(neighbour);
+
+                nodeArray[0].setNeighbourList(neighbours);
+            } catch (XMustBeLargerThanZeroException e) {
+                e.printStackTrace();
+            } catch (YMustBeLargerThanZeroException e) {
+                e.printStackTrace();
+            }catch (Exception e)
+            {
+                Log.d("EXCEPTION", "NODE1 " + e.getMessage());
+            }
+
+
+            try {
+                Corner bottomLeft = new Corner(nodeArray[1].getMyZone().getBottomLeft().getX(),midY);
+                Corner bottomRight = new Corner(nodeArray[1].getMyZone().getBottomRight().getX(),midY);
+
+                nodeArray[1].getMyZone().setBottomLeft(bottomLeft);
+
+                nodeArray[1].getMyZone().setBottomRight(bottomRight);
+
+                ArrayList<PeerMemo> peerMemos = new ArrayList<PeerMemo>();
+                peerMemos.clear();
+                PeerMemo peerMemo = new PeerMemo(nodeArray[3].getUid(),1,nodeArray[3].getIP());
+                peerMemos.add(peerMemo);
+
+                nodeArray[1].setPeerMemoList(peerMemos);
+
+                nodeArray[1].setCountPeers(1);
+
+                ArrayList<Neighbour> neighbours = new ArrayList<Neighbour>();
+
+                Neighbour neighbour = new Neighbour(nodeArray[0].getUid(),nodeArray[0].getPunktX(),nodeArray[0].getPunktY(),
+                        nodeArray[0].getIP(),nodeArray[0].getMyZone(),1);
+                neighbours.add(neighbour);
+
+                nodeArray[1].setNeighbourList(neighbours);
+            } catch (XMustBeLargerThanZeroException e) {
+                e.printStackTrace();
+            } catch (YMustBeLargerThanZeroException e) {
+                e.printStackTrace();
+            }catch (Exception e)
+            {
+                Log.d("EXCEPTION", "NODE2 " + e.getMessage());
+            }
+
+            try {
+                Corner topRight = new Corner(nodeArray[2].getMyZone().getTopRight().getX(),midY);
+                Corner topLeft = new Corner(nodeArray[2].getMyZone().getTopLeft().getX(),midY);
+
+                nodeArray[2].getMyZone().setTopRight(topRight);
+
+                nodeArray[2].getMyZone().setTopLeft(topLeft);
+
+                ArrayList<PeerMemo> peerMemos = new ArrayList<PeerMemo>();
+                peerMemos.clear();
+                PeerMemo peerMemo = new PeerMemo(nodeArray[0].getUid(),1,nodeArray[0].getIP());
+                peerMemos.add(peerMemo);
+
+                nodeArray[2].setPeerMemoList(peerMemos);
+
+                nodeArray[2].setCountPeers(1);
+
+                ArrayList<Neighbour> neighbours = new ArrayList<Neighbour>();
+
+                Neighbour neighbour = new Neighbour(nodeArray[3].getUid(),nodeArray[3].getPunktX(),nodeArray[3].getPunktY(),
+                        nodeArray[3].getIP(),nodeArray[3].getMyZone(),1);
+                neighbours.add(neighbour);
+
+                nodeArray[2].setNeighbourList(neighbours);
+
+            } catch (XMustBeLargerThanZeroException e) {
+                e.printStackTrace();
+            } catch (YMustBeLargerThanZeroException e) {
+                e.printStackTrace();
+            }catch (Exception e)
+            {
+                Log.d("EXCEPTION", "NODE3 " + e.getMessage());
+            }
+
+            try {
+                Corner bottomLeft = new Corner(nodeArray[3].getMyZone().getBottomLeft().getX(),midY);
+                Corner bottomRight = new Corner(nodeArray[3].getMyZone().getBottomRight().getX(),midY);
+
+                nodeArray[3].getMyZone().setBottomLeft(bottomLeft);
+
+                nodeArray[3].getMyZone().setBottomRight(bottomRight);
+
+                ArrayList<PeerMemo> peerMemos = new ArrayList<PeerMemo>();
+                peerMemos.clear();
+                PeerMemo peerMemo = new PeerMemo(nodeArray[1].getUid(),1,nodeArray[1].getIP());
+                peerMemos.add(peerMemo);
+
+                nodeArray[3].setPeerMemoList(peerMemos);
+
+                nodeArray[3].setCountPeers(1);
+
+
+                ArrayList<Neighbour> neighbours = new ArrayList<Neighbour>();
+
+                Neighbour neighbour = new Neighbour(nodeArray[2].getUid(),nodeArray[2].getPunktX(),nodeArray[2].getPunktY(),
+                        nodeArray[2].getIP(),nodeArray[2].getMyZone(),1);
+
+                neighbours.add(neighbour);
+
+                nodeArray[3].setNeighbourList(neighbours);
+            } catch (XMustBeLargerThanZeroException e) {
+                e.printStackTrace();
+            } catch (YMustBeLargerThanZeroException e) {
+                e.printStackTrace();
+            }catch (Exception e)
+            {
+                Log.d("EXCEPTION", "NODE4 " + e.getMessage());
+            }
         }
+
+
 
     }
 

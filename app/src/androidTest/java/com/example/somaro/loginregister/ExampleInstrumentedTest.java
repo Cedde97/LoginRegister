@@ -9,9 +9,12 @@ import android.util.Log;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import app.App;
+import connection.RoutHelper;
 import exception.*;
 import model.*;
 import source.*;
@@ -35,11 +38,9 @@ public class ExampleInstrumentedTest {
     }
 
 
-
     @Test
     public void test()
     {
-
         Context appContext = InstrumentationRegistry.getTargetContext();
 
         DateiMemoDbHelper dateiMemoDbHelper = new DateiMemoDbHelper(appContext);
@@ -295,7 +296,7 @@ public class ExampleInstrumentedTest {
             neighborMemo.setRTT(25.86);
             //neighborMemo.setNeighbour_id(2);
             neighborDbSource.createNeighborMemo(neighborMemo);
-            
+
 
             neighborDbSource.updateCornerBottomLeftYNeighbor(1,0.6666666);
             neighborDbSource.updateCornerBottomLeftXNeighbor(1,0.4444444);
@@ -411,6 +412,10 @@ public class ExampleInstrumentedTest {
 
     }
 
+    /**
+     * @author Alexander Lukacs
+     *
+     */
     @Test
     public void testExist()
     {
@@ -593,6 +598,326 @@ public class ExampleInstrumentedTest {
             Log.d("", "333333 " + e.getMessage());
         }
     }
+
+
+    @Test
+    public void testSplitt_Vertical()
+    {
+
+        Context appContext = InstrumentationRegistry.getTargetContext();
+
+        DateiMemoDbHelper dateiMemoDbHelper = new DateiMemoDbHelper(appContext);
+        DatabaseManager.initializeInstance(dateiMemoDbHelper);
+
+
+        SQLiteDatabase database;
+        database = DatabaseManager.getInstance().openDatabase();
+
+        dateiMemoDbHelper.onUpgrade(database,0,dateiMemoDbHelper.DB_VERSION);
+
+        Node node1;
+        Node node2;
+        Node node3;
+        Node node4;
+
+        Neighbour neighbour1;
+        Neighbour neighbour2;
+        Neighbour neighbour3;
+        Neighbour neighbour4;
+
+        DateiMemoDbSource dateiMemoDbSource1 = new DateiMemoDbSource();
+        DateiMemoDbSource dateiMemoDbSource2 = new DateiMemoDbSource();
+        DateiMemoDbSource dateiMemoDbSource3 = new DateiMemoDbSource();
+        DateiMemoDbSource dateiMemoDbSource4 = new DateiMemoDbSource();
+
+        NeighborDbSource neighborDbSource1 = new NeighborDbSource();
+        NeighborDbSource neighborDbSource2 = new NeighborDbSource();
+        NeighborDbSource neighborDbSource3 = new NeighborDbSource();
+        NeighborDbSource neighborDbSource4 = new NeighborDbSource();
+
+        try {
+            Corner topRight = new Corner(1.0,1.0);
+            Corner topLeft = new Corner(0.0,1.0);
+            Corner bottomRight = new Corner(1.0,0.0);
+            Corner bottomLeft = new Corner(0.0,0.0);
+
+            // Man benötigt für jeden Node eine eigene Zone,
+            // damit die Aufrufe zum updaten der Corner nicht Auswirkungen auf die Corner der anderen Nodes hat
+            Zone zone = new Zone(topLeft,topRight,bottomLeft,bottomRight);
+
+            node1 = new Node(1,0.1,0.2,"1.1.1.1",3,zone);
+            node2 = new Node(2,0.9,0.8,"1.1.1.2",3,zone);
+            node3 = new Node(3,0.4,0.3,"1.1.1.3",3,zone);
+            node4 = new Node(4,0.6,0.1,"1.1.1.4",3,zone);
+
+            neighbour1 = new Neighbour(node1.getUid(),node1.getPunktX(), node1.getPunktY(), node1.getIP(), node1.getMyZone(),1);
+            neighbour2 = new Neighbour(node2.getUid(), node2.getPunktX(), node2.getPunktY(), node2.getIP(), node2.getMyZone(),1);
+            neighbour3 = new Neighbour(node3.getUid(), node3.getPunktX(), node3.getPunktY(), node3.getIP(), node3.getMyZone(),1);
+            neighbour4 = new Neighbour(node4.getUid(), node4.getPunktX(), node4.getPunktY(), node4.getIP(), node4.getMyZone(),1);
+
+
+            dateiMemoDbSource1.createDateiMemo(node1);
+            dateiMemoDbSource2.createDateiMemo(node2);
+            dateiMemoDbSource3.createDateiMemo(node3);
+            dateiMemoDbSource4.createDateiMemo(node4);
+
+
+
+            zone.split(node1,node2,node3,node4);
+
+            /*neighborDbSource1.createNeighborMemo(neighbour1);
+            neighborDbSource2.createNeighborMemo(neighbour2);
+            neighborDbSource3.createNeighborMemo(neighbour3);
+            neighborDbSource3.createNeighborMemo(neighbour4);*/
+
+            dateiMemoDbSource1.updateCornerBottomRightY(node1.getMyZone().getBottomRight().getY());
+            dateiMemoDbSource1.updateCornerBottomRightX(node1.getMyZone().getBottomRight().getX());
+            dateiMemoDbSource1.updateCornerBottomLeftX(node1.getMyZone().getBottomLeft().getX());
+            dateiMemoDbSource1.updateCornerBottomLeftY(node1.getMyZone().getBottomLeft().getY());
+            dateiMemoDbSource1.updateCornerTopRightX(node1.getMyZone().getTopRight().getX());
+            dateiMemoDbSource1.updateCornerTopRightY(node1.getMyZone().getTopRight().getY());
+            dateiMemoDbSource1.updateCornerTopLeftX(node1.getMyZone().getTopLeft().getX());
+            dateiMemoDbSource1.updateCornerTopLeftY(node1.getMyZone().getTopLeft().getY());
+
+
+            Log.d("TEST", "NEIGHBOR " + neighborDbSource1.getAllNeighborMemo());
+
+            Log.d("TEST","NODE1: " + dateiMemoDbSource1.getAllDateiMemos());
+            Log.d("TEST",node1.getNeighbourList().toString());
+
+        } catch (XMustBeLargerThanZeroException e) {
+            e.printStackTrace();
+        } catch (YMustBeLargerThanZeroException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testSplitt_Horizontal()
+    {
+
+        Context appContext = InstrumentationRegistry.getTargetContext();
+
+        DateiMemoDbHelper dateiMemoDbHelper = new DateiMemoDbHelper(appContext);
+        DatabaseManager.initializeInstance(dateiMemoDbHelper);
+
+        Node node1;
+        Node node2;
+        Node node3;
+        Node node4;
+
+        try {
+            Corner topRight = new Corner(1.0,1.0);
+            Corner topLeft = new Corner(0.0,1.0);
+            Corner bottomRight = new Corner(1.0,0.0);
+            Corner bottomLeft = new Corner(0.0,0.0);
+
+            // Man benötigt für jeden Node eine eigene Zone,
+            // damit die Aufrufe zum updaten der Corner nicht Auswirkungen auf die Corner der anderen Nodes hat
+            Zone zone = new Zone(topLeft,topRight,bottomLeft,bottomRight);
+
+            node1 = new Node(1,0.1,0.2,"1.1.1.1",3,zone);
+            node2 = new Node(2,0.9,0.8,"1.1.1.2",3,zone);
+            node3 = new Node(3,0.4,0.3,"1.1.1.3",3,zone);
+            node4 = new Node(4,0.6,0.1,"1.1.1.4",3,zone);
+
+
+            zone.split(node1,node2,node3,node4);
+            zone.split(node1,node2,node3,node4);
+
+            Log.d("TEST", "NODE1: " + node1.getMyZone());
+            Log.d("TEST", "NODE2: " + node2.getMyZone());
+            Log.d("TEST", "NODE3: " + node3.getMyZone());
+            Log.d("TEST", "NODE4: " + node4.getMyZone());
+
+        } catch (XMustBeLargerThanZeroException e) {
+            e.printStackTrace();
+        } catch (YMustBeLargerThanZeroException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void test_Node_checkIfInMyZone_True()
+    {
+        Node node = new Node();
+        Corner cornerBottomLeft;
+        Corner cornerBottomRight;
+        Corner cornerTopLeft;
+        Corner cornerTopRight;
+        Zone zone;
+        try {
+            cornerBottomLeft = new Corner(0.0,0.0);
+            cornerBottomRight = new Corner(1.0,0.0);
+            cornerTopLeft = new Corner(0.0,1.0);
+            cornerTopRight = new Corner(1.0,1.0);
+            zone = new Zone(cornerTopLeft,cornerTopRight,cornerBottomLeft,cornerBottomRight);
+
+            System.out.print("IP: 192.111.23.4 = " + node.hashX("192.111.23.4") + ", " + node.hashY("192.111.23.4") + "\n");
+            System.out.print("IP: 255.255.255.255 = " +node.hashX("255.255.255.255") + ", " + node.hashY("255.255.255.255") + "\n");
+            System.out.print("IP: 180.1.23.123 = " +node.hashX("180.1.23.123") + ", " + node.hashY("180.1.23.123") + "\n");
+            System.out.print("IP: 12.191.3.255 = " +node.hashX("12.191.3.255") + ", " + node.hashY("12.191.3.255") + "\n");
+            System.out.print("IP: 1.111.223.34 = " +node.hashX("1.111.223.34") + ", " + node.hashY("1.111.223.34") + "\n");
+            System.out.print("IP: 0.0.0.0 = " +node.hashX("0.0.0.0") + ", " + node.hashY("0.0.0.0") + "\n");
+            System.out.print("IP: 78.31.3.129 = " +node.hashX("78.31.3.129") + ", " + node.hashY("78.31.3.129") + "\n");
+            System.out.print("IP: 111.111.111.111 = " +node.hashX("111.111.111.111") + ", " + node.hashY("111.111.111.111") + "\n");
+            System.out.print("IP: 222.222.222.222 = " +node.hashX("222.222.222.222") + ", " + node.hashY("222.222.222.222") + "\n");
+            System.out.print("IP: 12.191.10.255 = " +node.hashX("12.191.10.255") + ", " + node.hashY("12.191.10.255") + "\n");
+            System.out.print("IP: 12.191.11.255 = " +node.hashX("12.191.11.255") + ", " + node.hashY("12.191.11.255") + "\n");
+            System.out.print("IP: 12.191.12.255 = " +node.hashX("12.191.12.255") + ", " + node.hashY("12.191.12.255") + "\n");
+            System.out.print("IP: 12.255.255.255 = " +node.hashX("12.191.13.255") + ", " + node.hashY("12.191.13.255") + "\n");
+
+            assertEquals(true, zone.checkIfInMyZone(node.hashX("192.111.23.4"), node.hashY("192.111.23.4")));
+            assertEquals(true, zone.checkIfInMyZone(node.hashX("180.1.23.123"), node.hashY("180.1.23.123")));
+            assertEquals(true, zone.checkIfInMyZone(node.hashX("12.191.3.255"), node.hashY("12.191.3.255")));
+            assertEquals(true, zone.checkIfInMyZone(node.hashX("1.111.223.34"), node.hashY("1.111.223.34")));
+            assertEquals(true, zone.checkIfInMyZone(node.hashX("255.255.255.255"), node.hashY("255.255.255.255")));
+            assertEquals(true, zone.checkIfInMyZone(node.hashX("0.0.0.0"), node.hashY("0.0.0.0")));
+            assertEquals(true, zone.checkIfInMyZone(node.hashX("78.31.3.129"), node.hashY("78.31.3.129")));
+
+        }
+        catch(XMustBeLargerThanZeroException xMBLTZE)
+        {
+
+        }catch(YMustBeLargerThanZeroException yMBLTZE)
+        {
+
+        }catch( Exception e)
+        {
+
+        }
+    }
+    @Test
+    public void test_Node_checkIfInMyZone_False()
+    {
+        Node node = new Node();
+        Corner cornerBottomLeft;
+        Corner cornerBottomRight;
+        Corner cornerTopLeft;
+        Corner cornerTopRight;
+        Zone zone;
+        try {
+            cornerBottomLeft = new Corner(0.7,0.3);
+            cornerBottomRight = new Corner(0.8,0.3);
+            cornerTopLeft = new Corner(0.7 ,0.8);
+            cornerTopRight = new Corner(0.8,0.8);
+            zone = new Zone(cornerTopLeft,cornerTopRight,cornerBottomLeft,cornerBottomRight);
+
+            System.out.print(node.hashX("192.111.23.4") + ", " + node.hashY("192.111.23.4") + "\n");
+            System.out.print(node.hashX("255.255.255.255") + ", " + node.hashY("255.255.255.255") + "\n");
+            System.out.print(node.hashX("0.0.0.0") + ", " + node.hashY("0.0.0.0") + "\n");
+            System.out.print(node.hashX("78.31.3.129") + ", " + node.hashY("78.31.3.129") + "\n");
+            assertEquals(false, zone.checkIfInMyZone(node.hashX("192.111.23.4"), node.hashY("192.111.23.4")));
+            assertEquals(false, zone.checkIfInMyZone(node.hashX("255.255.255.255"), node.hashY("255.255.255.255")));
+            assertEquals(false, zone.checkIfInMyZone(node.hashX("0.0.0.0"), node.hashY("0.0.0.0")));
+            assertEquals(false, zone.checkIfInMyZone(node.hashX("78.31.3.129"), node.hashY("78.31.3.129")));
+
+        }catch(XMustBeLargerThanZeroException xMBLTZE)
+        {
+
+        }catch(YMustBeLargerThanZeroException yMBLTZE)
+        {
+
+        }catch( Exception e)
+        {
+
+        }
+    }
+
+    @Test
+    public void test_ComputeDistance()
+    {
+        Node node = new Node();
+        double x = node.hashX("192.111.23.4");
+        double y = node.hashY("192.111.23.4");
+        System.out.println(node.computeDistance(node.hashX("12.191.25.255"),node.hashY("12.191.25.255") ,node.hashX("12.191.10.255"),node.hashY("12.191.10.255")));
+        System.out.println(node.computeDistance(x ,y ,node.hashX("12.191.9.255"),node.hashY("12.191.9.255")));
+        System.out.println(node.computeDistance(x ,y ,node.hashX("1.1.1.100"),node.hashY("1.1.1.100")));
+        System.out.println(node.computeDistance(x ,y ,node.hashX("12.191.10.255"),node.hashY("12.191.10.255")));
+        System.out.println(node.computeDistance(x ,y ,node.hashX("12.191.11.255"),node.hashY("12.191.11.255")));
+        System.out.println(node.computeDistance(x ,y ,node.hashX("12.191.12.255"),node.hashY("12.191.12.255")));
+        System.out.println(node.computeDistance(x ,y ,node.hashX("12.191.13.255"),node.hashY("12.191.13.255")));
+        System.out.println(node.computeDistance(x ,y ,node.hashX("0.0.0.0"),node.hashY("0.0.0.0")));
+        System.out.println(node.computeDistance(x ,y ,node.hashX("255.255.255.255"),node.hashY("255.255.255.255")));
+        System.out.println(node.computeDistance(x ,y ,node.hashX("78.31.3.129"),node.hashY("78.31.3.129")));
+    }
+
+    @Test
+    public void test_CompareValues()
+    {
+        Node node = new Node();
+        double x = node.hashX("192.111.23.4");
+        double y = node.hashY("192.111.23.4");
+        double dis[] = new double[4];
+        dis [0] = node.computeDistance(x ,y ,node.hashX("12.191.10.255"),node.hashY("12.191.10.255"));
+        dis [1] = node.computeDistance(x ,y ,node.hashX("12.191.11.255"),node.hashY("12.191.11.255"));
+        dis [2] = node.computeDistance(x ,y ,node.hashX("12.191.12.255"),node.hashY("12.191.12.255"));
+        dis [3] = node.computeDistance(x ,y ,node.hashX("12.191.13.255"),node.hashY("12.191.13.255"));
+        System.out.println(node.computeDistance(x ,y ,node.hashX("12.191.10.255"),node.hashY("12.191.10.255")));
+        System.out.println(node.computeDistance(x ,y ,node.hashX("12.191.11.255"),node.hashY("12.191.11.255")));
+        System.out.println(node.computeDistance(x ,y ,node.hashX("12.191.12.255"),node.hashY("12.191.12.255")));
+        System.out.println(node.computeDistance(x ,y ,node.hashX("12.191.13.255"),node.hashY("12.191.13.255")));
+        System.out.println(node.compareValues(dis));
+        assertEquals(1, node.compareValues(dis));
+    }
+
+    @Test
+    public void test_UpdateNeighbourAndPeer() throws YMustBeLargerThanZeroException, XMustBeLargerThanZeroException, IOException {
+        List<Neighbour> neighbourList = new ArrayList<>();
+        List<PeerMemo> peerMemoList = new ArrayList<>();
+        String ip = "192.168.2.115";
+
+        Corner cornerBottomLeft1 = new Corner(0.0,0.0);
+        Corner cornerBottomRight1 = new Corner(0.5,0.0);
+        Corner cornerTopLeft1 = new Corner(0.0,1.0);
+        Corner cornerTopRight1 = new Corner(0.5,1.0);
+
+        Corner cornerBottomLeft2 = new Corner(0.5,0.0);
+        Corner cornerBottomRight2 = new Corner(1.0,0.0);
+        Corner cornerTopLeft2 = new Corner(0.5,1.0);
+        Corner cornerTopRight2 = new Corner(1.0,1.0);
+
+        Zone zone = new Zone(cornerTopLeft1,cornerTopRight1,cornerBottomLeft1,cornerBottomRight1);
+        Zone neighbourZone = new Zone(cornerTopLeft2, cornerTopRight2, cornerBottomLeft2, cornerBottomRight2);
+        Neighbour n = new Neighbour(03l,0.4,0.5,ip,zone,0.5);
+        Neighbour n1 = new Neighbour(03l,0.5,0.5,ip,neighbourZone,0.5);
+        PeerMemo p = new PeerMemo(03l,93,ip);
+        neighbourList.add(n);
+        neighbourList.add(n1);
+        peerMemoList.add(p);
+
+
+        Node node = new Node(01,0.5,0.5,ip,2,zone);
+        node.setNeighbourList(neighbourList);
+        node.setPeerMemoList(peerMemoList);
+        RoutHelper rh = new RoutHelper(ip,0.3,0.5,02);
+
+        Node neuerNode = node.routing(rh);
+        System.out.println(neuerNode.toString());
+
+    }
+  /*  @Test
+    public void testSendIPAddress() throws IOException {
+        Client client = new Client();
+        try{
+            client.sendeAlles("127.0.0.1","hashX","192.101.101.1",0.3,0.88766,2);
+
+        }catch(UnknownHostException e){
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void receivingServer() throws IOException {
+        Server server = new Server();
+        server.start();
+
+    }
+*/
+
+}
 //    @Test
 //    public void TestUpdateCorner() {
 //
@@ -806,4 +1131,3 @@ public class ExampleInstrumentedTest {
 //        }
 //
 //    }
-}

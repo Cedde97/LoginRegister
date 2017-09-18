@@ -88,7 +88,7 @@ public class ParserTest {
 
                     Zone zone = new Zone(corner,corner1,corner2,corner3);
 
-                    Node oldNode = new Node(01l, 0.1, 0.1, "192.168.2.115", 2, zone);
+                    Node oldNode = new Node(01, 0.1, 0.1, "192.168.2.115", 2, zone);
 
                     Node nodeNew = oldNode.routing(rh);
 

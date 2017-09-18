@@ -32,7 +32,7 @@ public class Node {
 
     private NeighborDbSource nDB = new NeighborDbSource();
     private PeerDbSource pDB     = new PeerDbSource();
-    private long   uid;
+    private int   uid;
     private double punktX;
     private double punktY;
     private String iP;
@@ -69,13 +69,13 @@ public class Node {
      * @param iP IP des Gerätes auf dem die APP läuft
      * @param countPeers Anzahl der Peers
      */
-    public Node(long uid, double punktX, double punktY, String iP, int countPeers, Zone ownZone) {
+    public Node(int uid, double punktX, double punktY, String iP, int countPeers, Zone ownZone) {
         this.uid                 = uid;
         this.punktX              = punktX;
         this.punktY              = punktY;
         this.iP                  = iP;
         this.countPeers          = countPeers;
-        this.ownZone             = ownZone;
+        this.ownZone             = new Zone(ownZone.getTopLeft(),ownZone.getTopRight(),ownZone.getBottomLeft(),ownZone.getBottomRight()); //ownZone;
     }
 
 
@@ -86,7 +86,7 @@ public class Node {
      * @param ip Anhand der IP wird ein x-Wert berechnet
      * @return Gebe einen double X-Wert zurÃ¼ck
      */
-    public static double hashX(String ip) {
+    /*public static double hashX(String ip) {
         double x = ip.hashCode();
         if(x < 0){
             x = x/(-DIVIDER);
@@ -95,15 +95,34 @@ public class Node {
             x = x/DIVIDER;
             return x;
         }
+    }*/
+
+    public static double hashX(String ip)
+    {
+        String xWert =  ip;
+        double hashX = Double.parseDouble("0." + hash(xWert));
+        return hashX;
     }
 
+    public static double hashY(String ip)
+    {
+        String yWert = umkehren(ip);
+        double hashY = Double.parseDouble("0." + hash(yWert));
+        return hashY;
+    }
+
+
+    private static int hash(String hashWert)
+    {
+        return Math.abs(hashWert.hashCode());
+    }
     /**
      * Diese Methode liefert einen Y-Wert der zwischen 0 und 1 liegt
      * Es wird durch 2552552552l geteilt, da so die Werte zwischen 0 und 1 liegen und die IP wird von hinten nach vorne gelesen durch Methode-Umkehren
      * @param ip Anhand der IP wird ein Y-Wert berechnet
      * @return Gebe einen double Y-Wert zurÃ¼ck
      */
-    public static double hashY(String ip){
+    /*public static double hashY(String ip){
         String hash2 = umkehren(ip);
         double y = hash2.hashCode();
         if(y < 0){
@@ -113,7 +132,7 @@ public class Node {
             y = y/DIVIDER;
             return y;
         }
-    }
+    }*/
 
     /**
      * Methode zum umkehren von einer IP-Adresse
@@ -193,7 +212,7 @@ public class Node {
             newNode.getNeighbourList().addAll(neighbourList);
             if(peerMemoList != null){
                 //setzte die PeerList des neuen Knoten auf seinsy;
-                PeerMemo pm = new PeerMemo((int)getUid(),getIP());
+                PeerMemo pm = new PeerMemo(getUid(),getIP());
                 newNode.getPeerMemoList().add(pm);
                 newNode.setCountPeers(getPeerMemoList().size());
             }
@@ -464,11 +483,11 @@ public class Node {
     }
 
 
-    public long getUid() {
+    public int getUid() {
         return uid;
     }
 
-    public void setUid(long uid) {
+    public void setUid(int uid) {
         this.uid = uid;
     }
 
@@ -570,7 +589,7 @@ public class Node {
         if(neighbourList != null && peerMemoList != null) {
             sb.append("\n\nNode: " + "\nUserId: " + uid + "\nPunktX: " + punktX + "\nPunktY: " + punktY + "\nIP: " + iP +
                     "\ncountPeers: " + countPeers + "\nOwn Zone: " + getMyZone().toString() +
-                    "\n\nNeighbourList: " + neighbourList.toString() + "\n\nPeerList: " + peerMemoList.toString() + "\n");
+                    "\n\nNeighbourList: " + getNeighbourList().toString() + "\n\nPeerList: " + getPeerMemoList().toString() + "\n");
 
             return sb.toString();
         }

@@ -13,6 +13,8 @@ import android.database.Cursor;
 import exception.XMustBeLargerThanZeroException;
 import exception.YMustBeLargerThanZeroException;
 import model.Corner;
+import model.Neighbour;
+import model.Zone;
 import source.DateiMemoDbHelper;
 import model.Node;
 import source.DatabaseManager;
@@ -115,7 +117,7 @@ public class DateiMemoDbSource {
     *
     *
     * */
-    public int createDateiMemo(Node dateiMemo) {
+    public void createDateiMemo(Node dateiMemo) {
         database = DatabaseManager.getInstance().openDatabase();
         ContentValues values = new ContentValues();
         values.put(DateiMemoDbHelper.COLUMN_UID, dateiMemo.getUid());
@@ -137,12 +139,9 @@ public class DateiMemoDbSource {
         //insert row
         //insert muss long
         //
-        int data_Id;
-        data_Id = (int)database.insert(DateiMemoDbHelper.TABLE_DATEI_LIST, null, values);
+
+        database.insert(DateiMemoDbHelper.TABLE_DATEI_LIST, null, values);
         DatabaseManager.getInstance().closeDatabase();
-
-
-        return data_Id;
     }
 
 
@@ -777,7 +776,7 @@ public class DateiMemoDbSource {
     *
     *
     * */
-    public String getIp(long dateiMemo_Id) {
+    public String getIp(int dateiMemo_Id) {
         database = DatabaseManager.getInstance().openDatabase();
         String selectQuery = "SELECT "+ DateiMemoDbHelper.COLUMN_IP +" FROM " + DateiMemoDbHelper.TABLE_DATEI_LIST +
                 " WHERE " + DateiMemoDbHelper.COLUMN_UID + " = " + dateiMemo_Id;
@@ -840,9 +839,12 @@ public class DateiMemoDbSource {
         Corner topRight = null;
         Corner bottomLeft = null;
         Corner bottomRight = null;
+
+        NeighborDbSource neighborDbSource = new NeighborDbSource();
+        PeerDbSource peerDbSource = new PeerDbSource();
+
         if (cursor.moveToFirst()) {
             do {
-                // DIESER NODE HAT KEINE CORNER DESHALB NULL POINTER
                 dateiMemo = new Node();
                 try {
                     topLeft = new Corner(cursor.getDouble(cursor.getColumnIndex(dbHelper.COLUMN_CORNERTOPLEFTX)),
@@ -858,7 +860,7 @@ public class DateiMemoDbSource {
                 } catch (YMustBeLargerThanZeroException e) {
                     e.printStackTrace();
                 }
-                dateiMemo.setUid(cursor.getLong(cursor.getColumnIndex(dbHelper.COLUMN_UID)));
+                dateiMemo.setUid(cursor.getInt(cursor.getColumnIndex(dbHelper.COLUMN_UID)));
                 //dateiMemo.setChecked(isChecked);
                 dateiMemo.setTopLeft(topLeft);
                 dateiMemo.setTopRight(topRight);
@@ -868,6 +870,8 @@ public class DateiMemoDbSource {
                 dateiMemo.setPunktY(cursor.getDouble(cursor.getColumnIndex(dbHelper.COLUMN_PUNKTY)));
                 dateiMemo.setIP(cursor.getString(cursor.getColumnIndex(dbHelper.COLUMN_IP)));
                 dateiMemo.setCountPeers(cursor.getInt(cursor.getColumnIndex(dbHelper.COLUMN_COUNTPEERS)));
+                dateiMemo.setNeighbourList(neighborDbSource.getAllNeighborMemo());
+                dateiMemo.setPeerMemoList(peerDbSource.getAllPeer());
 
 
                 // Add book to books
@@ -901,7 +905,7 @@ public class DateiMemoDbSource {
         if (cursor.moveToFirst()) {
             do {
                 dateiMemo = new Node();
-                dateiMemo.setUid(cursor.getLong(cursor.getColumnIndex(dbHelper.COLUMN_UID)));
+                dateiMemo.setUid(cursor.getInt(cursor.getColumnIndex(dbHelper.COLUMN_UID)));
                 //dateiMemo.setChecked(isChecked);
                 dateiMemo.getTopLeft().setX(cursor.getDouble(cursor.getColumnIndex(dbHelper.COLUMN_CORNERTOPLEFTX)));
                 dateiMemo.getTopLeft().setY(cursor.getDouble(cursor.getColumnIndex(dbHelper.COLUMN_CORNERTOPLEFTY)));

@@ -4,10 +4,10 @@ public class RoutHelper implements java.io.Serializable {
 
     protected String ip;
     protected double x,y;
-    protected long id;
+    protected int id;
 
 
-    public RoutHelper(String ip, double x, double y, long id){
+    public RoutHelper(String ip, double x, double y, int id){
         this.ip = ip;
         this.x  = x;
         this.y  = y;
@@ -33,7 +33,7 @@ public class RoutHelper implements java.io.Serializable {
         return y;
     }
 
-    public long getID(){
+    public int getID(){
         return id;
     }
 }

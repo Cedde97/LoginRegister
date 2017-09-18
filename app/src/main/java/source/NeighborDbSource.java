@@ -55,7 +55,8 @@ public class NeighborDbSource {
     };
 
     public NeighborDbSource(){
-        neighborMemo = new Neighbour();
+
+        //neighborMemo = new Neighbour();
     }
 
 
@@ -141,14 +142,14 @@ public class NeighborDbSource {
         ContentValues values = new ContentValues();
         values.put(DateiMemoDbHelper.COLUMN_NID, neighborMemo.getUid());
         //values.put(DateiMemoDbHelper.COLUMN_CHECKED, neighborMemo.isChecked());
-        values.put(DateiMemoDbHelper.COLUMN_CORNERTOPLEFTX, neighborMemo.getCornerTopLeftX());
-        values.put(DateiMemoDbHelper.COLUMN_CORNERTOPLEFTY, neighborMemo.getCornerTopLeftY());
-        values.put(DateiMemoDbHelper.COLUMN_CORNERTOPRIGHTX, neighborMemo.getCornerTopRightX());
-        values.put(DateiMemoDbHelper.COLUMN_CORNERTOPRIGHTY, neighborMemo.getCornerTopRightY());
-        values.put(DateiMemoDbHelper.COLUMN_CORNERBOTTOMLEFTX, neighborMemo.getCornerBottomLeftX());
-        values.put(DateiMemoDbHelper.COLUMN_CORNERBOTTOMLEFTY, neighborMemo.getCornerBottomLeftY());
-        values.put(DateiMemoDbHelper.COLUMN_CORNERBOTTOMRIGHTX, neighborMemo.getCornerBottomRightX());
-        values.put(DateiMemoDbHelper.COLUMN_CORNERBOTTOMRIGHTY, neighborMemo.getCornerBottomRightY());
+        values.put(DateiMemoDbHelper.COLUMN_CORNERTOPLEFTX, neighborMemo.getTopLeft().getX());
+        values.put(DateiMemoDbHelper.COLUMN_CORNERTOPLEFTY, neighborMemo.getTopLeft().getY());
+        values.put(DateiMemoDbHelper.COLUMN_CORNERTOPRIGHTX, neighborMemo.getTopRight().getX());
+        values.put(DateiMemoDbHelper.COLUMN_CORNERTOPRIGHTY, neighborMemo.getTopRight().getY());
+        values.put(DateiMemoDbHelper.COLUMN_CORNERBOTTOMLEFTX, neighborMemo.getBottomLeft().getX());
+        values.put(DateiMemoDbHelper.COLUMN_CORNERBOTTOMLEFTY, neighborMemo.getBottomLeft().getY());
+        values.put(DateiMemoDbHelper.COLUMN_CORNERBOTTOMRIGHTX, neighborMemo.getBottomRight().getX());
+        values.put(DateiMemoDbHelper.COLUMN_CORNERBOTTOMRIGHTY, neighborMemo.getBottomRight().getY());
         values.put(DateiMemoDbHelper.COLUMN_PUNKTX, neighborMemo.getPunktX());
         values.put(DateiMemoDbHelper.COLUMN_PUNKTY, neighborMemo.getPunktY());
         values.put(DateiMemoDbHelper.COLUMN_UIP, neighborMemo.getUIP());

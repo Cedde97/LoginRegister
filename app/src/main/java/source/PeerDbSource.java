@@ -44,7 +44,8 @@ public class PeerDbSource {
     };
 
     public PeerDbSource(){
-        peerMemo = new PeerMemo();
+
+        //peerMemo = new PeerMemo();
     }
 
 

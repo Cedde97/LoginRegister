@@ -41,7 +41,8 @@ public class ForeignDataDbSource {
     };
 
     public ForeignDataDbSource(){
-        foreignData = new ForeignData();
+
+        //foreignData = new ForeignData();
     }
 
     /*

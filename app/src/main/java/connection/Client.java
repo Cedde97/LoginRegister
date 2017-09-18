@@ -3,6 +3,9 @@ import android.util.Log;
 
 import connection.RoutHelper;
 import model.*;
+import source.DatabaseManager;
+import source.DateiMemoDbHelper;
+
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -13,9 +16,8 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 
-
-
 public class Client {
+
 
 	protected static final int portNr = 9797;
 	Serialization serialization = new Serialization();

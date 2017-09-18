@@ -171,10 +171,10 @@ public class LogicTest {
         peerMemoList.add(p);
 
 
-        Node node = new Node(01l,0.5,0.5,ip,2,zone);
+        Node node = new Node(01,0.5,0.5,ip,2,zone);
         node.setNeighbourList(neighbourList);
         node.setPeerMemoList(peerMemoList);
-        RoutHelper rh = new RoutHelper(ip,0.3,0.5,02l);
+        RoutHelper rh = new RoutHelper(ip,0.3,0.5,02);
 
         Node neuerNode = node.routing(rh);
         System.out.println(neuerNode.toString());

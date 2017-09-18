@@ -153,7 +153,7 @@ public String getPhotoId( ){
                 Log.d("ownIP: ", ownIP);
                 //uid holen
                 //Daten des zu routenden Knoten
-                RoutHelper rh = new RoutHelper(ownIP, Node.hashX(ownIP), Node.hashY(ownIP), 02l);
+                RoutHelper rh = new RoutHelper(ownIP, Node.hashX(ownIP), Node.hashY(ownIP), 02);
                 Log.d("Routhelper: ", rh.toString());
 
                 //senden des RoutHelper-Objectes
