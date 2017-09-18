@@ -344,7 +344,7 @@ public class PeerDbSource {
                 peerMemo.setPeerId(cursor.getLong(cursor.getColumnIndex(dbHelper.COLUMN_PEERID)));
 
 
-                // Add book to books
+                // Add Peer to PeerList
                 PeerMemoList.add(peerMemo);
             } while (cursor.moveToNext());
         }
