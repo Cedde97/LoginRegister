@@ -33,6 +33,8 @@ public class PeerDbSource {
     private DateiMemoDbSource dateiMemoDbSource = new DateiMemoDbSource();
     private PeerMemo peerMemo;
 
+    private static final int    maxPeers= 3;
+
 
 
     //neue Array String für Peer
@@ -156,6 +158,13 @@ public class PeerDbSource {
         DatabaseManager.getInstance().closeDatabase();
         //Log.d(LOG_TAG, "Eintrag gelöscht! ID: " + peerMemo.getUid() + " Inhalt: " + peerMemo.toString());
     }
+
+    public void deleteEachPeer(int peer_id){
+        database = DatabaseManager.getInstance().openDatabase();
+        database.delete(DateiMemoDbHelper.TABLE_PEER_LIST,
+                DateiMemoDbHelper.COLUMN_PEERID +" = "+ peer_id,
+                null);
+    }
     /*
     *
     * ==================================================================================================================
@@ -221,7 +230,7 @@ public class PeerDbSource {
         if (getPeersCount() == 0){
             System.out.println("No more Peers");
         }
-        deletePeerMemo();
+        deleteEachPeer(maxPeers);
         return getPeersCount();
     }
 
@@ -336,7 +345,7 @@ public class PeerDbSource {
                 peerMemo.setPeerId(cursor.getLong(cursor.getColumnIndex(dbHelper.COLUMN_PEERID)));
 
 
-                // Add book to books
+                // Add Peer to PeerList
                 PeerMemoList.add(peerMemo);
             } while (cursor.moveToNext());
         }

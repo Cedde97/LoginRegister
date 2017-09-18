@@ -129,7 +129,7 @@ public class Server {
 
 		byte[] bufferBody = serialization.getByteData(buffer);
 
-		list = serialization.deserializeList(bufferBody);
+		list = serialization.deserializePeerMemoList(bufferBody);
 
 		return list;
 	}
@@ -140,7 +140,7 @@ public class Server {
 
 		byte[] bufferBody = serialization.getByteData(buffer);
 
-		list = serialization.deserializeList(bufferBody);
+		list = serialization.deserializeNeighbourList(bufferBody);
 
 		return list;
 	}

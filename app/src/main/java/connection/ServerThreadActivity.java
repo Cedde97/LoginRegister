@@ -2,34 +2,29 @@ package connection;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 
-import org.json.JSONException;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.List;
 
-import exception.XMustBeLargerThanZeroException;
-import exception.YMustBeLargerThanZeroException;
-import model.Corner;
 import model.ForeignData;
 import model.Neighbour;
 import model.Node;
 import model.PeerMemo;
-import model.Zone;
+
+import source.DatabaseManager;
+import source.DateiMemoDbHelper;
+import source.ForeignDataDbSource;
 import source.NeighborDbSource;
 import source.PeerDbSource;
-import task.HashXTask;
-import task.HashYTask;
-import task.RoutingTask;
-import task.UpdateNeighbourDbTask;
+
 
 /**
  * Created by Cedric on 06.09.2017.
@@ -49,19 +44,34 @@ public class ServerThreadActivity extends Activity {
 
     private Socket socket = null;
     private Server server = new Server();
+
+    private static Context appContext;
+    private static DateiMemoDbHelper dbHelper;
+
     private NeighborDbSource nDB = new NeighborDbSource();
     private PeerDbSource pDB = new PeerDbSource();
+    private ForeignDataDbSource fDB = new ForeignDataDbSource();
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         new ServerThread().execute();
+
+        //===============================================
+        appContext = this.getApplicationContext();
+        dbHelper = new DateiMemoDbHelper(appContext);
+        DatabaseManager.initializeInstance(dbHelper);
+        //===============================================
+
     }
 
 
     class ServerThread extends AsyncTask<String, String, String> {
+
+
         protected String doInBackground(String... args) {
+
             Serialization serialization = new Serialization();
             ServerSocket ss = null;
             Node node = null;
@@ -126,11 +136,9 @@ public class ServerThreadActivity extends Activity {
                         Log.d("Routing: ", "");
 
                         RoutHelper rh = server.getRoutHelper(buffer);
-                        Node nodeNew = serialization.getSerialzedNode().routing(rh);
-                        if (nodeNew != null) {
-                            //starte node transfer
-                        }
-                        Log.d("nodeNew ", nodeNew.toString());
+
+
+                        Log.d("nodeNew ", " "+ rh.toString());
 
                     }
 
@@ -140,6 +148,7 @@ public class ServerThreadActivity extends Activity {
                         ArrayList<PeerMemo> list = server.getListPeer(buffer);
                         PeerMemo p = null, p1 =null, p2 = null;
                         int i = list.size();
+                        Log.d("PeerList filled", " "+list.toString());
 
                         if(i == 1){
                             p = list.get(i--);
@@ -160,49 +169,62 @@ public class ServerThreadActivity extends Activity {
 
                     case NEIGHBOURLIST: {
                         Log.d("NeighbourList:", "");
-                        int i, count = 0;
+                        int i;
                         ArrayList<Neighbour> list = server.getListNeighbour(buffer);
                         Neighbour n = null, n1 = null, n2 = null, n3 = null;
                         i = list.size();
-
-
-                        if(i == 1){
+                        Log.d("NeighbourList filled", " "+list.toString());
+/*
+                        if (i == 1) {
                             n = list.get(i--);
-                        }else if(i>1){
+                        } else if (i > 1) {
                             n1 = list.get(i--);
                             if (i > 1) {
                                 n2 = list.get(i--);
-                                if(i>=1){
+                                if (i >= 1) {
                                     n3 = list.get(i);
                                 }
                             }
-                        }else{
+                        } else {
 
-                        }
-                        Log.d("NeighBOUUUUUUUR", ""+nDB.getAllNeighborMemo().toString());
-                        startUpdateNeighbours(n,n1,n2,n3);
+                        }*/
+                        startUpdateNeighbours(n, n1, n2, n3);
+                        Log.d("NeighBOUUUUUUUR", "" + nDB.getAllNeighborMemo().toString());
+
                         //Log.d("List: ",  list.toString());
+
+                    }
+
+                    case FOREIGNTRANS: {
+                        Log.d("ForeignTransfer","");
+                        int i;
+                        ForeignData fd = server.getForeignData(buffer);
+                        fDB.createForeignData(fd);
+                        Log.d("ForeignTransfer","after Create");
 
                     }
 
                 }
 
-            ss.close();
-        }catch(Exception e){
-            e.printStackTrace();
-        } finally{
-            try {
-                if (ss != null)
-                    ss.close();
-                Log.d("ServerSocket closed", "");
-            } catch (IOException e) {
+                ss.close();
+            }catch(Exception e){
                 e.printStackTrace();
-            }
-        }
-            return null;
-    }
+            } finally{
+                try {
+                    if (ss != null)
+                        ss.close();
+                    Log.d("ServerSocket closed", "");
 
-}
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            return null;
+        }
+
+    }
 
 
 

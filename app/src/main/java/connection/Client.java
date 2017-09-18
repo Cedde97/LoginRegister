@@ -110,7 +110,7 @@ public class Client {
 
 		this.socket = socket;
 
-		byte[] buffer = serialization.fillListByteArray(list);
+		byte[] buffer = serialization.fillPeerMemoListByteArray(list);
 
 		sendByteArray(socket, buffer);
 	}
@@ -119,7 +119,7 @@ public class Client {
 
 		this.socket = socket;
 
-		byte[] buffer = serialization.fillListByteArrayNeighbour(list);
+		byte[] buffer = serialization.fillNeighbourListByteArray(list);
 
 		sendByteArray(socket, buffer);
 	}

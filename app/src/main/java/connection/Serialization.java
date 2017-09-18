@@ -29,7 +29,7 @@ public class Serialization {
 	protected static final int STR_SEND_PEERMEMO                = 5;
 	protected static final int STR_SEND_FOREIGNDATA             = 6;
 	protected static final int RESERVED_BYTES_FOR_METHOD_CALL   = 1;
-	protected static final int STR_SEND_LIST                    = 9;
+	protected static final int STR_SEND_LIST_PEERMEMO           = 9;
 	protected static final int STR_SEND_LIST_NEIGHBOUR          = 11;
 
 
@@ -301,6 +301,7 @@ public class Serialization {
 	}
 
 
+
 	protected byte[] serializeForeignData(ForeignData foreignData){
 
 		byte[] buffer = null;
@@ -343,7 +344,7 @@ public class Serialization {
 
 	}
 
-	protected static byte[] serializeList(ArrayList list){
+	protected static byte[] serializeNeighbourList(ArrayList<Neighbour> list){
 
 
 		byte[] buffer = null;
@@ -364,16 +365,17 @@ public class Serialization {
 		return buffer;
 	}
 
-	protected ArrayList deserializeList(byte[] buffer){
+	protected ArrayList<Neighbour> deserializeNeighbourList(byte[] buffer){
 
-		ArrayList list = null;
+		ArrayList<Neighbour> list = new ArrayList<Neighbour>();
+
 		ByteArrayInputStream bis = new ByteArrayInputStream(buffer);
 		ObjectInput in = null;
 
 		try{
 			in = new ObjectInputStream(bis);
 
-			list = (ArrayList) in.readObject();
+			list = (ArrayList<Neighbour>) in.readObject();
 
 		}catch (IOException e){
 			e.printStackTrace();
@@ -383,13 +385,72 @@ public class Serialization {
 		return list;
 	}
 
-	protected byte[] fillListByteArray(ArrayList<PeerMemo> list){
+	protected static byte[] serializePeerMemoList(ArrayList<PeerMemo> list){
 
-		byte methodName = (byte) STR_SEND_LIST;
+
+		byte[] buffer = null;
+
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		ObjectOutput out = null;
+
+		try{
+			out = new ObjectOutputStream(bos);
+			out.writeObject(list);
+			out.flush();
+			buffer = bos.toByteArray();
+			bos.close();
+
+		} catch(IOException e){
+			e.printStackTrace();
+		}
+		return buffer;
+	}
+
+	protected ArrayList<PeerMemo> deserializePeerMemoList(byte[] buffer){
+
+		ArrayList<PeerMemo> list = new ArrayList<PeerMemo>();
+
+		ByteArrayInputStream bis = new ByteArrayInputStream(buffer);
+		ObjectInput in = null;
+
+		try{
+			in = new ObjectInputStream(bis);
+
+			list = (ArrayList<PeerMemo>) in.readObject();
+
+		}catch (IOException e){
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+
+
+	protected byte[] fillPeerMemoListByteArray(ArrayList<PeerMemo> list){
+
+		byte methodName = (byte) STR_SEND_LIST_PEERMEMO;
 		byte[] bufferHeader= new byte[1];
 		bufferHeader[0] = methodName;
 
-		byte[] bufferBody = serializeList(list);
+		byte[] bufferBody = serializePeerMemoList(list);
+
+		byte[] bufferTarget = new byte[RESERVED_BYTES_FOR_METHOD_CALL + bufferBody.length];
+
+		System.arraycopy(bufferHeader, 0, bufferTarget, 0, 1);
+		System.arraycopy(bufferBody, 0, bufferTarget, 1, bufferBody.length);
+
+		return bufferTarget;
+	}
+
+
+	protected byte[] fillRoutHelperByteArray(RoutHelper routHelper){
+
+		byte methodName = (byte) STR_SEND_ROUTING_REQUEST;
+		byte[] bufferHeader= new byte[1];
+		bufferHeader[0] = methodName;
+
+		byte[] bufferBody = serializeRoutHelper(routHelper);
 
 		byte[] bufferTarget = new byte[RESERVED_BYTES_FOR_METHOD_CALL + bufferBody.length];
 
@@ -399,18 +460,20 @@ public class Serialization {
 		return bufferTarget;
 	}
 
-	protected byte[] fillListByteArrayNeighbour(ArrayList<Neighbour> list){
+
+
+	protected byte[] fillNeighbourListByteArray(ArrayList<Neighbour> list){
 
 		byte methodName = (byte) STR_SEND_LIST_NEIGHBOUR;
 		byte[] bufferHeader= new byte[1];
 		bufferHeader[0] = methodName;
 
-		byte[] bufferBody = serializeList(list);
+		byte[] bufferBody = serializeNeighbourList(list);
 
 		byte[] bufferTarget = new byte[RESERVED_BYTES_FOR_METHOD_CALL + bufferBody.length];
 
 		System.arraycopy(bufferHeader, 0, bufferTarget, 0, 1);
-		System.arraycopy(bufferBody, 0, bufferTarget, 1, bufferBody.length -1);
+		System.arraycopy(bufferBody, 0, bufferTarget, 1, bufferBody.length);
 
 		return bufferTarget;
 	}
@@ -473,21 +536,7 @@ public class Serialization {
 
 
 
-	protected byte[] fillRoutHelperByteArray(RoutHelper routHelper){
 
-		byte methodName = (byte) STR_SEND_ROUTING_REQUEST;
-		byte[] bufferHeader= new byte[1];
-		bufferHeader[0] = methodName;
-
-		byte[] bufferBody = serializeRoutHelper(routHelper);
-
-		byte[] bufferTarget = new byte[RESERVED_BYTES_FOR_METHOD_CALL + bufferBody.length];
-
-		System.arraycopy(bufferHeader, 0, bufferTarget, 0, 1);
-		System.arraycopy(bufferBody, 0, bufferTarget, 1, bufferBody.length -1);
-
-		return bufferTarget;
-	}
 
 
 	protected byte[] fillNeighbourByteArray(Neighbour neighbour){

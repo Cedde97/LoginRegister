@@ -4,8 +4,8 @@ package model;
  * Created by eridhobufferyrollian on 12.08.17.
  */
 
-public class OwnDataMemo {
-
+public class OwnDataMemo implements java.io.Serializable{
+    private static final long serialVersionUID = -9108470830188537841L;
 
     public long uid;
     public int fileId;
