@@ -186,6 +186,14 @@ public class NeighborDbSource {
         DatabaseManager.getInstance().closeDatabase();
         //Log.d(LOG_TAG, "Eintrag gelöscht! ID: " + neighborMemo.getUid() + " Inhalt: " + neighborMemo.toString());
     }
+
+    public void deleteEachNeighbor(int neighbour_id){
+        database = DatabaseManager.getInstance().openDatabase();
+        database.delete(DateiMemoDbHelper.TABLE_NEIGHBOR_LIST, //Which Table
+                DateiMemoDbHelper.COLUMN_NEIGHBOUR_ID +" = "+ neighbour_id, //where claus
+                null);
+        DatabaseManager.getInstance().closeDatabase();
+    }
     /*
     *
     * ==================================================================================================================
