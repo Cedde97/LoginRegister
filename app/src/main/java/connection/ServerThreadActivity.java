@@ -37,7 +37,7 @@ public class ServerThreadActivity extends Activity {
     private static final int NODETRANSFER = 2;
     private static final int NEIGHTRANSFER = 4;
     private static final int PEERTRANSFER = 5;
-    private static final int FOREIGNTRANS = 6;
+    private static final int FOREIGNTRANS = 18;
     private static final int ROUTING = 7;
     private static final int PEERLIST = 9;
     private static final int NEIGHBOURLIST = 11;
@@ -99,7 +99,7 @@ public class ServerThreadActivity extends Activity {
 
                 System.out.println(Integer.toString(methodName));
 
-
+                Log.d("Header: ", ""+methodName);
                 switch (methodName) {
 
                     case FILETRANSFER: {
@@ -139,6 +139,7 @@ public class ServerThreadActivity extends Activity {
 
 
                         Log.d("nodeNew ", " "+ rh.toString());
+                        break;
 
                     }
 
@@ -165,6 +166,7 @@ public class ServerThreadActivity extends Activity {
                         startUpdatePeers(p,p1,p2);
                         Log.d("List: ", list.toString());
                         Log.d("PEEEEEEEEEEEERS", pDB.getAllPeer().toString());
+                        break;
                     }
 
                     case NEIGHBOURLIST: {
@@ -191,16 +193,20 @@ public class ServerThreadActivity extends Activity {
                         startUpdateNeighbours(n, n1, n2, n3);
                         Log.d("NeighBOUUUUUUUR", "" + nDB.getAllNeighborMemo().toString());
 
+                        break;
+
                         //Log.d("List: ",  list.toString());
 
                     }
 
                     case FOREIGNTRANS: {
+
                         Log.d("ForeignTransfer","");
                         int i;
                         ForeignData fd = server.getForeignData(buffer);
                         fDB.createForeignData(fd);
                         Log.d("ForeignTransfer","after Create");
+                        break;
 
                     }
 

@@ -22,7 +22,8 @@ import java.util.List;
 
 import static android.R.attr.id;
 
-public class ForeignDataDbSource {
+public class ForeignDataDbSource  implements java.io.Serializable{
+    private static final long serialVersionUID = 336442653844274922L;
     private static final String LOG_TAG = ForeignDataDbSource.class.getSimpleName();
 
     private SQLiteDatabase database;

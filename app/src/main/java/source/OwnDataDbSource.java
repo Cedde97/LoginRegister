@@ -18,7 +18,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class OwnDataDbSource {
+public class OwnDataDbSource  implements java.io.Serializable {
+    private static final long serialVersionUID = 5028840444224539302L;
     private static final String LOG_TAG = OwnDataDbSource.class.getSimpleName();
 
     private SQLiteDatabase database;

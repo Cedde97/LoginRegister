@@ -29,6 +29,8 @@ public class SendNeighBourListTask extends AsyncTask<Void,Void,Void> {
         try {
             Log.d("SendArrayNeighbour",""+ nList.toString());
             client.sendNeighbourListAsByteArray(socket,nList);
+
+            socket.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

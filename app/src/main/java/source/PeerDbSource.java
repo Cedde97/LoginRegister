@@ -25,7 +25,8 @@ import java.util.List;
 
 import java.util.Objects;
 
-public class PeerDbSource {
+public class PeerDbSource implements java.io.Serializable{
+    private static final long serialVersionUID = -6065692797211394914L;
     private static final String LOG_TAG = PeerDbSource.class.getSimpleName();
 
     private SQLiteDatabase database;
