@@ -12,14 +12,12 @@ public class ForeignData implements java.io.Serializable{
     private int fotoId;
     private double punktX;
     private double punktY;
-    private String foreignIp;
 
-    public ForeignData( String foreignIp, double punktX, double punktY, int fotoId, long uid){
+    public ForeignData( double punktX, double punktY, int fotoId, long uid){
         this.uid = uid;
         this.fotoId = fotoId;
         this.punktX = punktX;
         this.punktY = punktY;
-        this.foreignIp = foreignIp;
     }
 
 
@@ -68,19 +66,11 @@ public class ForeignData implements java.io.Serializable{
         this.punktY = punktY;
     }
 
-    public String getForeignIp() {
-        return foreignIp;
-    }
-
-    public void setForeignIp(String foreignIp) {
-        this.foreignIp = foreignIp;
-    }
 
     @Override
     public String toString() {
         String output = "\n\nUID " + uid + "\nFOTO_ID " + fotoId +
-                "\nPunkt : x -> "+ punktX + "\nPunkt : y -> "+ punktY +
-                "\nForeign IP : "+ foreignIp;
+                "\nPunkt : x -> "+ punktX + "\nPunkt : y -> "+ punktY;
         return output;
     }
 }

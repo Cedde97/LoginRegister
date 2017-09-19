@@ -148,19 +148,14 @@ public class ServerThreadActivity extends Activity {
 
                         ArrayList<PeerMemo> list = server.getListPeer(buffer);
                         PeerMemo p = null, p1 =null, p2 = null;
-                        int i = list.size();
+                        int i;
                         Log.d("PeerList filled", " "+list.toString());
-
-                        if(i == 1){
-                            p = list.get(i--);
-                        }else if(i>1){
-                            p1 = list.get(i--);
-                            if (i >= 1) {
-                                p2 = list.get(i--);
-
-                            }
-                        }else{
-
+                        PeerMemo[] array = new PeerMemo[2];
+                        array[0] = p;
+                        array[1] = p1;
+                        array[2] = p2;
+                        for(i = 0; i <= list.size();i++){
+                            array[i] = list.get(i);
                         }
 
                         startUpdatePeers(p,p1,p2);
@@ -171,12 +166,19 @@ public class ServerThreadActivity extends Activity {
 
                     case NEIGHBOURLIST: {
                         Log.d("NeighbourList:", "");
-                        int i;
+                        int i = 0;
                         ArrayList<Neighbour> list = server.getListNeighbour(buffer);
                         Neighbour n = null, n1 = null, n2 = null, n3 = null;
-                        i = list.size();
                         Log.d("NeighbourList filled", " "+list.toString());
-/*
+                        Neighbour[] array = new Neighbour[3];
+                        array[0] = n;
+                        array[1] = n1;
+                        array[2] = n2;
+                        array[3] = n3;
+                        for(i = 0; i <= list.size();i++){
+                            array[i] = list.get(i);
+                        }
+                        /*
                         if (i == 1) {
                             n = list.get(i--);
                         } else if (i > 1) {
@@ -202,7 +204,6 @@ public class ServerThreadActivity extends Activity {
                     case FOREIGNTRANS: {
 
                         Log.d("ForeignTransfer","");
-                        int i;
                         ForeignData fd = server.getForeignData(buffer);
                         fDB.createForeignData(fd);
                         Log.d("ForeignTransfer","after Create");
@@ -233,7 +234,13 @@ public class ServerThreadActivity extends Activity {
     }
 
 
-
+    /**
+     * Diese Methode speichert die übergebenen PeerMemos in der Datenbank
+     * @param p Erster Peer
+     * @param p1 Zweiter Peer
+     * @param p2 Dritter Peer
+     * @author Joshua Zabel
+     */
     private void startUpdatePeers(PeerMemo p, PeerMemo p1, PeerMemo p2){
         new AsyncTask<PeerMemo,Void,Void>(){
 
@@ -241,6 +248,7 @@ public class ServerThreadActivity extends Activity {
             protected Void doInBackground(PeerMemo... params) {
                 int i;
                 for(i=0; i<params.length; i++){
+                    if(params[i] != null)
                     pDB.createPeerMemo(params[i]);
                 }
                 return null;
@@ -250,6 +258,14 @@ public class ServerThreadActivity extends Activity {
     }
 
 
+    /**
+     * Diese Methode speichert die übergebenen Neighbours in der Datenbank
+     * @param n Erster Neighbour
+     * @param n1 Zweiter Neighbour
+     * @param n2 Dritter Neighbour
+     * @param n3 Vierter Neighbour
+     * @author Joshua Zabel
+     */
     private void startUpdateNeighbours(Neighbour n, Neighbour n1, Neighbour n2, Neighbour n3) {
 
         new AsyncTask<Neighbour, Void, Void>() {
@@ -258,6 +274,7 @@ public class ServerThreadActivity extends Activity {
             protected Void doInBackground(Neighbour... params) {
                 int i;
                 for(i=0; i<params.length; i++){
+                    if(params[i] != null)
                     nDB.createNeighborMemo(params[i]);
                 }
 

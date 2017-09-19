@@ -2,28 +2,27 @@ package task;
 
 import android.os.AsyncTask;
 
-
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-
+import java.util.List;
 
 import connection.Client;
 import connection.RoutHelper;
 import exception.XMustBeLargerThanZeroException;
 import exception.YMustBeLargerThanZeroException;
-import model.Node;
-import model.PeerMemo;
+import model.ForeignData;
 import source.DateiMemoDbSource;
+import source.ForeignDataDbSource;
 import source.NeighborDbSource;
-import source.PeerDbSource;
 import util.DBUtil;
 
 /**
- * Created by Joshi on 07.09.2017.
+ * Created by Joshi on 19.09.2017.
  */
-public class RoutingTask extends AsyncTask<String, Void, Void> {
+
+public class recoverPicturesTask extends AsyncTask<String,Void,Void>{
     private final static int PORTNR = 9797;
 
 
@@ -32,36 +31,29 @@ public class RoutingTask extends AsyncTask<String, Void, Void> {
     private DBUtil dbu = new DBUtil();
     private DateiMemoDbSource ownDb = new DateiMemoDbSource();
     private NeighborDbSource nDB = new NeighborDbSource();
-    private PeerDbSource pDB = new PeerDbSource();
+    private ForeignDataDbSource fDb = new ForeignDataDbSource();
 
 
-    //wie mache ich das mit routing und receiveRoutingRequest also wie rufe ich sie jeweils auf? da sie sich gegenseitig aufrufen
     @Override
     protected Void doInBackground(String... params) {
+        //Ip des ursprünglichen Bildbesitzers
         String ip = params[0];
+        //x,y-Werte von einem Bild
         double x = Double.parseDouble(params[1]);
         double y = Double.parseDouble(params[2]);
-        int id = Integer.parseInt(params[3]);
+        int uId = Integer.parseInt(params[3]);
 
-        RoutHelper rh = new RoutHelper(ip, x, y, id);
-        //if not in Zone, routingCheckZone kümmert sich darum das neuerKnoten Corner,Peers und Neighbour bekommt
-        // Im If-Blcok wird weiter gerouted
-        if (!routingCheckZone(rh)) {
+        RoutHelper rh = new RoutHelper(ip,x,y,uId);
+
+        if(!routingCheckZone(rh)){
             try {
                 socket = new Socket(nDB.getUip(determineRoutingDestination(rh)), PORTNR);
-                client.sendRoutHelperAsByteArray(socket,rh);
-                socket.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            //berechne die Distanz von den Neighbourn zu den x,y-Werten und liefere den Index an welcher Stelle der Neighbour steht der am nächsten an den x,y-Werten ist
-
-
-
         }
         return null;
     }
-
 
     private double computeDistance(double x, double y, double neighbourX, double neighbourY) {
         double dis = Math.abs(x - neighbourX) + Math.abs(y - neighbourY);
@@ -82,26 +74,22 @@ public class RoutingTask extends AsyncTask<String, Void, Void> {
 
     private boolean routingCheckZone(RoutHelper rh) {
         try {
+            //testen ob initOwnZone geht
             if (dbu.initOwnZone(ownDb).checkIfInMyZone(rh.getX(), rh.getY())) {
-                //hier noch statt 3 getUID von OnlineDB
-                Node newNode = new Node(rh.getID(), rh.getX(), rh.getY(), rh.getIP(), ownDb.getCountPeers() + 1, dbu.initOwnZone(ownDb));
-                ownDb.updateCountPeers();
-                if (ownDb.getAllDateiMemos().checkIfMaxPeersCount()) {
-
-
-                    //splitt
-                    return true;
-                } else {
-                    //noch testen
-                    Socket socket = new Socket(rh.getIP(), PORTNR);
-                    client.sendNodeAsByteArray(socket, newNode);
-                    client.sendPeerMemoListAsByteArray(socket, (ArrayList) pDB.getAllPeer());
-                    client.sendNeighbourListAsByteArray(socket, (ArrayList) nDB.getAllNeighborMemo());
-
-                    //hier ein remote aufruf von updateNeighbourAndPeerForeign an die rh.getIp() senden
-                    //testen ob geht
-                    return true;
+                List<ForeignData> fdArray;
+                fdArray = fDb.getAllForeignData();
+                List<ForeignData> myPics = new ArrayList<ForeignData>();
+                for(int i = 0; i <= fdArray.size(); i++){
+                    if(fdArray.get(i).getUid() == rh.getID()){
+                        myPics.add(fdArray.get(i));
+                    }
                 }
+                Socket socket = new Socket(rh.getIP(), PORTNR);
+                // TODO: 19.09.2017 Jetzt noch alle Bilder(die in myPics sind) von Gerät holen und an socket senden  
+
+
+                return true;
+
             }
         } catch (YMustBeLargerThanZeroException | XMustBeLargerThanZeroException e) {
             e.printStackTrace();
@@ -126,6 +114,4 @@ public class RoutingTask extends AsyncTask<String, Void, Void> {
         }
         return index;
     }
-
-
 }
