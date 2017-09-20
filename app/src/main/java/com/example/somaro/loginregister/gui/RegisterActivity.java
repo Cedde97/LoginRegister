@@ -1,9 +1,11 @@
 package com.example.somaro.loginregister.gui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,6 +32,9 @@ import exception.YMustBeLargerThanZeroException;
 import model.Corner;
 import model.Node;
 import model.Zone;
+import source.DatabaseManager;
+import source.DateiMemoDbHelper;
+import source.DateiMemoDbSource;
 import task.CheckEmptyOnlineDBTask;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -39,12 +44,19 @@ public class RegisterActivity extends AppCompatActivity {
     private Corner topLeft;
     private Corner bottomRight;
     private Corner bottomLeft;
-    private boolean isEmpty;
+    private boolean isEmpty ;
+    private static Context appContext;
+    private static DateiMemoDbHelper dbHelper;
+    private DateiMemoDbSource ownDb = new DateiMemoDbSource();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+        appContext = this.getApplicationContext();
+        dbHelper = new DateiMemoDbHelper(appContext);
+        DatabaseManager.initializeInstance(dbHelper);
 
 
         final EditText etName = (EditText) findViewById(R.id.etName);
@@ -74,6 +86,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 startCheckEmptyOnlineDBTask();
                                 //isEmpty wird von startCheckEmptyOnlineDBTask initialisiert
                                 if(isEmpty){
+                                    Log.d("is empty","hat gefunkt");
                                     // das dieses Gerät das Erste ist, bekommt es die Grenzwerte von CAN als Zone/Corner
                                     topRight    = new Corner(1.0,1.0);
                                     topLeft     = new Corner(0.0,1.0);
@@ -90,6 +103,7 @@ public class RegisterActivity extends AppCompatActivity {
                                     String name = intent.getStringExtra("name");
                                     id = intent.getIntExtra("id",0);
                                     Node ownNode = new Node(id,Node.hashX(ip),Node.hashY(ip),ip,0,ownZone);
+                                    ownDb.createDateiMemo(ownNode);
 
 
                                 }else {
