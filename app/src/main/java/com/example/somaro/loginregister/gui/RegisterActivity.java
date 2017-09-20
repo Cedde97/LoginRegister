@@ -16,7 +16,30 @@ import com.example.somaro.loginregister.R;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import bootstrap.InsertOwnIPActivity;
+import connection.Client;
+import exception.XMustBeLargerThanZeroException;
+import exception.YMustBeLargerThanZeroException;
+import model.Corner;
+import model.Node;
+import model.Zone;
+import task.CheckEmptyOnlineDBTask;
+
 public class RegisterActivity extends AppCompatActivity {
+    private int id;
+    private Zone ownZone;
+    private Corner topRight;
+    private Corner topLeft;
+    private Corner bottomRight;
+    private Corner bottomLeft;
+    private boolean isEmpty;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,19 +68,34 @@ public class RegisterActivity extends AppCompatActivity {
                             JSONObject jsonResponse = new JSONObject(response);
                             boolean success = jsonResponse.getBoolean("success");
                             if (success){
+
                                 //start routing/ Abfrage ob das dies der erste Knoten ist der sich anmeldet
                                 // Nach dem erfolgreichen Registrieren öffnet sich die Login Seite
+                                startCheckEmptyOnlineDBTask();
+                                //isEmpty wird von startCheckEmptyOnlineDBTask initialisiert
+                                if(isEmpty){
+                                    // das dieses Gerät das Erste ist, bekommt es die Grenzwerte von CAN als Zone/Corner
+                                    topRight    = new Corner(1.0,1.0);
+                                    topLeft     = new Corner(0.0,1.0);
+                                    bottomRight = new Corner(1.0,0.0);
+                                    bottomLeft  = new Corner(0.0,0.0);
+                                    ownZone     = new Zone(topLeft,topRight,bottomLeft,bottomRight);
+                                    //bekommt die IP des eignenen Gerätes
+                                    String ip = Client.getOwnIpAddress();
+                                    //fügt die eigene IP zu dem Bootstrap-Server hinzu
+                                    startInsertOwnIP();
 
-                                /*if(//wenn nichts auf der Datenbank ist );
-                                {
-                                    //Die IP vom ersten Knoten muss zum Bootstrap Server
-                                    //Zone auf Eckpunkte setzen
-                                    //Knoten serialisieren
-                                }else
-                                {
+                                    //hiermit holt man die id von dem DB-Server
+                                    Intent intent = getIntent();
+                                    String name = intent.getStringExtra("name");
+                                    id = intent.getIntExtra("id",0);
+                                    Node ownNode = new Node(id,Node.hashX(ip),Node.hashY(ip),ip,0,ownZone);
+
+
+                                }else {
                                     //IP vom Bootstrap Server holen
                                     //Join-Request an diese IP senden
-                                }*/
+                                }
 
                                 Intent intent = new Intent(RegisterActivity.this,LoginActivity.class);
                                 RegisterActivity.this.startActivity(intent);
@@ -71,6 +109,10 @@ public class RegisterActivity extends AppCompatActivity {
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
+                        } catch (YMustBeLargerThanZeroException e) {
+                            e.printStackTrace();
+                        } catch (XMustBeLargerThanZeroException e) {
+                            e.printStackTrace();
                         }
                     }
                 };
@@ -81,4 +123,18 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void startInsertOwnIP() throws JSONException {
+        new InsertOwnIPActivity().execute();
+    }
+
+    private void startCheckEmptyOnlineDBTask(){
+        new CheckEmptyOnlineDBTask(new CheckEmptyOnlineDBTask.AsyncResponse(){
+            @Override
+            public void processFinish(boolean result) {
+                isEmpty = result;
+            }
+        }).execute();
+    }
 }
+

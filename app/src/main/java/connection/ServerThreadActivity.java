@@ -21,6 +21,7 @@ import model.PeerMemo;
 
 import source.DatabaseManager;
 import source.DateiMemoDbHelper;
+import source.DateiMemoDbSource;
 import source.ForeignDataDbSource;
 import source.NeighborDbSource;
 import source.PeerDbSource;
@@ -51,6 +52,7 @@ public class ServerThreadActivity extends Activity {
     private NeighborDbSource nDB = new NeighborDbSource();
     private PeerDbSource pDB = new PeerDbSource();
     private ForeignDataDbSource fDB = new ForeignDataDbSource();
+    private DateiMemoDbSource ownDb = new DateiMemoDbSource();
 
 
     @Override
@@ -170,13 +172,14 @@ public class ServerThreadActivity extends Activity {
                         ArrayList<Neighbour> list = server.getListNeighbour(buffer);
                         Neighbour n = null, n1 = null, n2 = null, n3 = null;
                         Log.d("NeighbourList filled", " "+list.toString());
-                        Neighbour[] array = new Neighbour[3];
+                        Neighbour[] array = new Neighbour[4];
                         array[0] = n;
                         array[1] = n1;
                         array[2] = n2;
                         array[3] = n3;
-                        for(i = 0; i <= list.size();i++){
+                        for(i = 0; i <= list.size()-1;i++){
                             array[i] = list.get(i);
+                            array[i].setUid(ownDb.getUid());
                         }
                         /*
                         if (i == 1) {
@@ -192,7 +195,10 @@ public class ServerThreadActivity extends Activity {
                         } else {
 
                         }*/
-                        startUpdateNeighbours(n, n1, n2, n3);
+                        Log.d("-----",array[0].toString());
+
+
+                        startUpdateNeighbours(array[0], array[1], array[2], array[3]);
                         Log.d("NeighBOUUUUUUUR", "" + nDB.getAllNeighborMemo().toString());
 
                         break;
@@ -248,13 +254,14 @@ public class ServerThreadActivity extends Activity {
             protected Void doInBackground(PeerMemo... params) {
                 int i;
                 for(i=0; i<params.length; i++){
-                    if(params[i] != null)
-                    pDB.createPeerMemo(params[i]);
+                    if(params[i] != null){
+                        pDB.createPeerMemo(params[i]);
+                    }
                 }
                 return null;
             }
             // vieleicht noch Pram zu execute
-        }.execute();
+        }.execute(p,p1,p2);
     }
 
 
@@ -267,21 +274,20 @@ public class ServerThreadActivity extends Activity {
      * @author Joshua Zabel
      */
     private void startUpdateNeighbours(Neighbour n, Neighbour n1, Neighbour n2, Neighbour n3) {
-
         new AsyncTask<Neighbour, Void, Void>() {
-
             @Override
             protected Void doInBackground(Neighbour... params) {
                 int i;
                 for(i=0; i<params.length; i++){
-                    if(params[i] != null)
-                    nDB.createNeighborMemo(params[i]);
+                    if(params[i] != null){
+                        Log.d("Node: ", ""+ params[i]);
+                        nDB.createNeighborMemo(params[i]);
+                        Log.d("nachUpdateÄÄÄÄÄÄ",""+nDB.getAllNeighborMemo().toString());
+                    }
                 }
-
-
                 return null;
             }
-        }.execute();
+        }.execute(n,n1,n2,n3);
     }
 
     @Override

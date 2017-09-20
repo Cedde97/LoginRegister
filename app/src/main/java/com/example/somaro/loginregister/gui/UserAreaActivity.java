@@ -35,6 +35,8 @@ import bootstrap.InsertOwnIPActivity;
 import connection.Client;
 import connection.RoutHelper;
 import connection.ServerThreadActivity;
+import exception.XMustBeLargerThanZeroException;
+import exception.YMustBeLargerThanZeroException;
 import model.*;
 
 
@@ -172,21 +174,21 @@ public class UserAreaActivity extends Activity {
                 ArrayList<Neighbour> arrayList= new ArrayList<>();
                 Neighbour n = new Neighbour();
                 Neighbour n1 = new Neighbour();
-                n.setUid(10000);
-                n.setCornerTopRightX(0.0);
-                n.setCornerTopRightY(0.0);
-                n.setCornerTopLeftX(0.0);
-                n.setCornerTopLeftY(0.0);
-                n.setCornerBottomLeftX(0.0);
-                n.setCornerBottomLeftY(0.0);
-                n.setCornerBottomRightX(1.0);
-                n.setCornerBottomRightY(1.0);
+                Corner topRight = new Corner(0.0,0.0);
+                Corner topLeft = new Corner(0.0,0.0);
+                Corner bottomRight = new Corner(0.0,0.0);
+                Corner bottomLeft = new Corner(1.0,1.0);
+                n.setUid(8754);
+                n.getMyZone().setTopRight(topRight);
+                n.getMyZone().setTopLeft(topLeft);
+                n.getMyZone().setBottomRight(bottomRight);
+                n.getMyZone().setBottomLeft(bottomLeft);
                 n.setPunktX(0.2);
                 n.setPunktY(0.4);
                 n.setUIP("277.0.0.0/8");
                 n.setRTT(25.89);
                 arrayList.add(n);
-
+                Log.d("before sending", ""+n.toString());
                 SendNeighBourListTask snl =new SendNeighBourListTask(socket,arrayList);
                 snl.execute();
                 //Neighbour neighbour = new Neighbour(01l, 0.0, 0.1, "192.33.2.12", 12.3);
@@ -195,6 +197,10 @@ public class UserAreaActivity extends Activity {
                 // nft.execute();
             } catch (IOException e) {
                 Log.d("NeighbourTransfer: ", e.toString());
+            } catch (YMustBeLargerThanZeroException e) {
+                e.printStackTrace();
+            } catch (XMustBeLargerThanZeroException e) {
+                e.printStackTrace();
             }
         }
     };
