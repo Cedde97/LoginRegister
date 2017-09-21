@@ -360,8 +360,8 @@ public class UserAreaActivity extends Activity {
         }*/
 
         dir.mkdirs();
-        String uriString = (dir.getAbsolutePath() +"/" + "#"
-                + getPhotoId() + "#" + ".jpg");
+        String uriString = (dir.getAbsolutePath() +"/"
+                + getPhotoId() + ".jpg");
         return uriString;
     }
 

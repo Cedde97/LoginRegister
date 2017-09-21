@@ -264,14 +264,14 @@ public class PeerDbSource {
     *           Get UID
     *
     * */
-    public long getUidPeer() {
+    public int getUidPeer() {
         //database = DatabaseManager.getInstance().openDatabase();
-        long id = dateiMemoDbSource.getUid();
+        int id = dateiMemoDbSource.getUid();
         //DatabaseManager.getInstance().closeDatabase();
         return id;
     }
 
-    public int getPeer(long index)
+    public int getPeer(int index)
     {
         database = DatabaseManager.getInstance().openDatabase();
         String selectQuery = "SELECT " + DateiMemoDbHelper.COLUMN_PEERID + " FROM " + DateiMemoDbHelper.TABLE_PEER_LIST + " WHERE "
@@ -297,7 +297,7 @@ public class PeerDbSource {
     *           Get Peer Ip
     *
     * */
-    public String getPeerIp(long index) {
+    public String getPeerIp(int index) {
         //List<Integer> PeerIdList = new ArrayList<>();
         String selectQuery = "SELECT "+ DateiMemoDbHelper.COLUMN_PEERIP + " FROM " + DateiMemoDbHelper.TABLE_PEER_LIST + " WHERE "
                 + DateiMemoDbHelper.COLUMN_PID + " = " + index;
@@ -339,10 +339,10 @@ public class PeerDbSource {
         if (cursor.moveToFirst()) {
             do {
                 peerMemo = new PeerMemo();
-                peerMemo.setUid(cursor.getLong(cursor.getColumnIndex(dbHelper.COLUMN_PID)));
+                peerMemo.setUid(cursor.getInt(cursor.getColumnIndex(dbHelper.COLUMN_PID)));
                 //peerMemo.setChecked(isChecked);
                 peerMemo.setPeerIp(cursor.getString(cursor.getColumnIndex(dbHelper.COLUMN_PEERIP)));
-                peerMemo.setPeerId(cursor.getLong(cursor.getColumnIndex(dbHelper.COLUMN_PEERID)));
+                peerMemo.setPeerId(cursor.getInt(cursor.getColumnIndex(dbHelper.COLUMN_PEERID)));
 
 
                 // Add Peer to PeerList
@@ -374,10 +374,10 @@ public class PeerDbSource {
         if (cursor.moveToFirst()) {
             do {
                 peerMemo = new PeerMemo();
-                peerMemo.setUid(cursor.getLong(cursor.getColumnIndex(dbHelper.COLUMN_PID)));
+                peerMemo.setUid(cursor.getInt(cursor.getColumnIndex(dbHelper.COLUMN_PID)));
                 //peerMemo.setChecked(isChecked);
                 peerMemo.setPeerIp(cursor.getString(cursor.getColumnIndex(dbHelper.COLUMN_PEERIP)));
-                peerMemo.setPeerId(cursor.getLong(cursor.getColumnIndex(dbHelper.COLUMN_PEERID)));
+                peerMemo.setPeerId(cursor.getInt(cursor.getColumnIndex(dbHelper.COLUMN_PEERID)));
 
 
                 // Add peer to peer List

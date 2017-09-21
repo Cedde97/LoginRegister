@@ -140,7 +140,7 @@ public class Node implements java.io.Serializable{
      * @param ip Eine IP-Adresse
      * @return Gibt die IP-Adresse umgekehrt zurÃ¼ck
      */
-    public static String umkehren( String ip )
+    private static String umkehren( String ip )
     {
         String umgekehrt = new String();
 
@@ -154,7 +154,7 @@ public class Node implements java.io.Serializable{
      * @param ip Ist die eigene IP
      * @param x X-Wert des zu routenden Bildes
      * @param y Y-Wert des zu routenden Bildes
-     * @param FotoId Foto-ID
+     * @param fotoId Foto-ID
      */
     private void picRouting(String ip, double x, double y, int fotoId, int uid) throws IOException {
         double[] distance = new double[3];

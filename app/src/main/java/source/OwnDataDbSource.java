@@ -23,7 +23,7 @@ public class OwnDataDbSource {
 
     private SQLiteDatabase database;
     private DateiMemoDbHelper dbHelper;
-    private DateiMemoDbSource dateiMemoDbSource;
+    private DateiMemoDbSource dateiMemoDbSource = new DateiMemoDbSource();
     private OwnDataMemo ownDataMemo;
 
     //Array
@@ -204,7 +204,7 @@ public class OwnDataDbSource {
      * @param index
      * @return
      */
-    public long getUID(int index){
+    public int getUID(int index){
         database = DatabaseManager.getInstance().openDatabase();
         String selectQuery = "SELECT "+ DateiMemoDbHelper.COLUMN_OID +" FROM " + DateiMemoDbHelper.TABLE_OWNDATA_LIST + " WHERE "
                 + DateiMemoDbHelper.COLUMN_FILEID + " = " + index;
@@ -212,7 +212,7 @@ public class OwnDataDbSource {
         Cursor cursor = database.rawQuery(selectQuery,null);
         cursor.moveToFirst();
         //if(cursor != null){
-            long uID = cursor.getInt(cursor.getColumnIndex(DateiMemoDbHelper.COLUMN_OID));
+            int uID = cursor.getInt(cursor.getColumnIndex(DateiMemoDbHelper.COLUMN_OID));
             //if(uID >= 0){
                 cursor.close();
                 DatabaseManager.getInstance().closeDatabase();
@@ -256,7 +256,7 @@ public class OwnDataDbSource {
     *           Get UID
     *
     * */
-    public double getUidOwn() {
+    public int getUidOwn() {
         database = DatabaseManager.getInstance().openDatabase();
         DatabaseManager.getInstance().closeDatabase();
         return dateiMemoDbSource.getUid();

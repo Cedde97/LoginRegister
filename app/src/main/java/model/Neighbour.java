@@ -34,14 +34,14 @@ public class Neighbour implements java.io.Serializable{
     private Corner bottomLeft;
     private Zone zone = new Zone();
     //private boolean checked;
-    private long uid;
-    private long neighbour_id;
+    private int uid;
+    private int neighbour_id;
 
     public long getNeighbour_id() {
         return neighbour_id;
     }
 
-    public void setNeighbour_id(long neighbour_id) {
+    public void setNeighbour_id(int neighbour_id) {
         this.neighbour_id = neighbour_id;
     }
 
@@ -77,7 +77,7 @@ public class Neighbour implements java.io.Serializable{
      * @param zone
      * @param rtt
      */
-    public Neighbour(long uid, double punktX, double punktY, String ip, Zone zone, double rtt){
+    public Neighbour(int uid, double punktX, double punktY, String ip, Zone zone, double rtt){
         this.uid = uid;
         this.punktX = punktX;
         this.punktY = punktY;
@@ -178,7 +178,7 @@ public class Neighbour implements java.io.Serializable{
         return uid;
     }
 
-    public  void setUid(long uid) {
+    public  void setUid(int uid) {
         this.uid = uid;
     }
 

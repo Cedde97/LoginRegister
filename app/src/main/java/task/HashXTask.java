@@ -34,19 +34,12 @@ public class HashXTask extends AsyncTask<String, String , String> {
     protected String doInBackground(String... params) {
 
         String ip = params[0];
-        double x = ip.hashCode();
-        if(x < 0){
-            x = x/(-DIVIDER);
-            hashX=x;
-        }else{
-            x = x/DIVIDER;
-            hashX=x;
-        }
 
-        return null;
+        String xWert = ip;
+        hashX = Double.parseDouble("0." + Math.abs(xWert.hashCode()));
+
+return null;
     }
-
-
 
     @Override
     protected void onPostExecute(String s){

@@ -35,7 +35,7 @@ public class PicRoutingTask extends AsyncTask<String, Void, Void>{
         double x = Double.parseDouble(params[1]);
         double y = Double.parseDouble(params[2]);
         int fotoId= Integer.parseInt(params[3]);
-        long uId  = Long.parseLong(params[4]);
+        int uId  = Integer.parseInt(params[4]);
 
         ForeignData fd = new ForeignData(ip,x,y,fotoId,uId);
         RoutHelper rh = new RoutHelper(ip,x,y,uId);

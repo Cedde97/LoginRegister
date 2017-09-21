@@ -2,22 +2,30 @@ package com.example.somaro.loginregister;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Environment;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
 
+import com.example.somaro.loginregister.gui.UserAreaActivity;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
 import app.App;
+import connection.Client;
 import connection.RoutHelper;
 import exception.*;
 import model.*;
 import source.*;
+import util.DBUtil;
 
 import static org.junit.Assert.*;
 
@@ -39,8 +47,7 @@ public class ExampleInstrumentedTest {
 
 
     @Test
-    public void test()
-    {
+    public void test() {
         Context appContext = InstrumentationRegistry.getTargetContext();
 
         DateiMemoDbHelper dateiMemoDbHelper = new DateiMemoDbHelper(appContext);
@@ -49,13 +56,12 @@ public class ExampleInstrumentedTest {
         SQLiteDatabase database;
         database = DatabaseManager.getInstance().openDatabase();
 
-        if(database == null)
-        {
+        if (database == null) {
             dateiMemoDbHelper.onCreate(database);
         }
         //dateiMemoDbHelper.onCreate(database);
 
-        dateiMemoDbHelper.onUpgrade(database,0,dateiMemoDbHelper.DB_VERSION);
+        dateiMemoDbHelper.onUpgrade(database, 0, dateiMemoDbHelper.DB_VERSION);
 
         DateiMemoDbSource dateiMemoDbSource = new DateiMemoDbSource();
         ForeignDataDbSource foreignDataDbSource = new ForeignDataDbSource();
@@ -82,15 +88,15 @@ public class ExampleInstrumentedTest {
         Zone zoneNeighbour;
 
         try {
-            cornerBottomLeft = new Corner(0.0,0.0);
-            cornerBottomRight = new Corner(1.0,0.0);
-            cornerTopLeft = new Corner(0.0,1.0);
-            cornerTopRight = new Corner(1.0,1.0);
+            cornerBottomLeft = new Corner(0.0, 0.0);
+            cornerBottomRight = new Corner(1.0, 0.0);
+            cornerTopLeft = new Corner(0.0, 1.0);
+            cornerTopRight = new Corner(1.0, 1.0);
 
             //dateiMemoDbSource.deleteDateiMemo();
 
 
-            zone = new Zone(cornerTopLeft,cornerTopRight,cornerBottomLeft,cornerBottomRight);
+            zone = new Zone(cornerTopLeft, cornerTopRight, cornerBottomLeft, cornerBottomRight);
 
             dateiMemo.setUid(7872);
             dateiMemo.setTopRight(cornerTopRight);
@@ -117,7 +123,7 @@ public class ExampleInstrumentedTest {
             dateiMemoDbSource.updateCornerTopRightX(0.11111158511111);
             dateiMemoDbSource.updateCornerTopRightY(0.1111851111111);
 
-            Log.d("TEST", "DATEIMEMO_UID " + dateiMemoDbSource.getUid() );
+            Log.d("TEST", "DATEIMEMO_UID " + dateiMemoDbSource.getUid());
             Log.d("TEST", "DATEIMEMO_TOPRIGHT " + dateiMemoDbSource.getCornerTopRightX() + ", " + dateiMemoDbSource.getCornerTopRightY());
             Log.d("TEST", "DATEIMEMO_BOTTOMRIGHT " + dateiMemoDbSource.getCornerBottomRightX() + ", " + dateiMemoDbSource.getCornerBottomRightY());
             Log.d("TEST", "DATEIMEMO_TOPLEFT " + dateiMemoDbSource.getCornerTopLeftX() + ", " + dateiMemoDbSource.getCornerTopLeftY());
@@ -152,35 +158,35 @@ public class ExampleInstrumentedTest {
 
             //getEachPeer-Test
             //
-            List<PeerMemo> peerMemoList= peerDbSource.getEachPeer(1);
-            Log.d("Test getEachPeer","=============================================================");
+            List<PeerMemo> peerMemoList = peerDbSource.getEachPeer(1);
+            Log.d("Test getEachPeer", "=============================================================");
 
-            for(int i= 0; i < peerMemoList.size(); i++){
-                String output = "Node_Peer_ID: "+ peerMemoList.get(i).getUid() +
+            for (int i = 0; i < peerMemoList.size(); i++) {
+                String output = "Node_Peer_ID: " + peerMemoList.get(i).getUid() +
                         //"\n Status: "+ peerMemoList.get(i).isChecked() +
-                        "\nPeer ID: "+ peerMemoList.get(i).getPeerId() +
-                        "\n IP: "+ peerMemoList.get(i).getPeerIp();
+                        "\nPeer ID: " + peerMemoList.get(i).getPeerId() +
+                        "\n IP: " + peerMemoList.get(i).getPeerIp();
 
                 Log.d("Result", output);
             }
-            Log.d("Test getEachPeer","=============================================================");
+            Log.d("Test getEachPeer", "=============================================================");
 
             //getAllPeer-Test
             //
-            List<PeerMemo> peerMemoListAll= peerDbSource.getAllPeer();
-            Log.d("Test getAllPeer","=============================================================");
+            List<PeerMemo> peerMemoListAll = peerDbSource.getAllPeer();
+            Log.d("Test getAllPeer", "=============================================================");
 
-            for(int i= 0; i < peerMemoListAll.size(); i++){
-                String output = "Node_Peer_ID: "+ peerMemoListAll.get(i).getUid() +
+            for (int i = 0; i < peerMemoListAll.size(); i++) {
+                String output = "Node_Peer_ID: " + peerMemoListAll.get(i).getUid() +
                         //"\n Status: "+ peerMemoList.get(i).isChecked() +
-                        "\nPeer ID: "+ peerMemoListAll.get(i).getPeerId() +
-                        "\n IP: "+ peerMemoListAll.get(i).getPeerIp();
+                        "\nPeer ID: " + peerMemoListAll.get(i).getPeerId() +
+                        "\n IP: " + peerMemoListAll.get(i).getPeerIp();
 
                 Log.d("Result", output);
             }
-            Log.d("Test getAllPeer","=============================================================");
+            Log.d("Test getAllPeer", "=============================================================");
 
-            String  p = peerDbSource.getPeerIp(peerDbSource.getUidPeer());
+            String p = peerDbSource.getPeerIp(peerDbSource.getUidPeer());
 
             assertEquals("1.1.1.1", p);
 
@@ -206,7 +212,7 @@ public class ExampleInstrumentedTest {
             Log.d("TEST", "FOREIGNDATADB_PUNKTY " + foreignDataDbSource.getPunktYForeign(foreignData.getUid()));
             Log.d("TEST", "FOREIGNDATADB_IP " + foreignDataDbSource.getforeignIp(foreignData.getUid()));
 
-            assertEquals(0.5,x,0);
+            assertEquals(0.5, x, 0);
             Log.d("HALLO", "AAAAAAAAAAAAAAAAAA: double_punktX " + x);
 
             //create own Data
@@ -298,70 +304,70 @@ public class ExampleInstrumentedTest {
             neighborDbSource.createNeighborMemo(neighborMemo);
 
 
-            neighborDbSource.updateCornerBottomLeftYNeighbor(1,0.6666666);
-            neighborDbSource.updateCornerBottomLeftXNeighbor(1,0.4444444);
-            neighborDbSource.updateCornerBottomRightXNeighbor(1,0.5555555);
-            neighborDbSource.updateCornerBottomRightYNeighbor(1,0.8888888);
-            neighborDbSource.updateCornerTopLeftXNeighbor(1,0.2222222);
-            neighborDbSource.updateCornerTopLeftYNeighbor(1,0.2222224);
-            neighborDbSource.updateCornerTopRightXNeighbor(1,0.5555556);
-            neighborDbSource.updateCornerTopRightYNeighbor(1,0.6666665);
+            neighborDbSource.updateCornerBottomLeftYNeighbor(1, 0.6666666);
+            neighborDbSource.updateCornerBottomLeftXNeighbor(1, 0.4444444);
+            neighborDbSource.updateCornerBottomRightXNeighbor(1, 0.5555555);
+            neighborDbSource.updateCornerBottomRightYNeighbor(1, 0.8888888);
+            neighborDbSource.updateCornerTopLeftXNeighbor(1, 0.2222222);
+            neighborDbSource.updateCornerTopLeftYNeighbor(1, 0.2222224);
+            neighborDbSource.updateCornerTopRightXNeighbor(1, 0.5555556);
+            neighborDbSource.updateCornerTopRightYNeighbor(1, 0.6666665);
 
             //getEachNeighbor Test
-            List<Neighbour> neighborMemoList= neighborDbSource.getEachNeighbour(1);
-            Log.d("Test getEachNeighbor","=============================================================");
+            List<Neighbour> neighborMemoList = neighborDbSource.getEachNeighbour(1);
+            Log.d("Test getEachNeighbor", "=============================================================");
             //double cornerTopRightX1 = neighborMemoList.get(1).getCornerTopRightX();
-           // Log.d("TEST", "REsult" + cornerTopRightX1);
-            for (int i= 0; i < neighborMemoList.size(); i++) {
-                String output = "Neighbor_ID: "+ neighborMemoList.get(i).getNeighbour_id() +
-                        "\n Neighbor_ID_Foreign: "+ neighborMemoList.get(i).getUid() +
+            // Log.d("TEST", "REsult" + cornerTopRightX1);
+            for (int i = 0; i < neighborMemoList.size(); i++) {
+                String output = "Neighbor_ID: " + neighborMemoList.get(i).getNeighbour_id() +
+                        "\n Neighbor_ID_Foreign: " + neighborMemoList.get(i).getUid() +
                         //"\n Status: "+ neighborMemoList.get(i).isChecked() +
-                        "\n Corner Top Right X: "+ neighborMemoList.get(i).getCornerTopRightX() +
-                        "\n Corner Top Right Y: "+ neighborMemoList.get(i).getCornerTopRightY() +
-                        "\n Corner Top Left X: "+ neighborMemoList.get(i).getCornerTopLeftX() +
-                        "\n Corner Top Left Y: "+ neighborMemoList.get(i).getCornerTopLeftY() +
-                        "\n Corner Bottom Right X: "+ neighborMemoList.get(i).getCornerBottomRightX() +
-                        "\n Corner Bottom Right Y: "+ neighborMemoList.get(i).getCornerBottomRightY() +
-                        "\n Corner Bottom Left X: "+ neighborMemoList.get(i).getCornerBottomLeftX() +
-                        "\n Corner Bottom Left Y: "+ neighborMemoList.get(i).getCornerBottomLeftY() +
-                        "\n Punkt X: "+ neighborMemoList.get(i).getPunktX() +
-                        "\n Punkt Y: "+ neighborMemoList.get(i).getPunktY() +
-                        "\n IP: "+ neighborMemoList.get(i).getUIP() +
-                        "\n RTT: "+ neighborMemoList.get(i).getRTT();
+                        "\n Corner Top Right X: " + neighborMemoList.get(i).getCornerTopRightX() +
+                        "\n Corner Top Right Y: " + neighborMemoList.get(i).getCornerTopRightY() +
+                        "\n Corner Top Left X: " + neighborMemoList.get(i).getCornerTopLeftX() +
+                        "\n Corner Top Left Y: " + neighborMemoList.get(i).getCornerTopLeftY() +
+                        "\n Corner Bottom Right X: " + neighborMemoList.get(i).getCornerBottomRightX() +
+                        "\n Corner Bottom Right Y: " + neighborMemoList.get(i).getCornerBottomRightY() +
+                        "\n Corner Bottom Left X: " + neighborMemoList.get(i).getCornerBottomLeftX() +
+                        "\n Corner Bottom Left Y: " + neighborMemoList.get(i).getCornerBottomLeftY() +
+                        "\n Punkt X: " + neighborMemoList.get(i).getPunktX() +
+                        "\n Punkt Y: " + neighborMemoList.get(i).getPunktY() +
+                        "\n IP: " + neighborMemoList.get(i).getUIP() +
+                        "\n RTT: " + neighborMemoList.get(i).getRTT();
 
                 Log.d("Result", output);
             }
-            Log.d("Test getEachNeighbor","=============================================================");
+            Log.d("Test getEachNeighbor", "=============================================================");
 
             //getAllNeighbor test
             //
-            List<Neighbour> neighbourMemoListAll= neighborDbSource.getAllNeighborMemo();
-            Log.d("Test getAll","=============================================================");
+            List<Neighbour> neighbourMemoListAll = neighborDbSource.getAllNeighborMemo();
+            Log.d("Test getAll", "=============================================================");
 //            double cornerTopRightX1All = neighbourMemoListAll.get(1).getCornerTopRightX();
 //            double cornerTopRightX2All = neighbourMemoListAll.get(2).getCornerTopRightX();
 //            Log.d("TEST", "BBBBBBBBB" + cornerTopRightX1All);
 //            Log.d("TEST", "BBBBBBBBB" + cornerTopRightX2All);
-            for (int i= 0; i < neighbourMemoListAll.size(); i++) {
-                String output = "Neighbor_ID: "+ neighbourMemoListAll.get(i).getNeighbour_id() +
-                        "\n Neighbor_ID_Foreign: "+ neighbourMemoListAll.get(i).getUid() +
+            for (int i = 0; i < neighbourMemoListAll.size(); i++) {
+                String output = "Neighbor_ID: " + neighbourMemoListAll.get(i).getNeighbour_id() +
+                        "\n Neighbor_ID_Foreign: " + neighbourMemoListAll.get(i).getUid() +
                         //"\n Status: "+ neighborMemoList.get(i).isChecked() +
-                        "\n Corner Top Right X: "+ neighbourMemoListAll.get(i).getCornerTopRightX() +
-                        "\n Corner Top Right Y: "+ neighbourMemoListAll.get(i).getCornerTopRightY() +
-                        "\n Corner Top Left X: "+ neighbourMemoListAll.get(i).getCornerTopLeftX() +
-                        "\n Corner Top Left Y: "+ neighbourMemoListAll.get(i).getCornerTopLeftY() +
-                        "\n Corner Bottom Right X: "+ neighbourMemoListAll.get(i).getCornerBottomRightX() +
-                        "\n Corner Bottom Right Y: "+ neighbourMemoListAll.get(i).getCornerBottomRightY() +
-                        "\n Corner Bottom Left X: "+ neighbourMemoListAll.get(i).getCornerBottomLeftX() +
-                        "\n Corner Bottom Left Y: "+ neighbourMemoListAll.get(i).getCornerBottomLeftY() +
-                        "\n Punkt X: "+ neighbourMemoListAll.get(i).getPunktX() +
-                        "\n Punkt Y: "+ neighbourMemoListAll.get(i).getPunktY() +
-                        "\n IP: "+ neighbourMemoListAll.get(i).getUIP() +
-                        "\n RTT: "+ neighbourMemoListAll.get(i).getRTT();
+                        "\n Corner Top Right X: " + neighbourMemoListAll.get(i).getCornerTopRightX() +
+                        "\n Corner Top Right Y: " + neighbourMemoListAll.get(i).getCornerTopRightY() +
+                        "\n Corner Top Left X: " + neighbourMemoListAll.get(i).getCornerTopLeftX() +
+                        "\n Corner Top Left Y: " + neighbourMemoListAll.get(i).getCornerTopLeftY() +
+                        "\n Corner Bottom Right X: " + neighbourMemoListAll.get(i).getCornerBottomRightX() +
+                        "\n Corner Bottom Right Y: " + neighbourMemoListAll.get(i).getCornerBottomRightY() +
+                        "\n Corner Bottom Left X: " + neighbourMemoListAll.get(i).getCornerBottomLeftX() +
+                        "\n Corner Bottom Left Y: " + neighbourMemoListAll.get(i).getCornerBottomLeftY() +
+                        "\n Punkt X: " + neighbourMemoListAll.get(i).getPunktX() +
+                        "\n Punkt Y: " + neighbourMemoListAll.get(i).getPunktY() +
+                        "\n IP: " + neighbourMemoListAll.get(i).getUIP() +
+                        "\n RTT: " + neighbourMemoListAll.get(i).getRTT();
 
                 Log.d("Result", output);
             }
 
-            Log.d("Test getAll","=============================================================");
+            Log.d("Test getAll", "=============================================================");
 
 
             Log.d("TEST", "NEIGHBOUR_ID " + neighborDbSource.getNID(1));
@@ -387,15 +393,11 @@ public class ExampleInstrumentedTest {
             //ownDataDbSource.deleteOwnData();
             //peerDbSource.deletePeerMemo();
 
-        }
-        catch(XMustBeLargerThanZeroException xMBLTZE)
-        {
+        } catch (XMustBeLargerThanZeroException xMBLTZE) {
             Log.d("", "111111");
-        }catch(YMustBeLargerThanZeroException yMBLTZE)
-        {
+        } catch (YMustBeLargerThanZeroException yMBLTZE) {
             Log.d("", "222222");
-        }catch( Exception e)
-        {
+        } catch (Exception e) {
             Log.d("", "333336 " + e.getMessage());
         }
         //foreign key
@@ -414,11 +416,9 @@ public class ExampleInstrumentedTest {
 
     /**
      * @author Alexander Lukacs
-     *
      */
     @Test
-    public void testExist()
-    {
+    public void testExist() {
         // DAS BRAUCHT MAN UM ZUGRIFF AUF DIE DATNEBANK ZU BEKOMMEN
         Context appContext = InstrumentationRegistry.getTargetContext();
 
@@ -431,13 +431,13 @@ public class ExampleInstrumentedTest {
         ForeignDataDbSource foreignDataDbSource = new ForeignDataDbSource();
         OwnDataDbSource ownDataDbSource = new OwnDataDbSource();
 
-        Log.d("TEST","NODE " + dateiMemoDbSource.getAllDateiMemos());
-        Log.d("TEST","NEIGHBOR" + neighborDbSource.getAllNeighborMemo());
-        Log.d("TEST","PEERS" + peerDbSource.getAllPeer());
-        Log.d("TEST","FOREIGNDATA" + foreignDataDbSource.getAllForeignData());
-        Log.d("TEST","OWNDATA" + ownDataDbSource.getAllOwnData());
+        Log.d("TEST", "NODE " + dateiMemoDbSource.getAllDateiMemos());
+        Log.d("TEST", "NEIGHBOR" + neighborDbSource.getAllNeighborMemo());
+        Log.d("TEST", "PEERS" + peerDbSource.getAllPeer());
+        Log.d("TEST", "FOREIGNDATA" + foreignDataDbSource.getAllForeignData());
+        Log.d("TEST", "OWNDATA" + ownDataDbSource.getAllOwnData());
 
-        Log.d("TEST","NEIGHBOR_ONE" + neighborDbSource.getEachNeighbour(1));
+        Log.d("TEST", "NEIGHBOR_ONE" + neighborDbSource.getEachNeighbour(1));
 
     }
 
@@ -451,8 +451,7 @@ public class ExampleInstrumentedTest {
         SQLiteDatabase database;
         database = DatabaseManager.getInstance().openDatabase();
 
-        if(database == null)
-        {
+        if (database == null) {
             dateiMemoDbHelper.onCreate(database);
         }
         //dateiMemoDbHelper.onCreate(database);
@@ -483,16 +482,16 @@ public class ExampleInstrumentedTest {
         Corner cornerTopRightNeighbour;
         Zone zoneNeighbour;
 
-        try{
-            cornerBottomLeft = new Corner(0.0,0.0);
-            cornerBottomRight = new Corner(1.0,0.0);
-            cornerTopLeft = new Corner(0.0,1.0);
-            cornerTopRight = new Corner(1.0,1.0);
+        try {
+            cornerBottomLeft = new Corner(0.0, 0.0);
+            cornerBottomRight = new Corner(1.0, 0.0);
+            cornerTopLeft = new Corner(0.0, 1.0);
+            cornerTopRight = new Corner(1.0, 1.0);
 
             //dateiMemoDbSource.deleteDateiMemo();
 
 
-            zone = new Zone(cornerTopLeft,cornerTopRight,cornerBottomLeft,cornerBottomRight);
+            zone = new Zone(cornerTopLeft, cornerTopRight, cornerBottomLeft, cornerBottomRight);
 
             dateiMemo.setUid(7872);
             dateiMemo.setTopRight(cornerTopRight);
@@ -506,7 +505,7 @@ public class ExampleInstrumentedTest {
             dateiMemo.setMyZone(zone);
             dateiMemoDbSource.createDateiMemo(dateiMemo);
 
-            Log.d("TEST", "DATEIMEMO_UID " + dateiMemoDbSource.getUid() );
+            Log.d("TEST", "DATEIMEMO_UID " + dateiMemoDbSource.getUid());
             Log.d("TEST", "DATEIMEMO_TOPRIGHT " + dateiMemoDbSource.getCornerTopRightX() + ", " + dateiMemoDbSource.getCornerTopRightY());
             Log.d("TEST", "DATEIMEMO_BOTTOMRIGHT " + dateiMemoDbSource.getCornerBottomRightX() + ", " + dateiMemoDbSource.getCornerBottomRightY());
             Log.d("TEST", "DATEIMEMO_TOPLEFT " + dateiMemoDbSource.getCornerTopLeftX() + ", " + dateiMemoDbSource.getCornerTopLeftY());
@@ -521,7 +520,7 @@ public class ExampleInstrumentedTest {
             dateiMemoDbSource.updatePunktX(0.4);
             dateiMemoDbSource.updatePunktY(0.5);
 
-            Log.d("TEST", "DATEIMEMO_UID " + dateiMemoDbSource.getUid() );
+            Log.d("TEST", "DATEIMEMO_UID " + dateiMemoDbSource.getUid());
             Log.d("TEST", "DATEIMEMO_TOPRIGHT " + dateiMemoDbSource.getCornerTopRightX() + ", " + dateiMemoDbSource.getCornerTopRightY());
             Log.d("TEST", "DATEIMEMO_BOTTOMRIGHT " + dateiMemoDbSource.getCornerBottomRightX() + ", " + dateiMemoDbSource.getCornerBottomRightY());
             Log.d("TEST", "DATEIMEMO_TOPLEFT " + dateiMemoDbSource.getCornerTopLeftX() + ", " + dateiMemoDbSource.getCornerTopLeftY());
@@ -587,22 +586,18 @@ public class ExampleInstrumentedTest {
             assertEquals(0.3, neighborDbSource.getCornerTopLeftYNeighbor(1), 0);
 
 
-        } catch(XMustBeLargerThanZeroException xMBLTZE)
-        {
+        } catch (XMustBeLargerThanZeroException xMBLTZE) {
             Log.d("", "111111");
-        }catch(YMustBeLargerThanZeroException yMBLTZE)
-        {
+        } catch (YMustBeLargerThanZeroException yMBLTZE) {
             Log.d("", "222222");
-        }catch( Exception e)
-        {
+        } catch (Exception e) {
             Log.d("", "333333 " + e.getMessage());
         }
     }
 
 
     @Test
-    public void testSplitt_Vertical()
-    {
+    public void testSplitt_Vertical() {
 
         Context appContext = InstrumentationRegistry.getTargetContext();
 
@@ -613,7 +608,7 @@ public class ExampleInstrumentedTest {
         SQLiteDatabase database;
         database = DatabaseManager.getInstance().openDatabase();
 
-        dateiMemoDbHelper.onUpgrade(database,0,dateiMemoDbHelper.DB_VERSION);
+        dateiMemoDbHelper.onUpgrade(database, 0, dateiMemoDbHelper.DB_VERSION);
 
         Node node1;
         Node node2;
@@ -636,24 +631,24 @@ public class ExampleInstrumentedTest {
         NeighborDbSource neighborDbSource4 = new NeighborDbSource();
 
         try {
-            Corner topRight = new Corner(1.0,1.0);
-            Corner topLeft = new Corner(0.0,1.0);
-            Corner bottomRight = new Corner(1.0,0.0);
-            Corner bottomLeft = new Corner(0.0,0.0);
+            Corner topRight = new Corner(1.0, 1.0);
+            Corner topLeft = new Corner(0.0, 1.0);
+            Corner bottomRight = new Corner(1.0, 0.0);
+            Corner bottomLeft = new Corner(0.0, 0.0);
 
             // Man benötigt für jeden Node eine eigene Zone,
             // damit die Aufrufe zum updaten der Corner nicht Auswirkungen auf die Corner der anderen Nodes hat
-            Zone zone = new Zone(topLeft,topRight,bottomLeft,bottomRight);
+            Zone zone = new Zone(topLeft, topRight, bottomLeft, bottomRight);
 
-            node1 = new Node(1,0.1,0.2,"1.1.1.1",3,zone);
-            node2 = new Node(2,0.9,0.8,"1.1.1.2",3,zone);
-            node3 = new Node(3,0.4,0.3,"1.1.1.3",3,zone);
-            node4 = new Node(4,0.6,0.1,"1.1.1.4",3,zone);
+            node1 = new Node(1, 0.1, 0.2, "1.1.1.1", 3, zone);
+            node2 = new Node(2, 0.9, 0.8, "1.1.1.2", 3, zone);
+            node3 = new Node(3, 0.4, 0.3, "1.1.1.3", 3, zone);
+            node4 = new Node(4, 0.6, 0.1, "1.1.1.4", 3, zone);
 
-            neighbour1 = new Neighbour(node1.getUid(),node1.getPunktX(), node1.getPunktY(), node1.getIP(), node1.getMyZone(),1);
-            neighbour2 = new Neighbour(node2.getUid(), node2.getPunktX(), node2.getPunktY(), node2.getIP(), node2.getMyZone(),1);
-            neighbour3 = new Neighbour(node3.getUid(), node3.getPunktX(), node3.getPunktY(), node3.getIP(), node3.getMyZone(),1);
-            neighbour4 = new Neighbour(node4.getUid(), node4.getPunktX(), node4.getPunktY(), node4.getIP(), node4.getMyZone(),1);
+            neighbour1 = new Neighbour(node1.getUid(), node1.getPunktX(), node1.getPunktY(), node1.getIP(), node1.getMyZone(), 1);
+            neighbour2 = new Neighbour(node2.getUid(), node2.getPunktX(), node2.getPunktY(), node2.getIP(), node2.getMyZone(), 1);
+            neighbour3 = new Neighbour(node3.getUid(), node3.getPunktX(), node3.getPunktY(), node3.getIP(), node3.getMyZone(), 1);
+            neighbour4 = new Neighbour(node4.getUid(), node4.getPunktX(), node4.getPunktY(), node4.getIP(), node4.getMyZone(), 1);
 
 
             dateiMemoDbSource1.createDateiMemo(node1);
@@ -662,8 +657,7 @@ public class ExampleInstrumentedTest {
             dateiMemoDbSource4.createDateiMemo(node4);
 
 
-
-            zone.split(node1,node2,node3,node4);
+            zone.split(node1, node2, node3, node4);
 
             /*neighborDbSource1.createNeighborMemo(neighbour1);
             neighborDbSource2.createNeighborMemo(neighbour2);
@@ -682,8 +676,8 @@ public class ExampleInstrumentedTest {
 
             Log.d("TEST", "NEIGHBOR " + neighborDbSource1.getAllNeighborMemo());
 
-            Log.d("TEST","NODE1: " + dateiMemoDbSource1.getAllDateiMemos());
-            Log.d("TEST",node1.getNeighbourList().toString());
+            Log.d("TEST", "NODE1: " + dateiMemoDbSource1.getAllDateiMemos());
+            Log.d("TEST", node1.getNeighbourList().toString());
 
         } catch (XMustBeLargerThanZeroException e) {
             e.printStackTrace();
@@ -693,8 +687,7 @@ public class ExampleInstrumentedTest {
     }
 
     @Test
-    public void testSplitt_Horizontal()
-    {
+    public void testSplitt_Horizontal() {
 
         Context appContext = InstrumentationRegistry.getTargetContext();
 
@@ -707,23 +700,23 @@ public class ExampleInstrumentedTest {
         Node node4;
 
         try {
-            Corner topRight = new Corner(1.0,1.0);
-            Corner topLeft = new Corner(0.0,1.0);
-            Corner bottomRight = new Corner(1.0,0.0);
-            Corner bottomLeft = new Corner(0.0,0.0);
+            Corner topRight = new Corner(1.0, 1.0);
+            Corner topLeft = new Corner(0.0, 1.0);
+            Corner bottomRight = new Corner(1.0, 0.0);
+            Corner bottomLeft = new Corner(0.0, 0.0);
 
             // Man benötigt für jeden Node eine eigene Zone,
             // damit die Aufrufe zum updaten der Corner nicht Auswirkungen auf die Corner der anderen Nodes hat
-            Zone zone = new Zone(topLeft,topRight,bottomLeft,bottomRight);
+            Zone zone = new Zone(topLeft, topRight, bottomLeft, bottomRight);
 
-            node1 = new Node(1,0.1,0.2,"1.1.1.1",3,zone);
-            node2 = new Node(2,0.9,0.8,"1.1.1.2",3,zone);
-            node3 = new Node(3,0.4,0.3,"1.1.1.3",3,zone);
-            node4 = new Node(4,0.6,0.1,"1.1.1.4",3,zone);
+            node1 = new Node(1, 0.1, 0.2, "1.1.1.1", 3, zone);
+            node2 = new Node(2, 0.9, 0.8, "1.1.1.2", 3, zone);
+            node3 = new Node(3, 0.4, 0.3, "1.1.1.3", 3, zone);
+            node4 = new Node(4, 0.6, 0.1, "1.1.1.4", 3, zone);
 
 
-            zone.split(node1,node2,node3,node4);
-            zone.split(node1,node2,node3,node4);
+            zone.split(node1, node2, node3, node4);
+            zone.split(node1, node2, node3, node4);
 
             Log.d("TEST", "NODE1: " + node1.getMyZone());
             Log.d("TEST", "NODE2: " + node2.getMyZone());
@@ -738,8 +731,7 @@ public class ExampleInstrumentedTest {
     }
 
     @Test
-    public void test_Node_checkIfInMyZone_True()
-    {
+    public void test_Node_checkIfInMyZone_True() {
         Node node = new Node();
         Corner cornerBottomLeft;
         Corner cornerBottomRight;
@@ -747,25 +739,25 @@ public class ExampleInstrumentedTest {
         Corner cornerTopRight;
         Zone zone;
         try {
-            cornerBottomLeft = new Corner(0.0,0.0);
-            cornerBottomRight = new Corner(1.0,0.0);
-            cornerTopLeft = new Corner(0.0,1.0);
-            cornerTopRight = new Corner(1.0,1.0);
-            zone = new Zone(cornerTopLeft,cornerTopRight,cornerBottomLeft,cornerBottomRight);
+            cornerBottomLeft = new Corner(0.0, 0.0);
+            cornerBottomRight = new Corner(1.0, 0.0);
+            cornerTopLeft = new Corner(0.0, 1.0);
+            cornerTopRight = new Corner(1.0, 1.0);
+            zone = new Zone(cornerTopLeft, cornerTopRight, cornerBottomLeft, cornerBottomRight);
 
             System.out.print("IP: 192.111.23.4 = " + node.hashX("192.111.23.4") + ", " + node.hashY("192.111.23.4") + "\n");
-            System.out.print("IP: 255.255.255.255 = " +node.hashX("255.255.255.255") + ", " + node.hashY("255.255.255.255") + "\n");
-            System.out.print("IP: 180.1.23.123 = " +node.hashX("180.1.23.123") + ", " + node.hashY("180.1.23.123") + "\n");
-            System.out.print("IP: 12.191.3.255 = " +node.hashX("12.191.3.255") + ", " + node.hashY("12.191.3.255") + "\n");
-            System.out.print("IP: 1.111.223.34 = " +node.hashX("1.111.223.34") + ", " + node.hashY("1.111.223.34") + "\n");
-            System.out.print("IP: 0.0.0.0 = " +node.hashX("0.0.0.0") + ", " + node.hashY("0.0.0.0") + "\n");
-            System.out.print("IP: 78.31.3.129 = " +node.hashX("78.31.3.129") + ", " + node.hashY("78.31.3.129") + "\n");
-            System.out.print("IP: 111.111.111.111 = " +node.hashX("111.111.111.111") + ", " + node.hashY("111.111.111.111") + "\n");
-            System.out.print("IP: 222.222.222.222 = " +node.hashX("222.222.222.222") + ", " + node.hashY("222.222.222.222") + "\n");
-            System.out.print("IP: 12.191.10.255 = " +node.hashX("12.191.10.255") + ", " + node.hashY("12.191.10.255") + "\n");
-            System.out.print("IP: 12.191.11.255 = " +node.hashX("12.191.11.255") + ", " + node.hashY("12.191.11.255") + "\n");
-            System.out.print("IP: 12.191.12.255 = " +node.hashX("12.191.12.255") + ", " + node.hashY("12.191.12.255") + "\n");
-            System.out.print("IP: 12.255.255.255 = " +node.hashX("12.191.13.255") + ", " + node.hashY("12.191.13.255") + "\n");
+            System.out.print("IP: 255.255.255.255 = " + node.hashX("255.255.255.255") + ", " + node.hashY("255.255.255.255") + "\n");
+            System.out.print("IP: 180.1.23.123 = " + node.hashX("180.1.23.123") + ", " + node.hashY("180.1.23.123") + "\n");
+            System.out.print("IP: 12.191.3.255 = " + node.hashX("12.191.3.255") + ", " + node.hashY("12.191.3.255") + "\n");
+            System.out.print("IP: 1.111.223.34 = " + node.hashX("1.111.223.34") + ", " + node.hashY("1.111.223.34") + "\n");
+            System.out.print("IP: 0.0.0.0 = " + node.hashX("0.0.0.0") + ", " + node.hashY("0.0.0.0") + "\n");
+            System.out.print("IP: 78.31.3.129 = " + node.hashX("78.31.3.129") + ", " + node.hashY("78.31.3.129") + "\n");
+            System.out.print("IP: 111.111.111.111 = " + node.hashX("111.111.111.111") + ", " + node.hashY("111.111.111.111") + "\n");
+            System.out.print("IP: 222.222.222.222 = " + node.hashX("222.222.222.222") + ", " + node.hashY("222.222.222.222") + "\n");
+            System.out.print("IP: 12.191.10.255 = " + node.hashX("12.191.10.255") + ", " + node.hashY("12.191.10.255") + "\n");
+            System.out.print("IP: 12.191.11.255 = " + node.hashX("12.191.11.255") + ", " + node.hashY("12.191.11.255") + "\n");
+            System.out.print("IP: 12.191.12.255 = " + node.hashX("12.191.12.255") + ", " + node.hashY("12.191.12.255") + "\n");
+            System.out.print("IP: 12.255.255.255 = " + node.hashX("12.191.13.255") + ", " + node.hashY("12.191.13.255") + "\n");
 
             assertEquals(true, zone.checkIfInMyZone(node.hashX("192.111.23.4"), node.hashY("192.111.23.4")));
             assertEquals(true, zone.checkIfInMyZone(node.hashX("180.1.23.123"), node.hashY("180.1.23.123")));
@@ -775,21 +767,17 @@ public class ExampleInstrumentedTest {
             assertEquals(true, zone.checkIfInMyZone(node.hashX("0.0.0.0"), node.hashY("0.0.0.0")));
             assertEquals(true, zone.checkIfInMyZone(node.hashX("78.31.3.129"), node.hashY("78.31.3.129")));
 
-        }
-        catch(XMustBeLargerThanZeroException xMBLTZE)
-        {
+        } catch (XMustBeLargerThanZeroException xMBLTZE) {
 
-        }catch(YMustBeLargerThanZeroException yMBLTZE)
-        {
+        } catch (YMustBeLargerThanZeroException yMBLTZE) {
 
-        }catch( Exception e)
-        {
+        } catch (Exception e) {
 
         }
     }
+
     @Test
-    public void test_Node_checkIfInMyZone_False()
-    {
+    public void test_Node_checkIfInMyZone_False() {
         Node node = new Node();
         Corner cornerBottomLeft;
         Corner cornerBottomRight;
@@ -797,11 +785,11 @@ public class ExampleInstrumentedTest {
         Corner cornerTopRight;
         Zone zone;
         try {
-            cornerBottomLeft = new Corner(0.7,0.3);
-            cornerBottomRight = new Corner(0.8,0.3);
-            cornerTopLeft = new Corner(0.7 ,0.8);
-            cornerTopRight = new Corner(0.8,0.8);
-            zone = new Zone(cornerTopLeft,cornerTopRight,cornerBottomLeft,cornerBottomRight);
+            cornerBottomLeft = new Corner(0.7, 0.3);
+            cornerBottomRight = new Corner(0.8, 0.3);
+            cornerTopLeft = new Corner(0.7, 0.8);
+            cornerTopRight = new Corner(0.8, 0.8);
+            zone = new Zone(cornerTopLeft, cornerTopRight, cornerBottomLeft, cornerBottomRight);
 
             System.out.print(node.hashX("192.111.23.4") + ", " + node.hashY("192.111.23.4") + "\n");
             System.out.print(node.hashX("255.255.255.255") + ", " + node.hashY("255.255.255.255") + "\n");
@@ -812,51 +800,46 @@ public class ExampleInstrumentedTest {
             assertEquals(false, zone.checkIfInMyZone(node.hashX("0.0.0.0"), node.hashY("0.0.0.0")));
             assertEquals(false, zone.checkIfInMyZone(node.hashX("78.31.3.129"), node.hashY("78.31.3.129")));
 
-        }catch(XMustBeLargerThanZeroException xMBLTZE)
-        {
+        } catch (XMustBeLargerThanZeroException xMBLTZE) {
 
-        }catch(YMustBeLargerThanZeroException yMBLTZE)
-        {
+        } catch (YMustBeLargerThanZeroException yMBLTZE) {
 
-        }catch( Exception e)
-        {
+        } catch (Exception e) {
 
         }
     }
 
     @Test
-    public void test_ComputeDistance()
-    {
+    public void test_ComputeDistance() {
         Node node = new Node();
         double x = node.hashX("192.111.23.4");
         double y = node.hashY("192.111.23.4");
-        System.out.println(node.computeDistance(node.hashX("12.191.25.255"),node.hashY("12.191.25.255") ,node.hashX("12.191.10.255"),node.hashY("12.191.10.255")));
-        System.out.println(node.computeDistance(x ,y ,node.hashX("12.191.9.255"),node.hashY("12.191.9.255")));
-        System.out.println(node.computeDistance(x ,y ,node.hashX("1.1.1.100"),node.hashY("1.1.1.100")));
-        System.out.println(node.computeDistance(x ,y ,node.hashX("12.191.10.255"),node.hashY("12.191.10.255")));
-        System.out.println(node.computeDistance(x ,y ,node.hashX("12.191.11.255"),node.hashY("12.191.11.255")));
-        System.out.println(node.computeDistance(x ,y ,node.hashX("12.191.12.255"),node.hashY("12.191.12.255")));
-        System.out.println(node.computeDistance(x ,y ,node.hashX("12.191.13.255"),node.hashY("12.191.13.255")));
-        System.out.println(node.computeDistance(x ,y ,node.hashX("0.0.0.0"),node.hashY("0.0.0.0")));
-        System.out.println(node.computeDistance(x ,y ,node.hashX("255.255.255.255"),node.hashY("255.255.255.255")));
-        System.out.println(node.computeDistance(x ,y ,node.hashX("78.31.3.129"),node.hashY("78.31.3.129")));
+        System.out.println(node.computeDistance(node.hashX("12.191.25.255"), node.hashY("12.191.25.255"), node.hashX("12.191.10.255"), node.hashY("12.191.10.255")));
+        System.out.println(node.computeDistance(x, y, node.hashX("12.191.9.255"), node.hashY("12.191.9.255")));
+        System.out.println(node.computeDistance(x, y, node.hashX("1.1.1.100"), node.hashY("1.1.1.100")));
+        System.out.println(node.computeDistance(x, y, node.hashX("12.191.10.255"), node.hashY("12.191.10.255")));
+        System.out.println(node.computeDistance(x, y, node.hashX("12.191.11.255"), node.hashY("12.191.11.255")));
+        System.out.println(node.computeDistance(x, y, node.hashX("12.191.12.255"), node.hashY("12.191.12.255")));
+        System.out.println(node.computeDistance(x, y, node.hashX("12.191.13.255"), node.hashY("12.191.13.255")));
+        System.out.println(node.computeDistance(x, y, node.hashX("0.0.0.0"), node.hashY("0.0.0.0")));
+        System.out.println(node.computeDistance(x, y, node.hashX("255.255.255.255"), node.hashY("255.255.255.255")));
+        System.out.println(node.computeDistance(x, y, node.hashX("78.31.3.129"), node.hashY("78.31.3.129")));
     }
 
     @Test
-    public void test_CompareValues()
-    {
+    public void test_CompareValues() {
         Node node = new Node();
         double x = node.hashX("192.111.23.4");
         double y = node.hashY("192.111.23.4");
         double dis[] = new double[4];
-        dis [0] = node.computeDistance(x ,y ,node.hashX("12.191.10.255"),node.hashY("12.191.10.255"));
-        dis [1] = node.computeDistance(x ,y ,node.hashX("12.191.11.255"),node.hashY("12.191.11.255"));
-        dis [2] = node.computeDistance(x ,y ,node.hashX("12.191.12.255"),node.hashY("12.191.12.255"));
-        dis [3] = node.computeDistance(x ,y ,node.hashX("12.191.13.255"),node.hashY("12.191.13.255"));
-        System.out.println(node.computeDistance(x ,y ,node.hashX("12.191.10.255"),node.hashY("12.191.10.255")));
-        System.out.println(node.computeDistance(x ,y ,node.hashX("12.191.11.255"),node.hashY("12.191.11.255")));
-        System.out.println(node.computeDistance(x ,y ,node.hashX("12.191.12.255"),node.hashY("12.191.12.255")));
-        System.out.println(node.computeDistance(x ,y ,node.hashX("12.191.13.255"),node.hashY("12.191.13.255")));
+        dis[0] = node.computeDistance(x, y, node.hashX("12.191.10.255"), node.hashY("12.191.10.255"));
+        dis[1] = node.computeDistance(x, y, node.hashX("12.191.11.255"), node.hashY("12.191.11.255"));
+        dis[2] = node.computeDistance(x, y, node.hashX("12.191.12.255"), node.hashY("12.191.12.255"));
+        dis[3] = node.computeDistance(x, y, node.hashX("12.191.13.255"), node.hashY("12.191.13.255"));
+        System.out.println(node.computeDistance(x, y, node.hashX("12.191.10.255"), node.hashY("12.191.10.255")));
+        System.out.println(node.computeDistance(x, y, node.hashX("12.191.11.255"), node.hashY("12.191.11.255")));
+        System.out.println(node.computeDistance(x, y, node.hashX("12.191.12.255"), node.hashY("12.191.12.255")));
+        System.out.println(node.computeDistance(x, y, node.hashX("12.191.13.255"), node.hashY("12.191.13.255")));
         System.out.println(node.compareValues(dis));
         assertEquals(1, node.compareValues(dis));
     }
@@ -867,34 +850,270 @@ public class ExampleInstrumentedTest {
         List<PeerMemo> peerMemoList = new ArrayList<>();
         String ip = "192.168.2.115";
 
-        Corner cornerBottomLeft1 = new Corner(0.0,0.0);
-        Corner cornerBottomRight1 = new Corner(0.5,0.0);
-        Corner cornerTopLeft1 = new Corner(0.0,1.0);
-        Corner cornerTopRight1 = new Corner(0.5,1.0);
+        Corner cornerBottomLeft1 = new Corner(0.0, 0.0);
+        Corner cornerBottomRight1 = new Corner(0.5, 0.0);
+        Corner cornerTopLeft1 = new Corner(0.0, 1.0);
+        Corner cornerTopRight1 = new Corner(0.5, 1.0);
 
-        Corner cornerBottomLeft2 = new Corner(0.5,0.0);
-        Corner cornerBottomRight2 = new Corner(1.0,0.0);
-        Corner cornerTopLeft2 = new Corner(0.5,1.0);
-        Corner cornerTopRight2 = new Corner(1.0,1.0);
+        Corner cornerBottomLeft2 = new Corner(0.5, 0.0);
+        Corner cornerBottomRight2 = new Corner(1.0, 0.0);
+        Corner cornerTopLeft2 = new Corner(0.5, 1.0);
+        Corner cornerTopRight2 = new Corner(1.0, 1.0);
 
-        Zone zone = new Zone(cornerTopLeft1,cornerTopRight1,cornerBottomLeft1,cornerBottomRight1);
+        Zone zone = new Zone(cornerTopLeft1, cornerTopRight1, cornerBottomLeft1, cornerBottomRight1);
         Zone neighbourZone = new Zone(cornerTopLeft2, cornerTopRight2, cornerBottomLeft2, cornerBottomRight2);
-        Neighbour n = new Neighbour(03l,0.4,0.5,ip,zone,0.5);
-        Neighbour n1 = new Neighbour(03l,0.5,0.5,ip,neighbourZone,0.5);
-        PeerMemo p = new PeerMemo(03l,93,ip);
+        Neighbour n = new Neighbour(03, 0.4, 0.5, ip, zone, 0.5);
+        Neighbour n1 = new Neighbour(03, 0.5, 0.5, ip, neighbourZone, 0.5);
+        PeerMemo p = new PeerMemo(03, 93, ip);
         neighbourList.add(n);
         neighbourList.add(n1);
         peerMemoList.add(p);
 
 
-        Node node = new Node(01,0.5,0.5,ip,2,zone);
+        Node node = new Node(01, 0.5, 0.5, ip, 2, zone);
         node.setNeighbourList(neighbourList);
         node.setPeerMemoList(peerMemoList);
-        RoutHelper rh = new RoutHelper(ip,0.3,0.5,02);
+        RoutHelper rh = new RoutHelper(ip, 0.3, 0.5, 02);
 
         Node neuerNode = node.routing(rh);
         System.out.println(neuerNode.toString());
 
+    }
+
+    private final static int PORTNR = 9797;
+
+
+    private Socket socket;
+    private Client client = new Client();
+    private DBUtil dbu = new DBUtil();
+    private DateiMemoDbSource ownDb = new DateiMemoDbSource();
+    private NeighborDbSource nDB = new NeighborDbSource();
+    private PeerDbSource pDB = new PeerDbSource();
+    RoutHelper rh;
+
+    @Test
+    public void testUpdate() {
+
+        Context appContext = InstrumentationRegistry.getTargetContext();
+
+        DateiMemoDbHelper dateiMemoDbHelper = new DateiMemoDbHelper(appContext);
+        DatabaseManager.initializeInstance(dateiMemoDbHelper);
+
+        Corner cornerBottomLeft2 = null;
+        Corner cornerBottomRight2 = null;
+        Corner cornerTopLeft2 = null;
+        Corner cornerTopRight2 = null;
+        try {
+            cornerBottomLeft2 = new Corner(0.5, 0.0);
+            cornerBottomRight2 = new Corner(1.0, 0.0);
+            cornerTopLeft2 = new Corner(0.5, 1.0);
+            cornerTopRight2 = new Corner(1.0, 1.0);
+        } catch (XMustBeLargerThanZeroException e) {
+            e.printStackTrace();
+        } catch (YMustBeLargerThanZeroException e) {
+            e.printStackTrace();
+        }
+        Zone neighbourZone = new Zone(cornerTopLeft2, cornerTopRight2, cornerBottomLeft2, cornerBottomRight2);
+
+        Node node1;
+        node1 = new Node(1, 0.1, 0.2, "1.1.1.1", 2, neighbourZone);
+
+        String ip = "1.1.1.5";
+        double x = 0.5;
+        double y = 0.3;
+        int id = 1;
+        rh = new RoutHelper(ip, x, y, id);
+
+        ownDb.createDateiMemo(node1);
+
+        Neighbour n1 = new Neighbour(03, 0.5, 0.5, ip, neighbourZone, 0.5);
+
+        /*nDB.createNeighborMemo(n1);
+        nDB.createNeighborMemo(n1);
+        nDB.createNeighborMemo(n1);
+        nDB.createNeighborMemo(n1);*/
+
+        Log.d("TEST", " " + nDB.getAllNeighborMemo());
+
+        Log.d("TEST", " " + determineRoutingDestination(rh));
+
+        //Log.d("TEST"," " +routingCheckZone(rh));
+
+    }
+
+    private double computeDistance(double x, double y, double neighbourX, double neighbourY) {
+        double dis = Math.abs(x - neighbourX) + Math.abs(y - neighbourY);
+        return dis;
+    }
+
+    private int determineRoutingDestination(RoutHelper rh) {
+        double[] distance = new double[14];
+        for (int i = 0; i < nDB.getCount(); i++) {
+            distance[i] = computeDistance(rh.getX(), rh.getY(), nDB.getPunktXNeighbor(i + 1),
+                    nDB.getPunktYNeighbor(i + 1));
+        }
+        int index = compareValues(distance);
+
+        return index;
+    }
+
+
+    private boolean routingCheckZone(RoutHelper rh) {
+        try {
+            if (dbu.initOwnZone(ownDb).checkIfInMyZone(rh.getX(), rh.getY())) {
+                //hier noch statt 3 getUID von OnlineDB
+
+
+                Node newNode = new Node(rh.getID(), rh.getX(), rh.getY(), rh.getIP(), ownDb.getCountPeers() + 1, dbu.initOwnZone(ownDb));
+                ownDb.updateCountPeers();
+
+                if (ownDb.getAllDateiMemos().checkIfMaxPeersCount()) {
+
+                    //splitt
+                    return true;
+                } else {
+
+                    //noch testen
+                    Socket socket = new Socket(rh.getIP(), PORTNR);
+                    client.sendNodeAsByteArray(socket, newNode);
+                    client.sendListAsByteArray(socket, (ArrayList) pDB.getAllPeer());
+                    client.sendListAsByteArrayNeighbour(socket, (ArrayList) nDB.getAllNeighborMemo());
+                    //hier ein remote aufruf von updateNeighbourAndPeerForeign an die rh.getIp() senden
+                    //testen ob geht
+                    return true;
+                }
+            }
+        } catch (YMustBeLargerThanZeroException | XMustBeLargerThanZeroException e) {
+            e.printStackTrace();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
+    private int compareValues(double[] distances) {
+        int index = 0;
+        double temp = distances[0];
+        for (int i = 1; i < distances.length; i++) {
+            if (temp > distances[i]) {
+
+                temp = distances[i];
+                index = i;
+            }
+        }
+        return index;
+    }
+
+    @Test
+    public void testEigensBildbekommen() {
+
+        Context appContext = InstrumentationRegistry.getTargetContext();
+
+        DateiMemoDbHelper dateiMemoDbHelper = new DateiMemoDbHelper(appContext);
+        DatabaseManager.initializeInstance(dateiMemoDbHelper);
+
+        SQLiteDatabase database;
+        database = DatabaseManager.getInstance().openDatabase();
+
+        if (database == null) {
+            dateiMemoDbHelper.onCreate(database);
+        }
+
+        dateiMemoDbHelper.onUpgrade(database, 0, dateiMemoDbHelper.DB_VERSION);
+
+        OwnDataMemo ownDataMemo = new OwnDataMemo();
+        DateiMemoDbSource dateiMemoDbSource = new DateiMemoDbSource();
+        OwnDataDbSource ownDataDbSource = new OwnDataDbSource();
+        Node dateiMemo = new Node();
+        ForeignData foreignData = new ForeignData();
+        ForeignDataDbSource foreignDataDbSource = new ForeignDataDbSource();
+
+        Corner cornerBottomLeft = null;
+        Corner cornerBottomRight = null;
+        Corner cornerTopLeft = null;
+        Corner cornerTopRight = null;
+        Zone zone;
+
+        try {
+            cornerBottomLeft = new Corner(0.0, 0.0);
+            cornerBottomRight = new Corner(1.0, 0.0);
+            cornerTopLeft = new Corner(0.0, 1.0);
+            cornerTopRight = new Corner(1.0, 1.0);
+        } catch (XMustBeLargerThanZeroException e) {
+            e.printStackTrace();
+        } catch (YMustBeLargerThanZeroException e) {
+            e.printStackTrace();
+        }
+
+
+        //dateiMemoDbSource.deleteDateiMemo();
+
+
+        zone = new Zone(cornerTopLeft, cornerTopRight, cornerBottomLeft, cornerBottomRight);
+
+        dateiMemo.setUid(7872);
+        dateiMemo.setTopRight(cornerTopRight);
+        dateiMemo.setBottomLeft(cornerBottomLeft);
+        dateiMemo.setTopLeft(cornerTopLeft);
+        dateiMemo.setBottomRight(cornerBottomRight);
+        dateiMemo.setPunktX(0.3);
+        dateiMemo.setPunktY(0.4);
+        dateiMemo.setIP("227.0.0.0/8");
+        dateiMemo.setCountPeers(2);
+        dateiMemo.setMyZone(zone);
+        dateiMemoDbSource.createDateiMemo(dateiMemo);
+
+        ownDataMemo.setFileId(3);
+        ownDataMemo.setUid(dateiMemoDbSource.getUid());
+        ownDataDbSource.createOwnData(ownDataMemo);
+
+
+        dateiMemo.setUid(1);
+        dateiMemo.setTopRight(cornerTopRight);
+        dateiMemo.setBottomLeft(cornerBottomLeft);
+        dateiMemo.setTopLeft(cornerTopLeft);
+        dateiMemo.setBottomRight(cornerBottomRight);
+        dateiMemo.setPunktX(0.3);
+        dateiMemo.setPunktY(0.4);
+        dateiMemo.setIP("227.0.0.0/8");
+        dateiMemo.setCountPeers(2);
+        dateiMemo.setMyZone(zone);
+        //dateiMemoDbSource.createDateiMemo(dateiMemo);
+
+        foreignData.setFotoId(2);
+        foreignData.setUid(dateiMemoDbSource.getUid());
+        foreignData.setForeignIp(dateiMemoDbSource.getIp(dateiMemoDbSource.getUid()));
+        foreignDataDbSource.createForeignData(foreignData);
+
+        foreignData.setUid(dateiMemoDbSource.getUid());
+        foreignData.setFotoId(5);
+        foreignData.setForeignIp(dateiMemoDbSource.getIp(dateiMemoDbSource.getUid()));
+        foreignDataDbSource.createForeignData(foreignData);
+
+
+        for (int i = 1; i <= foreignDataDbSource.getAllForeignData().size();i++)
+        getImage(i, foreignDataDbSource);
+    }
+
+
+        public String getFile(int uid, ForeignDataDbSource foreignDataDb)
+        {
+            String foto = "";
+            Log.d("TEST",""+ uid );
+            if (uid == foreignDataDb.getUidForeign()) {
+                foto = foreignDataDb.getFotoId(foreignDataDb.getUidForeign()) + ".jpg";
+                Log.d("TEST", "FOTO " + foto);
+            }
+            return foto;
+        }
+
+    public File getImage(int uid, ForeignDataDbSource foreignDataDb)
+    {
+        File file = new File(Environment.getExternalStorageDirectory() + File.separator+"images"+ File.separator+"CAN_PICS"+ File.separator + getFile(uid,foreignDataDb));
+        return file;
     }
   /*  @Test
     public void testSendIPAddress() throws IOException {
@@ -917,7 +1136,7 @@ public class ExampleInstrumentedTest {
     }
 */
 
-}
+    }
 //    @Test
 //    public void TestUpdateCorner() {
 //

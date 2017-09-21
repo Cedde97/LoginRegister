@@ -35,15 +35,8 @@ public class HashYTask extends AsyncTask<String, String , String> {
 
         String ip = params[0];
 
-        String hash2 = umkehren(ip);
-        double y = hash2.hashCode();
-        if(y < 0){
-            y = y/(-DIVIDER);
-            hashY = y;
-        }else{
-            y = y/DIVIDER;
-            hashY=y;
-        }
+        String yWert = umkehren(ip);
+        hashY = Double.parseDouble("0." + Math.abs(yWert.hashCode()));
         return null;
     }
 

@@ -4,15 +4,15 @@ package model;
 public class PeerMemo implements java.io.Serializable{
     //DateiMemo dateiMemo;
     private static final long serialVersionUID = -3454312037450492244L;
-    private long uid;
-    private long peerId;
+    private int uid;
+    private int peerId;
     private String peerIp;
 
 
     public PeerMemo(){
     }
 
-    public PeerMemo(long uid, int peerId, String peerIp) {
+    public PeerMemo(int uid, int peerId, String peerIp) {
         this.uid = uid;
         this.peerId = peerId;
         this.peerIp = peerIp;
@@ -24,19 +24,19 @@ public class PeerMemo implements java.io.Serializable{
         this.peerIp = peerIp;
     }
 
-    public long getUid() {
+    public int getUid() {
         return uid;
     }
 
-    public void setUid(long uid) {
+    public void setUid(int uid) {
         this.uid = uid;
     }
 
-    public long getPeerId() {
+    public int getPeerId() {
         return peerId;
     }
 
-    public void setPeerId(long peerId) {
+    public void setPeerId(int peerId) {
         this.peerId = peerId;
     }
 

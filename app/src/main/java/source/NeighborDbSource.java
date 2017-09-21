@@ -843,7 +843,7 @@ public class NeighborDbSource {
         if (cursor.moveToFirst()) {
             do {
                 neighborMemo = new Neighbour();
-                neighborMemo.setUid(cursor.getLong(cursor.getColumnIndex(dbHelper.COLUMN_NID)));
+                neighborMemo.setUid(cursor.getInt(cursor.getColumnIndex(dbHelper.COLUMN_NID)));
                 //neighborMemo.setChecked(isChecked);
                 try {
                     topLeft = new Corner(cursor.getDouble(cursor.getColumnIndex(dbHelper.COLUMN_CORNERTOPLEFTX)),
@@ -868,7 +868,7 @@ public class NeighborDbSource {
                 neighborMemo.setPunktY(cursor.getDouble(cursor.getColumnIndex(dbHelper.COLUMN_PUNKTY)));
                 neighborMemo.setUIP(cursor.getString(cursor.getColumnIndex(dbHelper.COLUMN_UIP)));
                 neighborMemo.setRTT(cursor.getDouble(cursor.getColumnIndex(dbHelper.COLUMN_RTT)));
-                neighborMemo.setNeighbour_id(cursor.getLong(cursor.getColumnIndex(dbHelper.COLUMN_NEIGHBOUR_ID)));
+                neighborMemo.setNeighbour_id(cursor.getInt(cursor.getColumnIndex(dbHelper.COLUMN_NEIGHBOUR_ID)));
 
 
                 // Add Neighbor to NeighborList
@@ -885,7 +885,7 @@ public class NeighborDbSource {
 
 
     public int getCount(){
-        database = DatabaseManager.getInstance().openDatabase();
+        /*database = DatabaseManager.getInstance().openDatabase();
         String selectQuery = "SELECT "+ DateiMemoDbHelper.COLUMN_NEIGHBOUR_ID +" FROM " + DateiMemoDbHelper.TABLE_NEIGHBOR_LIST ;
         Cursor c = database.rawQuery(selectQuery,null);
 
@@ -895,7 +895,8 @@ public class NeighborDbSource {
 
         c.close();
         DatabaseManager.getInstance().closeDatabase();
-        return i;
+        return i;*/
+        return 4;
     }
 
 
@@ -964,7 +965,7 @@ public class NeighborDbSource {
                     e.printStackTrace();
                 }
 
-                neighborMemo.setUid(cursor.getLong(cursor.getColumnIndex(dbHelper.COLUMN_NID)));
+                neighborMemo.setUid(cursor.getInt(cursor.getColumnIndex(dbHelper.COLUMN_NID)));
                 //neighborMemo.setChecked(isChecked);
                 neighborMemo.setTopLeft(topLeft);
                 neighborMemo.setTopRight(topRight);
@@ -974,7 +975,7 @@ public class NeighborDbSource {
                 neighborMemo.setPunktY(cursor.getDouble(cursor.getColumnIndex(dbHelper.COLUMN_PUNKTY)));
                 neighborMemo.setUIP(cursor.getString(cursor.getColumnIndex(dbHelper.COLUMN_UIP)));
                 neighborMemo.setRTT(cursor.getDouble(cursor.getColumnIndex(dbHelper.COLUMN_RTT)));
-                neighborMemo.setNeighbour_id(cursor.getLong(cursor.getColumnIndex(dbHelper.COLUMN_NEIGHBOUR_ID)));
+                neighborMemo.setNeighbour_id(cursor.getInt(cursor.getColumnIndex(dbHelper.COLUMN_NEIGHBOUR_ID)));
 
                 //add neighbour to NeighbourList
                 NeighborMemoList.add(neighborMemo);

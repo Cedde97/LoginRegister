@@ -1,8 +1,10 @@
 package connection;
 import android.os.Environment;
+import android.util.Log;
 
 import connection.RoutHelper;
 import model.*;
+import source.ForeignDataDbSource;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -65,16 +67,16 @@ public class Serialization {
 
 	}
 
-	public void serializeNode2(Node node) throws IOException {
-		FileOutputStream fileOut = new FileOutputStream(Environment.getExternalStorageDirectory());
+	public void serializeNode2(Node node, ForeignDataDbSource foreignDataDb) throws IOException {
+		FileOutputStream fileOut = new FileOutputStream(getFilePath(node.getUid(),foreignDataDb));
 		ObjectOutputStream out = new ObjectOutputStream(fileOut);
 		out.writeObject(node);
 		out.close();
 		fileOut.close();
 	}
 
-	public Node getSerialzedNode() throws IOException, ClassNotFoundException {
-		FileInputStream fileIn = new FileInputStream(Environment.getExternalStorageDirectory());
+	public Node getSerialzedNode(int uid, ForeignDataDbSource foreignDataDb) throws IOException, ClassNotFoundException {
+		FileInputStream fileIn = new FileInputStream(getFilePath(uid,foreignDataDb));
 		ObjectInputStream in = new ObjectInputStream(fileIn);
 		Node node = (Node) in.readObject();
 		in.close();
@@ -83,6 +85,22 @@ public class Serialization {
 		return node;
 	}
 
+	private String getFoto(int uid, ForeignDataDbSource foreignDataDb)
+	{
+		String foto = "";
+		Log.d("TEST",""+ uid );
+		if (uid == foreignDataDb.getUidForeign()) {
+			foto = foreignDataDb.getFotoId(foreignDataDb.getUidForeign()) + ".jpg";
+			Log.d("TEST", "FOTO " + foto);
+		}
+		return foto;
+	}
+
+	private File getFilePath(int uid, ForeignDataDbSource foreignDataDb)
+	{
+		return new File(Environment.getExternalStorageDirectory() + File.separator+"images"
+				+ File.separator + "CAN_PICS" + File.separator + getFoto(uid,foreignDataDb) );
+	}
 	/**
 	 * Methode, um aus einem ByteArray ein Knoten/Node wiederherzustellen
 	 *
