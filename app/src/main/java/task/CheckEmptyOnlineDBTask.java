@@ -1,6 +1,7 @@
 package task;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -44,6 +45,7 @@ public class CheckEmptyOnlineDBTask extends AsyncTask<Void,Void,Boolean> {
 
             }
             jsonString = stringBuilder.toString();
+            Log.d("jsonString: ", ""+ jsonString);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -63,6 +65,7 @@ public class CheckEmptyOnlineDBTask extends AsyncTask<Void,Void,Boolean> {
     //noch testen
     @Override
     protected void onPostExecute(Boolean aBoolean) {
+        Log.d("isempty", ""+isEmpty);
         isEmpty = aBoolean;
         delegate.processFinish(isEmpty);
     }
