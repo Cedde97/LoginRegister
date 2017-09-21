@@ -21,6 +21,7 @@ import model.PeerMemo;
 
 import source.DatabaseManager;
 import source.DateiMemoDbHelper;
+import source.DateiMemoDbSource;
 import source.ForeignDataDbSource;
 import source.NeighborDbSource;
 import source.PeerDbSource;
@@ -37,7 +38,7 @@ public class ServerThreadActivity extends Activity {
     private static final int NODETRANSFER = 2;
     private static final int NEIGHTRANSFER = 4;
     private static final int PEERTRANSFER = 5;
-    private static final int FOREIGNTRANS = 6;
+    private static final int FOREIGNTRANS = 18;
     private static final int ROUTING = 7;
     private static final int PEERLIST = 9;
     private static final int NEIGHBOURLIST = 11;
@@ -51,6 +52,7 @@ public class ServerThreadActivity extends Activity {
     private NeighborDbSource nDB = new NeighborDbSource();
     private PeerDbSource pDB = new PeerDbSource();
     private ForeignDataDbSource fDB = new ForeignDataDbSource();
+    private DateiMemoDbSource ownDb = new DateiMemoDbSource();
 
 
     @Override
@@ -99,7 +101,7 @@ public class ServerThreadActivity extends Activity {
 
                 System.out.println(Integer.toString(methodName));
 
-
+                Log.d("Header: ", ""+methodName);
                 switch (methodName) {
 
                     case FILETRANSFER: {
@@ -139,6 +141,7 @@ public class ServerThreadActivity extends Activity {
 
 
                         Log.d("nodeNew ", " "+ rh.toString());
+                        break;
 
                     }
 
@@ -147,34 +150,38 @@ public class ServerThreadActivity extends Activity {
 
                         ArrayList<PeerMemo> list = server.getListPeer(buffer);
                         PeerMemo p = null, p1 =null, p2 = null;
-                        int i = list.size();
+                        int i;
                         Log.d("PeerList filled", " "+list.toString());
-
-                        if(i == 1){
-                            p = list.get(i--);
-                        }else if(i>1){
-                            p1 = list.get(i--);
-                            if (i >= 1) {
-                                p2 = list.get(i--);
-
-                            }
-                        }else{
-
+                        PeerMemo[] array = new PeerMemo[2];
+                        array[0] = p;
+                        array[1] = p1;
+                        array[2] = p2;
+                        for(i = 0; i <= list.size();i++){
+                            array[i] = list.get(i);
                         }
 
                         startUpdatePeers(p,p1,p2);
                         Log.d("List: ", list.toString());
                         Log.d("PEEEEEEEEEEEERS", pDB.getAllPeer().toString());
+                        break;
                     }
 
                     case NEIGHBOURLIST: {
                         Log.d("NeighbourList:", "");
-                        int i;
+                        int i = 0;
                         ArrayList<Neighbour> list = server.getListNeighbour(buffer);
                         Neighbour n = null, n1 = null, n2 = null, n3 = null;
-                        i = list.size();
                         Log.d("NeighbourList filled", " "+list.toString());
-/*
+                        Neighbour[] array = new Neighbour[4];
+                        array[0] = n;
+                        array[1] = n1;
+                        array[2] = n2;
+                        array[3] = n3;
+                        for(i = 0; i <= list.size()-1;i++){
+                            array[i] = list.get(i);
+                            array[i].setUid(ownDb.getUid());
+                        }
+                        /*
                         if (i == 1) {
                             n = list.get(i--);
                         } else if (i > 1) {
@@ -188,19 +195,25 @@ public class ServerThreadActivity extends Activity {
                         } else {
 
                         }*/
-                        startUpdateNeighbours(n, n1, n2, n3);
+                        Log.d("-----",array[0].toString());
+
+
+                        startUpdateNeighbours(array[0], array[1], array[2], array[3]);
                         Log.d("NeighBOUUUUUUUR", "" + nDB.getAllNeighborMemo().toString());
+
+                        break;
 
                         //Log.d("List: ",  list.toString());
 
                     }
 
                     case FOREIGNTRANS: {
+
                         Log.d("ForeignTransfer","");
-                        int i;
                         ForeignData fd = server.getForeignData(buffer);
                         fDB.createForeignData(fd);
                         Log.d("ForeignTransfer","after Create");
+                        break;
 
                     }
 
@@ -227,7 +240,13 @@ public class ServerThreadActivity extends Activity {
     }
 
 
-
+    /**
+     * Diese Methode speichert die übergebenen PeerMemos in der Datenbank
+     * @param p Erster Peer
+     * @param p1 Zweiter Peer
+     * @param p2 Dritter Peer
+     * @author Joshua Zabel
+     */
     private void startUpdatePeers(PeerMemo p, PeerMemo p1, PeerMemo p2){
         new AsyncTask<PeerMemo,Void,Void>(){
 
@@ -235,30 +254,40 @@ public class ServerThreadActivity extends Activity {
             protected Void doInBackground(PeerMemo... params) {
                 int i;
                 for(i=0; i<params.length; i++){
-                    pDB.createPeerMemo(params[i]);
+                    if(params[i] != null){
+                        pDB.createPeerMemo(params[i]);
+                    }
                 }
                 return null;
             }
             // vieleicht noch Pram zu execute
-        }.execute();
+        }.execute(p,p1,p2);
     }
 
 
+    /**
+     * Diese Methode speichert die übergebenen Neighbours in der Datenbank
+     * @param n Erster Neighbour
+     * @param n1 Zweiter Neighbour
+     * @param n2 Dritter Neighbour
+     * @param n3 Vierter Neighbour
+     * @author Joshua Zabel
+     */
     private void startUpdateNeighbours(Neighbour n, Neighbour n1, Neighbour n2, Neighbour n3) {
-
         new AsyncTask<Neighbour, Void, Void>() {
-
             @Override
             protected Void doInBackground(Neighbour... params) {
                 int i;
                 for(i=0; i<params.length; i++){
-                    nDB.createNeighborMemo(params[i]);
+                    if(params[i] != null){
+                        Log.d("Node: ", ""+ params[i]);
+                        nDB.createNeighborMemo(params[i]);
+                        Log.d("nachUpdateÄÄÄÄÄÄ",""+nDB.getAllNeighborMemo().toString());
+                    }
                 }
-
-
                 return null;
             }
-        }.execute();
+        }.execute(n,n1,n2,n3);
     }
 
     @Override

@@ -22,7 +22,8 @@ import java.util.List;
 
 import static android.R.attr.id;
 
-public class ForeignDataDbSource {
+public class ForeignDataDbSource  implements java.io.Serializable{
+    private static final long serialVersionUID = 336442653844274922L;
     private static final String LOG_TAG = ForeignDataDbSource.class.getSimpleName();
 
     private SQLiteDatabase database;
@@ -122,7 +123,6 @@ public class ForeignDataDbSource {
         values.put(DateiMemoDbHelper.COLUMN_FOTOID, foreignData.getFotoId());
         values.put(DateiMemoDbHelper.COLUMN_PUNKTX, foreignData.getPunktX());
         values.put(DateiMemoDbHelper.COLUMN_PUNKTY, foreignData.getPunktY());
-        values.put(DateiMemoDbHelper.COLUMN_IP, foreignData.getForeignIp());
 
 
         //
@@ -316,7 +316,6 @@ public class ForeignDataDbSource {
                 //foreignData.setChecked(isChecked);
                 foreignData.setPunktX(cursor.getDouble(cursor.getColumnIndex(dbHelper.COLUMN_PUNKTX)));
                 foreignData.setPunktY(cursor.getDouble(cursor.getColumnIndex(dbHelper.COLUMN_PUNKTY)));
-                foreignData.setForeignIp(cursor.getString(cursor.getColumnIndex(dbHelper.COLUMN_IP)));
                 foreignData.setFotoId(cursor.getInt(cursor.getColumnIndex(dbHelper.COLUMN_FOTOID)));
 
 
@@ -354,7 +353,6 @@ public class ForeignDataDbSource {
                 //foreignData.setChecked(isChecked);
                 foreignData.setPunktX(cursor.getDouble(cursor.getColumnIndex(dbHelper.COLUMN_PUNKTX)));
                 foreignData.setPunktY(cursor.getDouble(cursor.getColumnIndex(dbHelper.COLUMN_PUNKTY)));
-                foreignData.setForeignIp(cursor.getString(cursor.getColumnIndex(dbHelper.COLUMN_IP)));
                 foreignData.setFotoId(cursor.getInt(cursor.getColumnIndex(dbHelper.COLUMN_FOTOID)));
 
 

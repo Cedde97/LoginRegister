@@ -28,7 +28,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class NeighborDbSource {
+public class NeighborDbSource  implements java.io.Serializable {
+    private static final long serialVersionUID = -8212184267205016118L;
     private static final String LOG_TAG = NeighborDbSource.class.getSimpleName();
 
     private SQLiteDatabase database;

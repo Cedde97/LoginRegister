@@ -8,7 +8,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 //Synchronize Class wenn Open Database und Close
 
-public class DatabaseManager {
+public class DatabaseManager implements java.io.Serializable{
+    private static final long serialVersionUID = -2931957573976583798L;
     private Integer mOpenCounter = 0;
 
     private static DatabaseManager instance;

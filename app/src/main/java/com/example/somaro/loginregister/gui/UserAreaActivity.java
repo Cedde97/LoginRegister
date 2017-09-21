@@ -20,38 +20,24 @@ import com.example.somaro.loginregister.R;
 
 import org.json.JSONException;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.Socket;
-import java.net.URL;
-import java.net.UnknownHostException;
-import java.util.HashMap;
-import java.util.concurrent.ExecutionException;
 
 import activity.FileTransferActivity;
-import activity.SendNeighBourListActivity;
+import activity.SendNeighBourListTask;
 import activity.SendRoutActivity;
 import bootstrap.AllIPsActivity;
 import bootstrap.InsertOwnIPActivity;
 import connection.Client;
 import connection.RoutHelper;
 import connection.ServerThreadActivity;
+import exception.XMustBeLargerThanZeroException;
+import exception.YMustBeLargerThanZeroException;
 import model.*;
-import source.OwnDataDbSource;
 
 
 public class UserAreaActivity extends Activity {
@@ -188,22 +174,22 @@ public class UserAreaActivity extends Activity {
                 ArrayList<Neighbour> arrayList= new ArrayList<>();
                 Neighbour n = new Neighbour();
                 Neighbour n1 = new Neighbour();
-                n.setUid(10000);
-                n.setCornerTopRightX(0.5);
-                n.setCornerTopRightY(0.6);
-                n.setCornerTopLeftX(0.2);
-                n.setCornerTopLeftY(0.2);
-                n.setCornerBottomLeftX(0.4);
-                n.setCornerBottomLeftY(0.6);
-                n.setCornerBottomRightX(0.5);
-                n.setCornerBottomRightY(0.8);
+                Corner topRight = new Corner(0.0,0.0);
+                Corner topLeft = new Corner(0.0,0.0);
+                Corner bottomRight = new Corner(0.0,0.0);
+                Corner bottomLeft = new Corner(1.0,1.0);
+                n.setUid(8754);
+                n.getMyZone().setTopRight(topRight);
+                n.getMyZone().setTopLeft(topLeft);
+                n.getMyZone().setBottomRight(bottomRight);
+                n.getMyZone().setBottomLeft(bottomLeft);
                 n.setPunktX(0.2);
                 n.setPunktY(0.4);
                 n.setUIP("277.0.0.0/8");
                 n.setRTT(25.89);
                 arrayList.add(n);
-
-                SendNeighBourListActivity snl =new SendNeighBourListActivity(socket,arrayList);
+                Log.d("before sending", ""+n.toString());
+                SendNeighBourListTask snl =new SendNeighBourListTask(socket,arrayList);
                 snl.execute();
                 //Neighbour neighbour = new Neighbour(01l, 0.0, 0.1, "192.33.2.12", 12.3);
 
@@ -211,6 +197,10 @@ public class UserAreaActivity extends Activity {
                 // nft.execute();
             } catch (IOException e) {
                 Log.d("NeighbourTransfer: ", e.toString());
+            } catch (YMustBeLargerThanZeroException e) {
+                e.printStackTrace();
+            } catch (XMustBeLargerThanZeroException e) {
+                e.printStackTrace();
             }
         }
     };

@@ -28,8 +28,8 @@ import java.util.List;
 import static android.R.attr.id;
 
 
-public class DateiMemoDbSource {
-
+public class DateiMemoDbSource implements java.io.Serializable{
+    private static final long serialVersionUID = -3949763602604083943L;
     private static final String LOG_TAG = DateiMemoDbSource.class.getSimpleName();
 
     private SQLiteDatabase database;

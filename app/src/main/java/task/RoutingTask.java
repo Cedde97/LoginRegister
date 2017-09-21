@@ -44,11 +44,13 @@ public class RoutingTask extends AsyncTask<String, Void, Void> {
         int id = Integer.parseInt(params[3]);
 
         RoutHelper rh = new RoutHelper(ip, x, y, id);
-        //if not in Zone, routingCheckZone sendet das routing weiter
+        //if not in Zone, routingCheckZone kümmert sich darum das neuerKnoten Corner,Peers und Neighbour bekommt
+        // Im If-Blcok wird weiter gerouted
         if (!routingCheckZone(rh)) {
             try {
                 socket = new Socket(nDB.getUip(determineRoutingDestination(rh)), PORTNR);
                 client.sendRoutHelperAsByteArray(socket,rh);
+                socket.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -93,8 +95,8 @@ public class RoutingTask extends AsyncTask<String, Void, Void> {
                     //noch testen
                     Socket socket = new Socket(rh.getIP(), PORTNR);
                     client.sendNodeAsByteArray(socket, newNode);
-                    client.sendListAsByteArray(socket, (ArrayList) pDB.getAllPeer());
-                    client.sendListAsByteArrayNeighbour(socket, (ArrayList) nDB.getAllNeighborMemo());
+                    client.sendPeerMemoListAsByteArray(socket, (ArrayList) pDB.getAllPeer());
+                    client.sendNeighbourListAsByteArray(socket, (ArrayList) nDB.getAllNeighborMemo());
 
                     //hier ein remote aufruf von updateNeighbourAndPeerForeign an die rh.getIp() senden
                     //testen ob geht

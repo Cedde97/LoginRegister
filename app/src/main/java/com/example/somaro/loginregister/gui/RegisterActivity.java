@@ -1,5 +1,6 @@
 package com.example.somaro.loginregister.gui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -24,12 +25,41 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+<<<<<<< HEAD
+=======
+import bootstrap.InsertOwnIPActivity;
+import connection.Client;
+import exception.XMustBeLargerThanZeroException;
+import exception.YMustBeLargerThanZeroException;
+import model.Corner;
+import model.Node;
+import model.Zone;
+import source.DatabaseManager;
+import source.DateiMemoDbHelper;
+import source.DateiMemoDbSource;
+import task.CheckEmptyOnlineDBTask;
+
+>>>>>>> 0b5215f35e35a9b91bafa7636d7fa204e56dfd99
 public class RegisterActivity extends AppCompatActivity {
+    private int id;
+    private Zone ownZone;
+    private Corner topRight;
+    private Corner topLeft;
+    private Corner bottomRight;
+    private Corner bottomLeft;
+    private boolean isEmpty ;
+    private static Context appContext;
+    private static DateiMemoDbHelper dbHelper;
+    private DateiMemoDbSource ownDb = new DateiMemoDbSource();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+        appContext = this.getApplicationContext();
+        dbHelper = new DateiMemoDbHelper(appContext);
+        DatabaseManager.initializeInstance(dbHelper);
 
 
         final EditText etName = (EditText) findViewById(R.id.etName);
@@ -53,9 +83,25 @@ public class RegisterActivity extends AppCompatActivity {
                             JSONObject jsonResponse = new JSONObject(response);
                             boolean success = jsonResponse.getBoolean("success");
                             if (success){
+
                                 //start routing/ Abfrage ob das dies der erste Knoten ist der sich anmeldet
                                 // Nach dem erfolgreichen Registrieren öffnet sich die Login Seite
+                                startCheckEmptyOnlineDBTask();
+                                //isEmpty wird von startCheckEmptyOnlineDBTask initialisiert
+                                if(isEmpty){
+                                    Log.d("is empty","hat gefunkt");
+                                    // das dieses Gerät das Erste ist, bekommt es die Grenzwerte von CAN als Zone/Corner
+                                    topRight    = new Corner(1.0,1.0);
+                                    topLeft     = new Corner(0.0,1.0);
+                                    bottomRight = new Corner(1.0,0.0);
+                                    bottomLeft  = new Corner(0.0,0.0);
+                                    ownZone     = new Zone(topLeft,topRight,bottomLeft,bottomRight);
+                                    //bekommt die IP des eignenen Gerätes
+                                    String ip = Client.getOwnIpAddress();
+                                    //fügt die eigene IP zu dem Bootstrap-Server hinzu
+                                    startInsertOwnIP();
 
+<<<<<<< HEAD
                                 if(chickEmptyDatabase())
                                 {
                                     Log.d("TEST", "DATENBANK IST LEER");
@@ -64,6 +110,17 @@ public class RegisterActivity extends AppCompatActivity {
                                     //Knoten serialisieren
                                 }else
                                 {
+=======
+                                    //hiermit holt man die id von dem DB-Server
+                                    Intent intent = getIntent();
+                                    String name = intent.getStringExtra("name");
+                                    id = intent.getIntExtra("id",0);
+                                    Node ownNode = new Node(id,Node.hashX(ip),Node.hashY(ip),ip,0,ownZone);
+                                    ownDb.createDateiMemo(ownNode);
+
+
+                                }else {
+>>>>>>> 0b5215f35e35a9b91bafa7636d7fa204e56dfd99
                                     //IP vom Bootstrap Server holen
                                     //Join-Request an diese IP senden
                                 }
@@ -80,6 +137,10 @@ public class RegisterActivity extends AppCompatActivity {
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
+                        } catch (YMustBeLargerThanZeroException e) {
+                            e.printStackTrace();
+                        } catch (XMustBeLargerThanZeroException e) {
+                            e.printStackTrace();
                         }
                     }
                 };
@@ -91,6 +152,7 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
+<<<<<<< HEAD
     protected boolean chickEmptyDatabase() {
 
         String jsonString = "";
@@ -120,5 +182,19 @@ public class RegisterActivity extends AppCompatActivity {
             return false;
         }
 
+=======
+    private void startInsertOwnIP() throws JSONException {
+        new InsertOwnIPActivity().execute();
+    }
+
+    private void startCheckEmptyOnlineDBTask(){
+        new CheckEmptyOnlineDBTask(new CheckEmptyOnlineDBTask.AsyncResponse(){
+            @Override
+            public void processFinish(boolean result) {
+                isEmpty = result;
+            }
+        }).execute();
+>>>>>>> 0b5215f35e35a9b91bafa7636d7fa204e56dfd99
     }
 }
+

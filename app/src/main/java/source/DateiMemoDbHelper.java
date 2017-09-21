@@ -14,7 +14,8 @@ import app.App;
 
 import java.security.PublicKey;
 
-public class DateiMemoDbHelper extends SQLiteOpenHelper{
+public class DateiMemoDbHelper extends SQLiteOpenHelper  implements java.io.Serializable{
+    private static final long serialVersionUID = 5712903987153432590L;
 
     private static final String LOG_TAG = DateiMemoDbHelper.class.getSimpleName();
 
