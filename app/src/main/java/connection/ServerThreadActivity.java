@@ -282,7 +282,6 @@ public class ServerThreadActivity extends Activity {
                     if(params[i] != null){
                         Log.d("Node: ", ""+ params[i]);
                         nDB.createNeighborMemo(params[i]);
-                        Log.d("nachUpdateÄÄÄÄÄÄ",""+nDB.getAllNeighborMemo().toString());
                     }
                 }
                 return null;
