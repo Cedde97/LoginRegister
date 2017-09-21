@@ -976,8 +976,8 @@ public class ExampleInstrumentedTest {
                     //noch testen
                     Socket socket = new Socket(rh.getIP(), PORTNR);
                     client.sendNodeAsByteArray(socket, newNode);
-                    client.sendListAsByteArray(socket, (ArrayList) pDB.getAllPeer());
-                    client.sendListAsByteArrayNeighbour(socket, (ArrayList) nDB.getAllNeighborMemo());
+                    //client.sendListAsByteArray(socket, (ArrayList) pDB.getAllPeer());
+                    //client.sendListAsByteArrayNeighbour(socket, (ArrayList) nDB.getAllNeighborMemo());
                     //hier ein remote aufruf von updateNeighbourAndPeerForeign an die rh.getIp() senden
                     //testen ob geht
                     return true;
