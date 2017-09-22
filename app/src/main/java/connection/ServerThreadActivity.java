@@ -171,7 +171,6 @@ public class ServerThreadActivity extends Activity {
                             int i = 0;
                             ArrayList<Neighbour> list = server.getListNeighbour(buffer);
                             Neighbour n = null, n1 = null, n2 = null, n3 = null;
-                            Log.d("NeighbourList filled", " " + list.toString());
                             Neighbour[] array = new Neighbour[4];
                             array[0] = n;
                             array[1] = n1;
@@ -181,7 +180,6 @@ public class ServerThreadActivity extends Activity {
                                 array[i] = list.get(i);
                                 array[i].setUid(ownDb.getUid());
                             }
-                            Log.d("-----", array[0].toString());
 
 
                             startUpdateNeighbours(array[0], array[1], array[2], array[3]);
@@ -266,7 +264,6 @@ public class ServerThreadActivity extends Activity {
                 int i;
                 for(i=0; i<params.length; i++){
                     if(params[i] != null){
-                        Log.d("Node: ", ""+ params[i]);
                         nDB.createNeighborMemo(params[i]);
                     }
                 }

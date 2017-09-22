@@ -843,8 +843,7 @@ public class DateiMemoDbSource implements java.io.Serializable{
                 dateiMemo.setPunktY(cursor.getDouble(cursor.getColumnIndex(dbHelper.COLUMN_PUNKTY)));
                 dateiMemo.setIP(cursor.getString(cursor.getColumnIndex(dbHelper.COLUMN_IP)));
                 dateiMemo.setCountPeers(cursor.getInt(cursor.getColumnIndex(dbHelper.COLUMN_COUNTPEERS)));
-                dateiMemo.setNeighbourList(neighborDbSource.getAllNeighborMemo());
-                dateiMemo.setPeerMemoList(peerDbSource.getAllPeer());
+
 
 
                 // Add book to books

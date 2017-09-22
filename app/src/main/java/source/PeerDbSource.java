@@ -34,7 +34,7 @@ public class PeerDbSource implements java.io.Serializable{
     private DateiMemoDbSource dateiMemoDbSource = new DateiMemoDbSource();
     //private PeerMemo peerMemo;  // TODO: löschen, da nie benutzt
 
-    private static final int    maxPeers= Node.maxPeers;  // TODO: model.Node.maxPeers verwenden
+    //private static final int    maxPeers= Node.maxPeers;  // TODO: model.Node.maxPeers verwenden
 
     public PeerDbSource(){
 

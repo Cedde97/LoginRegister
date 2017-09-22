@@ -24,10 +24,7 @@ public class Node implements java.io.Serializable{
     //vielleicht in eigene Klasse
     private static final long serialVersionUID = -5141596970718880337L;
     private static final int    maxPeers= 3;
-    private static final long   DIVIDER=2552552552l;
     private static final int    PORTNR = 9797;
-    private static final String NLIEE = "Die Neighbourliste ist Leer!!";
-    private static final String PLIEE = "Die Peerliste ist Leer!!!";
     private static String bootsIp = null;
 
 
@@ -38,22 +35,10 @@ public class Node implements java.io.Serializable{
     private double punktY;
     private String iP;
     private int    countPeers;
-    private Corner topRight;
-    private Corner topLeft;
-    private Corner bottomRight;
-    private Corner bottomLeft;
     private Zone   ownZone = new Zone();
     private Socket socket;
     private Client client = new Client();
     //Da keine DB
-
-    private List<Neighbour> neighbourList = new ArrayList<>();
-    private List<PeerMemo> peerMemoList = new ArrayList<>();
-    private List<OwnDataMemo> ownDataMemoList;
-    private List<ForeignData> ForeignDataList;
-
-
-
 
     public Node ()
     {
@@ -175,7 +160,7 @@ public class Node implements java.io.Serializable{
 
     }
 
-
+/*
     public Node routing(RoutHelper rh) throws IOException {
         Node nodeNew = routingCheckZone(rh);
         double[] distance = new double[3];
@@ -194,7 +179,7 @@ public class Node implements java.io.Serializable{
         client.sendRoutHelperAsByteArray(socket,rh);
         return nodeNew;
 
-    }
+    }*/
 
     /**
      * Methode die remote aufgerufen wird um die Neighbour und Peer-Datenbank upzudaten
@@ -214,11 +199,10 @@ public class Node implements java.io.Serializable{
     }
 
 
-    /**
+   /* *//**
      * als wenn node.updateNeighbourAndPeer(newNode) so aufgerufen wird bekommt newNode die Listen von node
      * Methode um dem übergebenen Knoten seine eigene Neighbour und Peerlist zu übertragen
-     * @param newNode dieser Knoten bekommt die Neighbour und Peerlist
-     */
+     *//*
     public void updateNeighbourAndPeer(Node newNode)  {
         if(neighbourList != null){
             //setzte die NeighbourList des neuen Knoten auf seine eigene
@@ -230,10 +214,10 @@ public class Node implements java.io.Serializable{
                 newNode.setCountPeers(getPeerMemoList().size());
             }
         }
-    }
+    }*/
 
 
-
+/*
     private Node routingCheckZone(RoutHelper rh) {
         if(getMyZone().checkIfInMyZone(rh.getX(),rh.getY())){
             //hier noch statt 3 getUID von OnlineDB
@@ -250,7 +234,7 @@ public class Node implements java.io.Serializable{
             return newNode;
         }
         return null;
-    }
+    }*/
     /*
 
     *//**
@@ -577,36 +561,16 @@ public class Node implements java.io.Serializable{
         countPeers++;
     }
 
-
-    public List<Neighbour> getNeighbourList() {
-        return neighbourList;
-    }
-
-    public void setNeighbourList(List<Neighbour> neighbourList) {
-        this.neighbourList = neighbourList;
-    }
-
-    public List<PeerMemo> getPeerMemoList() {
-        return peerMemoList;
-    }
-
-    public void setPeerMemoList(List<PeerMemo> peerMemoList) {
-        this.peerMemoList = peerMemoList;
-    }
-
-
-
     //noch updaten
     public String toString() {
         StringBuffer sb = new StringBuffer();
-        if(neighbourList != null && peerMemoList != null) {
-            sb.append("\n\nNode: " + "\nUserId: " + uid + "\nPunktX: " + punktX + "\nPunktY: " + punktY + "\nIP: " + iP +
-                    "\ncountPeers: " + countPeers + "\nOwn Zone: " + getMyZone().toString() +
-                    "\n\nNeighbourList: " + getNeighbourList().toString() + "\n\nPeerList: " + getPeerMemoList().toString() + "\n");
 
-            return sb.toString();
-        }
-        return null;
+        sb.append("\n\nNode: " + "\nUserId: " + uid + "\nPunktX: " + punktX + "\nPunktY: " + punktY + "\nIP: " + iP +
+                "\ncountPeers: " + countPeers + "\nOwn Zone: " + getMyZone().toString());
+
+        return sb.toString();
+
+
     }
 
 
