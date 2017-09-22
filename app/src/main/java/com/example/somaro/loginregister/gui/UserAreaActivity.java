@@ -158,10 +158,6 @@ public class UserAreaActivity extends Activity {
         new InsertOwnIPActivity().execute();
     }
 
-
-
-
-
     private View.OnClickListener NeighbourTransferListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {

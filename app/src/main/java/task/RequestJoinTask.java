@@ -1,5 +1,6 @@
 package task;
 import android.os.AsyncTask;
+import android.util.Log;
 
 
 import org.json.JSONException;
@@ -38,7 +39,7 @@ public class RequestJoinTask extends AsyncTask<String, Void, Void> {
         double y = Double.parseDouble(params[2]);
         int id = Integer.parseInt(params[3]);
         RoutHelper rh = new RoutHelper(ip, x, y, id);
-
+        Log.d("in RequestJoinTask","AAAAAAAAA");
         for(int i = 0; i< bootIps.length; i++){
             try {
                 socket = new Socket(bootIps[i], PORTNR);

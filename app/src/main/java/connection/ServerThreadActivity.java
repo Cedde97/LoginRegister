@@ -138,6 +138,7 @@ public class ServerThreadActivity extends Activity {
                             Log.d("Routing: ", "");
 
                             RoutHelper rh = server.getRoutHelper(buffer);
+                            String ip = rh.getIP();
 
 
                             Log.d("nodeNew ", " " + rh.toString());
@@ -181,8 +182,7 @@ public class ServerThreadActivity extends Activity {
                                 array[i].setUid(ownDb.getUid());
                             }
 
-
-
+                            Log.d("array:",""+array[0].toString());
                             startUpdateNeighbours(array[0], array[1], array[2], array[3]);
                             Log.d("NeighBOUUUUUUUR", "" + nDB.getAllNeighborMemo().toString());
                             break;
@@ -220,6 +220,7 @@ public class ServerThreadActivity extends Activity {
 
 
             }
+
         }
     }
 
@@ -259,12 +260,14 @@ public class ServerThreadActivity extends Activity {
      */
     private void startUpdateNeighbours(Neighbour n, Neighbour n1, Neighbour n2, Neighbour n3) {
         new AsyncTask<Neighbour, Void, Void>() {
+
             @Override
             protected Void doInBackground(Neighbour... params) {
                 int i;
                 for(i=0; i<params.length; i++){
                     if(params[i] != null){
                         nDB.createNeighborMemo(params[i]);
+                        Log.d("Nach create", "" + nDB.getAllNeighborMemo().toString());
                     }
                 }
                 return null;

@@ -45,7 +45,6 @@ public class CheckEmptyOnlineDBTask extends AsyncTask<Void,Void,Boolean> {
 
             }
             jsonString = stringBuilder.toString();
-            Log.d("jsonString: ", ""+ jsonString);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
