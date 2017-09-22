@@ -64,39 +64,7 @@ public class DateiMemoDbSource implements java.io.Serializable{
     //
 
 
-    /*
-   *
-   *
-   *           Converting List to Double -- List to Integer -- List to int
-   *
-   * */
-    public double listToDouble(List<Double> list){
-        double[] tmp = new double[list.size()];
-        double ret = 0;
 
-        for (int i = 0; i < list.size(); ++i) { //iterate over the elements of the list
-            tmp[i] = Double.valueOf(list.get(i));
-        }
-        for (int j = 0; j < tmp.length; ++j) {
-            ret = tmp[j];
-        }
-
-        return ret;
-    }
-
-    public int listToInt(List<Integer> list){
-        int[] tmp = new int[list.size()];
-        int ret = 0;
-
-        for (int i = 0; i < list.size(); ++i) { //iterate over the elements of the list
-            tmp[i] = Integer.valueOf(list.get(i));
-        }
-        for (int j = 0; j < tmp.length; ++j) {
-            ret = tmp[j];
-        }
-
-        return ret;
-    }
 
     //
     //==================================================================================================================
@@ -154,12 +122,17 @@ public class DateiMemoDbSource implements java.io.Serializable{
     *
     *
     * */
-    public void deleteDateiMemo() {
-
+    public void deleteAllDateiMemo() {
         database = DatabaseManager.getInstance().openDatabase();
         database.delete(DateiMemoDbHelper.TABLE_DATEI_LIST, null, null);
         DatabaseManager.getInstance().closeDatabase();
-        //Log.d(LOG_TAG, "Eintrag gelöscht! ID: " + id + " Inhalt: " + dateiMemo.toString());
+    }
+
+    public void deleteEachNode(int uid){
+        database = DatabaseManager.getInstance().openDatabase();
+        database.delete(DateiMemoDbHelper.TABLE_DATEI_LIST, //which Table
+                DateiMemoDbHelper.COLUMN_UID +" = "+ uid, //where clause
+                null);
     }
     /*
     *

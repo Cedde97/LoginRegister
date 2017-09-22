@@ -44,53 +44,7 @@ public class OwnDataDbSource  implements java.io.Serializable {
     //==================================================================================================================
     //
 
-    /*
-   *
-   *
-   *           Converting List to Double -- List to Integer -- List to Long
-   *
-   * */
-    public double listToDouble(List<Double> list){
-        double[] tmp = new double[list.size()];
-        double ret = 0;
 
-        for (int i = 0; i < list.size(); ++i) { //iterate over the elements of the list
-            tmp[i] = Double.valueOf(list.get(i));
-        }
-        for (int j = 0; j < tmp.length; ++j) {
-            ret = tmp[j];
-        }
-
-        return ret;
-    }
-
-    public int listToInt(List<Integer> list){
-        int[] tmp = new int[list.size()];
-        int ret = 0;
-
-        for (int i = 0; i < list.size(); ++i) { //iterate over the elements of the list
-            tmp[i] = Integer.valueOf(list.get(i));
-        }
-        for (int j = 0; j < tmp.length; ++j) {
-            ret = tmp[j];
-        }
-
-        return ret;
-    }
-
-    public long listToLong(List<Long> list){
-        long[] tmp = new long[list.size()];
-        long ret = 0;
-
-        for (int i = 0; i < list.size(); ++i) { //iterate over the elements of the list
-            tmp[i] = Long.valueOf(list.get(i));
-        }
-        for (int j = 0; j < tmp.length; ++j) {
-            ret = tmp[j];
-        }
-
-        return ret;
-    }
 
 
     //
@@ -137,11 +91,17 @@ public class OwnDataDbSource  implements java.io.Serializable {
 *
 *
 * */
-    public void deleteOwnData() {
+    public void deleteAllOwnData() {
         database = DatabaseManager.getInstance().openDatabase();
         database.delete(DateiMemoDbHelper.TABLE_OWNDATA_LIST, null, null);
         DatabaseManager.getInstance().closeDatabase();
-        //Log.d(LOG_TAG, "Eintrag gelöscht! ID: " + ownDataMemo.getUid() + " Inhalt: " + ownDataMemo.toString());
+    }
+
+    public void deleteEachOwnData(int file_id){
+        database = DatabaseManager.getInstance().openDatabase();
+        database.delete(DateiMemoDbHelper.TABLE_OWNDATA_LIST,
+                DateiMemoDbHelper.COLUMN_FILEID +" = "+ file_id,
+                null);
     }
     /*
     *
@@ -296,6 +256,9 @@ public class OwnDataDbSource  implements java.io.Serializable {
         return OwnDataList;
     }
 
+    //
+    //Bestimmte Own data rauszuholen -- "Each" mit bestimmte file_id
+    //
     public List<OwnDataMemo> getEachOwnData(int file_id) {
         List<OwnDataMemo> OwnDataList = new LinkedList<OwnDataMemo>();
 
@@ -313,7 +276,7 @@ public class OwnDataDbSource  implements java.io.Serializable {
         OwnDataMemo ownDataMemo = null;
         if (cursor.moveToFirst()) {
             do {
-                //ownDataMemo = new OwnDataMemo();
+                ownDataMemo = new OwnDataMemo();
                 ownDataMemo.setUid(cursor.getLong(cursor.getColumnIndex(dbHelper.COLUMN_OID)));
                 //ownDataMemo.setChecked(isChecked);
                 ownDataMemo.setFileId(cursor.getInt(cursor.getColumnIndex(dbHelper.COLUMN_FILEID)));
