@@ -57,7 +57,6 @@ public class UserAreaActivity extends Activity {
 
     private String data = null;
 
-   // UserSeeionManager session ;
 
     private Button routRequest, fileTransferRequest, neighbourTransfer, startServer;
     
@@ -78,11 +77,11 @@ public class UserAreaActivity extends Activity {
          *Würde es im onCreate lassen, denn wenn man sie über einen Clicklistener realisieren will, muss man die Threads wieder mal handlen. Der Asynctask ist sonst nicht schnell genug fertig. Bzw gibts
          *thread-sync probleme
          */
-        try {
+        /*try {
             String bootsIp = startGetBootsIp();
         } catch (JSONException e) {
             e.printStackTrace();
-        }
+        }*/
         setContentView(R .layout.activity_user_area);
         if (android.os.Build.VERSION.SDK_INT > 9) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();

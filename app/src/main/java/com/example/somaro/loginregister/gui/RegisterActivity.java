@@ -37,6 +37,7 @@ import source.DatabaseManager;
 import source.DateiMemoDbHelper;
 import source.DateiMemoDbSource;
 import task.CheckEmptyOnlineDBTask;
+import task.RequestJoinTask;
 
 public class RegisterActivity extends AppCompatActivity {
     private int id;
@@ -110,6 +111,7 @@ public class RegisterActivity extends AppCompatActivity {
                                     ownDb.createDateiMemo(ownNode);
                                 }else {
                                     Log.d("in Else","");
+                                    startRequestJoinTask();
                                     //IP vom Bootstrap Server holen
                                     //Join-Request an diese IP senden
                                 }
@@ -143,6 +145,10 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void startInsertOwnIP() throws JSONException {
         new InsertOwnIPActivity().execute();
+    }
+
+    private void startRequestJoinTask(){
+        new RequestJoinTask().execute();
     }
 
     private boolean startCheckEmptyOnlineDBTask(){
