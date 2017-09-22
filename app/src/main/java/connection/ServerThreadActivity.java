@@ -33,15 +33,17 @@ import source.PeerDbSource;
  */
 
 public class ServerThreadActivity extends Activity {
+
     private static final int PORTNR = 9797;
-    private static final int FILETRANSFER = 1;
-    private static final int NODETRANSFER = 2;
-    private static final int NEIGHTRANSFER = 4;
-    private static final int PEERTRANSFER = 5;
-    private static final int FOREIGNTRANS = 18;
-    private static final int ROUTING = 7;
-    private static final int PEERLIST = 9;
-    private static final int NEIGHBOURLIST = 11;
+  
+    private static final int IMAGE_TRANSFER						 = 1;
+    private static final int NODE_TRANSFER 						 = 2;
+    private static final int ROUTING 							 = 3;
+    private static final int NEIGHBOUR_TRANSFER					 = 4;
+    private static final int PEERMEMO_TRANSFER					 = 5;
+    private static final int FOREIGNDATA_TRANSFER 				 = 6;   
+    private static final int PEERMEMO_LIST 						 = 7;
+    private static final int NEIGHBOUR_LIST 					 = 8;
 
     private Socket socket = null;
     private Server server = new Server();
@@ -104,7 +106,7 @@ public class ServerThreadActivity extends Activity {
                     Log.d("Header: ", "" + methodName);
                     switch (methodName) {
 
-                        case FILETRANSFER: {
+                        case IMAGE_TRANSFER: {
                             Log.d("File Transfer Request", "");
 
                             String pathDestination = "C://Users/Cedric/Pictures/test/placeholderNew1.jpg";
@@ -122,12 +124,10 @@ public class ServerThreadActivity extends Activity {
                             break;
                         }
 
-                        case 2: {
+                        case NODE_TRANSFER: {
                             Log.d("Node Transfer Request", "");
 
-                            byte[] bufferBody = serialization.getByteData(buffer);
-
-                            node = serialization.deserializdeNode(bufferBody);
+                            node = server.getNode(buffer);
 
                             Log.d(node.toString(), "");
 
@@ -138,15 +138,24 @@ public class ServerThreadActivity extends Activity {
                             Log.d("Routing: ", "");
 
                             RoutHelper rh = server.getRoutHelper(buffer);
-                            String ip = rh.getIP();
 
 
                             Log.d("nodeNew ", " " + rh.toString());
                             break;
 
                         }
+                        
+                        case FOREIGNDATA_TRANSFER: {
 
-                        case PEERLIST: {
+                            Log.d("ForeignTransfer", "");
+                            ForeignData fd = server.getForeignData(buffer);
+                            fDB.createForeignData(fd);
+                            Log.d("ForeignTransfer", "after Create");
+                            break;
+
+                        }
+
+                        case PEERMEMO_LIST: {
                             Log.d("List: ", "");
 
                             ArrayList<PeerMemo> list = server.getListPeer(buffer);
@@ -167,7 +176,7 @@ public class ServerThreadActivity extends Activity {
                             break;
                         }
 
-                        case NEIGHBOURLIST: {
+                        case NEIGHBOUR_LIST: {
                             Log.d("NeighbourList:", "");
                             int i = 0;
                             ArrayList<Neighbour> list = server.getListNeighbour(buffer);
@@ -182,24 +191,15 @@ public class ServerThreadActivity extends Activity {
                                 array[i].setUid(ownDb.getUid());
                             }
 
-                            Log.d("array:",""+array[0].toString());
+
+
                             startUpdateNeighbours(array[0], array[1], array[2], array[3]);
                             Log.d("NeighBOUUUUUUUR", "" + nDB.getAllNeighborMemo().toString());
                             break;
 
                             //Log.d("List: ",  list.toString());
 
-                        }
-
-                        case FOREIGNTRANS: {
-
-                            Log.d("ForeignTransfer", "");
-                            ForeignData fd = server.getForeignData(buffer);
-                            fDB.createForeignData(fd);
-                            Log.d("ForeignTransfer", "after Create");
-                            break;
-
-                        }
+                        }                      
 
                     }
 
@@ -220,7 +220,6 @@ public class ServerThreadActivity extends Activity {
 
 
             }
-
         }
     }
 
@@ -260,14 +259,12 @@ public class ServerThreadActivity extends Activity {
      */
     private void startUpdateNeighbours(Neighbour n, Neighbour n1, Neighbour n2, Neighbour n3) {
         new AsyncTask<Neighbour, Void, Void>() {
-
             @Override
             protected Void doInBackground(Neighbour... params) {
                 int i;
                 for(i=0; i<params.length; i++){
                     if(params[i] != null){
                         nDB.createNeighborMemo(params[i]);
-                        Log.d("Nach create", "" + nDB.getAllNeighborMemo().toString());
                     }
                 }
                 return null;
