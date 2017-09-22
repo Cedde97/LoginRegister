@@ -120,10 +120,10 @@ public class UserAreaActivity extends Activity {
     /**
      * Button Test für Routing
      */
-    private View.OnClickListener RoutClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            client = new Client();
+            private View.OnClickListener RoutClickListener = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    client = new Client();
 
             try {
                 //ip von Bootstrap-Server holen

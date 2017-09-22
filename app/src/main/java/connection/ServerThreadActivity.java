@@ -182,9 +182,9 @@ public class ServerThreadActivity extends Activity {
                             }
 
 
+
                             startUpdateNeighbours(array[0], array[1], array[2], array[3]);
                             Log.d("NeighBOUUUUUUUR", "" + nDB.getAllNeighborMemo().toString());
-
                             break;
 
                             //Log.d("List: ",  list.toString());
@@ -218,7 +218,7 @@ public class ServerThreadActivity extends Activity {
                     }
                 }
 
-                return null;
+
             }
         }
     }
