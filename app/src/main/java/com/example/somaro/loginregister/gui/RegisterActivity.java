@@ -25,6 +25,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import bootstrap.AllIPsActivity;
 import bootstrap.InsertOwnIPActivity;
 import connection.Client;
 import exception.XMustBeLargerThanZeroException;
@@ -49,9 +50,11 @@ public class RegisterActivity extends AppCompatActivity {
     private static DateiMemoDbHelper dbHelper;
     private DateiMemoDbSource ownDb = new DateiMemoDbSource();
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        isEmpty = startCheckEmptyOnlineDBTask();
         setContentView(R.layout.activity_register);
 
         appContext = this.getApplicationContext();
@@ -83,7 +86,8 @@ public class RegisterActivity extends AppCompatActivity {
 
                                 //start routing/ Abfrage ob das dies der erste Knoten ist der sich anmeldet
                                 // Nach dem erfolgreichen Registrieren öffnet sich die Login Seite
-                                startCheckEmptyOnlineDBTask();
+
+                                Log.d("nachIni: ", ""+isEmpty);
                                 //isEmpty wird von startCheckEmptyOnlineDBTask initialisiert
                                 if(isEmpty){
                                     Log.d("is empty","hat gefunkt");
@@ -104,9 +108,8 @@ public class RegisterActivity extends AppCompatActivity {
                                     id = intent.getIntExtra("id",0);
                                     Node ownNode = new Node(id,Node.hashX(ip),Node.hashY(ip),ip,0,ownZone);
                                     ownDb.createDateiMemo(ownNode);
-
-
                                 }else {
+                                    Log.d("in Else","");
                                     //IP vom Bootstrap Server holen
                                     //Join-Request an diese IP senden
                                 }
@@ -142,13 +145,17 @@ public class RegisterActivity extends AppCompatActivity {
         new InsertOwnIPActivity().execute();
     }
 
-    private void startCheckEmptyOnlineDBTask(){
+    private boolean startCheckEmptyOnlineDBTask(){
+
         new CheckEmptyOnlineDBTask(new CheckEmptyOnlineDBTask.AsyncResponse(){
             @Override
             public void processFinish(boolean result) {
+                Log.d("result: ", ""+result);
                 isEmpty = result;
             }
         }).execute();
+        return isEmpty;
     }
+
 }
 
