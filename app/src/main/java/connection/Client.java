@@ -1,5 +1,4 @@
 package connection;
-import android.util.Log;
 
 import connection.RoutHelper;
 import model.*;
@@ -13,15 +12,50 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 
+/**
+ * Klasse Client, die diverse SendeMethoden fuer die benoetigten Objekte bietet.
+ * 
+ * @author Cedric
+ *
+ */
 
+public class Client implements java.io.Serializable {
 
-public class Client {
-
+	private static final long serialVersionUID = 2677455955263183331L;
 	protected static final int portNr = 9797;
 	Serialization serialization = new Serialization();
 	Socket socket = null;
+	
 
+	/**
+	 * Methode zum Senden eines ByteArrays
+	 *
+	 * @param socket 	= das Socket, auf dem Uebertragen wird
+	 * @param buffer	= das zu uebertragende ByteArray
+	 */
 
+	public void sendByteArray (Socket socket, byte[] buffer)throws IOException, UnknownHostException{
+
+		byte[] message = buffer;
+		this.socket    = socket;
+
+		try{
+			
+			DataOutputStream dOut = new DataOutputStream(socket.getOutputStream());
+			dOut.writeInt(message.length);
+			dOut.write(message);
+
+		}catch (IOException e){
+			e.printStackTrace();
+		}finally{
+			if(socket != null){
+				socket.close();
+			}
+		}
+	}
+
+	
+	
 	/**
 	 * Methode, um eine File/ein Image als ByteArray zu senden
 	 *
@@ -51,44 +85,11 @@ public class Client {
 	}
 
 
-
-	/**
-	 * Methode zum Senden eines ByteArrays
-	 *
-	 * @param socket 	= das Socket, auf dem Uebertragen wird
-	 * @param buffer	= das zu uebertragende ByteArray
-	 */
-
-	public void sendByteArray (Socket socket, byte[] buffer)throws IOException, UnknownHostException{
-
-		byte[] message = buffer;
-		this.socket    = socket;
-
-		try{
-			DataOutputStream dOut = new DataOutputStream(socket.getOutputStream());
-
-			dOut.writeInt(message.length);
-			dOut.write(message);
-
-		}catch (IOException e){
-			e.printStackTrace();
-		}finally{
-		}
-		try{
-			if(socket != null){
-				socket.close();
-			}
-		} catch (IOException ex){
-			ex.printStackTrace();
-		}
-	}
-
-
-
-
+	
 	/**
 	 * Methode, um ein Knoten/Node Objekt als ByteArray zu senden
-	 *		 = IP Adresse des Empfaengers
+	 * 
+	 * @param socket  					= das Socket, auf dem uebertragen wird	 
 	 * @param node						= der zu uebertragende Knoten/Node
 	 * @throws UnknownHostException		= Unknown Host
 	 * @throws IOException				= Fehler beim Input/Output
@@ -103,7 +104,17 @@ public class Client {
 		sendByteArray(socket, buffer);
 	}
 
+	
 
+	/**
+	 * Methode, um eine PeerMemo-Liste als ByteArray zu senden
+	 * 
+	 * @param socket  					= das Socket, auf dem uebertragen wird
+	 * @param list						= die Liste, die gesendet wird
+	 * @throws UnknownHostException     = Unknown Host
+	 * @throws IOException				= Fehler beim Input/Output
+	 */
+	
 	public void sendPeerMemoListAsByteArray(Socket socket, ArrayList<PeerMemo> list) throws UnknownHostException, IOException{
 
 		this.socket = socket;
@@ -112,6 +123,17 @@ public class Client {
 
 		sendByteArray(socket, buffer);
 	}
+	
+	
+	
+	/**
+	 * Methode, um eine Neighbour-Liste als ByteArray zu senden
+	 * 
+	 * @param socket  					= das Socket, auf dem uebertragen wird
+	 * @param list						= die Liste, die gesendet wird
+	 * @throws UnknownHostException     = Unknown Host
+	 * @throws IOException				= Fehler beim Input/Output
+	 */
 
 	public void sendNeighbourListAsByteArray(Socket socket, ArrayList<Neighbour> list) throws UnknownHostException, IOException{
 
@@ -122,17 +144,36 @@ public class Client {
 		sendByteArray(socket, buffer);
 	}
 
+	
+	
+	/**
+	 * Methode, um ein RoutHelper-Objekt als ByteArray zu senden
+	 * 
+	 * @param socket  					= das Socket, auf dem uebertragen wird
+	 * @param routhelper				= der RoutHelper, der uebertragen wird
+	 * @throws UnknownHostException     = Unknown Host
+	 * @throws IOException				= Fehler beim Input/Output
+	 */
+	
 	public void sendRoutHelperAsByteArray(Socket socket, RoutHelper routhelper) throws UnknownHostException, IOException{
 
 		this.socket = socket;
 
 		byte[] buffer = serialization.fillRoutHelperByteArray(routhelper);
-		Log.d("Send ByteArray Start", "");
 		sendByteArray(socket, buffer);
 	}
 
+	
 
-
+	/**
+	 * Methode, um ein Neighbour-Objekt als ByteArray zu senden
+	 * 
+	 * @param socket  					= das Socket, auf dem uebertragen wird
+	 * @param neighbour					= der Neighbour, der uebertragen wird
+	 * @throws UnknownHostException     = Unknown Host
+	 * @throws IOException				= Fehler beim Input/Output
+	 */
+	
 	public void sendNeighbourAsByteArray(Socket socket, Neighbour neighbour) throws UnknownHostException, IOException{
 
 		this.socket = socket;
@@ -141,8 +182,17 @@ public class Client {
 
 		sendByteArray(socket, buffer);
 	}
+	
+	
 
-
+	/**
+	 * Methode, um ein PeerMemo-Objekt als ByteArray zu senden
+	 * 
+	 * @param socket  					= das Socket, auf dem uebertragen wird
+	 * @param peerMemo				= das PeerMemo, das uebertragen wird
+	 * @throws UnknownHostException     = Unknown Host
+	 * @throws IOException				= Fehler beim Input/Output
+	 */
 
 	public void sendPeerMemoAsByteArray(Socket socket, PeerMemo peerMemo) throws UnknownHostException, IOException{
 
@@ -153,7 +203,16 @@ public class Client {
 		sendByteArray(socket, buffer);
 	}
 
-
+	
+	
+	/**
+	 * Methode, um ein ForeignData-Objekt als ByteArray zu senden
+	 * 
+	 * @param socket  					= das Socket, auf dem uebertragen wird
+	 * @param foreignData				= die ForeignData, die uebertragen wird
+	 * @throws UnknownHostException     = Unknown Host
+	 * @throws IOException				= Fehler beim Input/Output
+	 */
 
 	public void sendForeignDataAsByteArray(Socket socket, ForeignData foreignData) throws UnknownHostException, IOException{
 
@@ -164,9 +223,18 @@ public class Client {
 		sendByteArray(socket, buffer);
 	}
 
+	
+	
+	/**
+	 * Methode, um die eigene IP-Adresse wiederzugeben
+	 * 
+	 * @return   = Eigene IP-Adresse
+	 */
+	
 	public static String getOwnIpAddress() {
 		String ip = "";
 		try {
+			
 			Enumeration<NetworkInterface> enumNetworkInterfaces = NetworkInterface.getNetworkInterfaces();
 			while (enumNetworkInterfaces.hasMoreElements()) {
 				NetworkInterface networkInterface = enumNetworkInterfaces
@@ -185,7 +253,6 @@ public class Client {
 		} catch (java.net.SocketException e){
 			e.printStackTrace();
 		}
-
 		return ip;
 	}
 }
