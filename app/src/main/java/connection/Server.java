@@ -14,7 +14,13 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
-@SuppressWarnings("unused")
+/**
+ * Klasse Server, die Methoden zum Umwandeln des empfangenen Byte-Arrays bietet.
+ * 
+ * @author Cedric
+ *
+ */
+
 public class Server {
 	ServerSocket serverSocket = null;
 	Serialization serialization = new Serialization();
@@ -29,7 +35,6 @@ public class Server {
 	 * @throws IOException		= Fehler bei Input/Output
 	 */
 
-
 	public byte[] receiveByteArray(ServerSocket serverSocket, Socket socket) throws IOException{
 
 		byte[] buffer = null;
@@ -37,14 +42,12 @@ public class Server {
 		try{
 
 			DataInputStream dIn = new DataInputStream(socket.getInputStream());
-
 			int length = dIn.readInt();
 
 			if(length>0) {
 				buffer = new byte[length];
 				dIn.readFully(buffer, 0, buffer.length);
 			}
-
 			try{
 				if(serverSocket!= null){
 					serverSocket.close();
@@ -79,50 +82,115 @@ public class Server {
 
 	}
 
+	
+	
+	/**
+	 * Methode, die ein empfangenes ByteArray in ein RoutHelper Objekt umwandelt
+	 * 
+	 * @param buffer			= das empfangene ByteArray
+	 * @return					= das RoutHelper Objekt
+	 */
+	
 	public RoutHelper getRoutHelper(byte[] buffer){
 
 		RoutHelper routHelper = null;
 
 		byte[] bufferBody = serialization.getByteData(buffer);
 
-		routHelper = serialization.deserializdeRoutHelper(bufferBody);
+		routHelper = serialization.deserializeRoutHelper(bufferBody);
 
 		return routHelper;
 	}
 
+
+
+	/**
+	 * Methode, die ein empfangenes ByteArray in ein Node Objekt umwandelt
+	 *
+	 * @param buffer			= das empfangene ByteArray
+	 * @return					= das Node Objekt
+	 */
+
+	public Node getNode(byte[] buffer){
+
+		Node node = null;
+
+		byte[] bufferBody = serialization.getByteData(buffer);
+
+		node = serialization.deserializeNode(bufferBody);
+
+		return node;
+	}
+
+	
+	
+	/**
+	 * Methode, die ein empfangenes ByteArray in ein Neighbour Objekt umwandelt
+	 * 
+	 * @param buffer			= das empfangene ByteArray
+	 * @return					= das Neighbour Objekt
+	 */
+	
 	public Neighbour getNeighbour(byte[] buffer){
 
 		Neighbour neighbour = null;
 
 		byte[] bufferBody = serialization.getByteData(buffer);
 
-		neighbour = serialization.deserializdeNeighbour(bufferBody);
+		neighbour = serialization.deserializeNeighbour(bufferBody);
 
 		return neighbour;
 	}
 
+	
+	
+	/**
+	 * Methode, die ein empfangenes ByteArray in ein PeerMemo Objekt umwandelt
+	 * 
+	 * @param buffer			= das empfangene ByteArray
+	 * @return					= das PeerMemo Objekt
+	 */
+	
 	public PeerMemo getPeerMemo(byte[] buffer){
 
 		PeerMemo peerMemo = null;
 
 		byte[] bufferBody = serialization.getByteData(buffer);
 
-		peerMemo = serialization.deserializdePeerMemo(bufferBody);
+		peerMemo = serialization.deserializePeerMemo(bufferBody);
 
 		return peerMemo;
 	}
 
+	
+	
+	/**
+	 * Methode, die ein empfangenes ByteArray in ein PeerMemo Objekt umwandelt
+	 * 
+	 * @param buffer			= das empfangene ByteArray
+	 * @return					= das PeerMemo Objekt
+	 */
+	
 	public ForeignData getForeignData(byte[] buffer){
 
 		ForeignData foreignData = null;
 
 		byte[] bufferBody = serialization.getByteData(buffer);
 
-		foreignData = serialization.deserializdeForeignData(bufferBody);
+		foreignData = serialization.deserializeForeignData(bufferBody);
 
 		return foreignData;
 	}
 
+	
+	
+	/**
+	 * Methode, die ein empfangenes ByteArray in eine PeerMemo-Liste umwandelt
+	 * 
+	 * @param buffer			= das empfangene ByteArray
+	 * @return					= die PeerMemo-Liste
+	 */
+	
 	public ArrayList<PeerMemo> getListPeer(byte[] buffer){
 
 		ArrayList<PeerMemo> list;
@@ -133,7 +201,16 @@ public class Server {
 
 		return list;
 	}
+	
+	
 
+	/**
+	 * Methode, die ein empfangenes ByteArray in eine Neighbour-Liste umwandelt
+	 * 
+	 * @param buffer			= das empfangene ByteArray
+	 * @return					= die Neighbour-Liste
+	 */
+	
 	public ArrayList<Neighbour> getListNeighbour(byte[] buffer){
 
 		ArrayList<Neighbour> list;
