@@ -122,11 +122,17 @@ public class DateiMemoDbSource implements java.io.Serializable{
     *
     *
     * */
-    public void deleteDateiMemo() {
-
+    public void deleteAllDateiMemo() {
         database = DatabaseManager.getInstance().openDatabase();
         database.delete(DateiMemoDbHelper.TABLE_DATEI_LIST, null, null);
         DatabaseManager.getInstance().closeDatabase();
+    }
+
+    public void deleteEachNode(int uid){
+        database = DatabaseManager.getInstance().openDatabase();
+        database.delete(DateiMemoDbHelper.TABLE_DATEI_LIST, //which Table
+                DateiMemoDbHelper.COLUMN_UID +" = "+ uid, //where clause
+                null);
     }
     /*
     *
