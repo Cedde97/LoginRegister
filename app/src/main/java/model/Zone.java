@@ -163,7 +163,11 @@ public class Zone implements java.io.Serializable {
      * @return the new pair of zones created by splitting this zone
      */
 
+<<<<<<< HEAD
   /*  public void split(Node node1, Node node2, Node node3, Node node4) {
+=======
+   /* public void split(Node node1, Node node2, Node node3, Node node4) {
+>>>>>>> 2f248724cce97bdc1027b5c4891aa4bf698ebf58
 
         // we split the zone along the longest side
         if (getLengthX(node1) >= getLengthY(node1)) {
@@ -432,9 +436,18 @@ public class Zone implements java.io.Serializable {
                 Log.d("EXCEPTION", "NODE4 " + e.getMessage());
             }
         }
+<<<<<<< HEAD
     }*/
 
     /*public Node[] determineLocationX(Node node1, Node node2, Node node3, Node node4)
+=======
+*/
+
+
+   // }
+
+    public Node[] determineLocationX(Node node1, Node node2, Node node3, Node node4)
+>>>>>>> 2f248724cce97bdc1027b5c4891aa4bf698ebf58
     {
         Node[] nodeArray = new Node[4];
 

@@ -46,53 +46,7 @@ public class ForeignDataDbSource  implements java.io.Serializable{
         //foreignData = new ForeignData();
     }
 
-    /*
-   *
-   *
-   *           Converting List to Double -- List to Integer -- List to Long
-   *
-   * */
-    public double listToDouble(List<Double> list){
-        double[] tmp = new double[list.size()];
-        double ret = 0;
 
-        for (int i = 0; i < list.size(); ++i) { //iterate over the elements of the list
-            tmp[i] = Double.valueOf(list.get(i));
-        }
-        for (int j = 0; j < tmp.length; ++j) {
-            ret = tmp[j];
-        }
-
-        return ret;
-    }
-
-    public int listToInt(List<Integer> list){
-        int[] tmp = new int[list.size()];
-        int ret = 0;
-
-        for (int i = 0; i < list.size(); ++i) { //iterate over the elements of the list
-            tmp[i] = Integer.valueOf(list.get(i));
-        }
-        for (int j = 0; j < tmp.length; ++j) {
-            ret = tmp[j];
-        }
-
-        return ret;
-    }
-
-    public long listToLong(List<Long> list){
-        long[] tmp = new long[list.size()];
-        long ret = 0;
-
-        for (int i = 0; i < list.size(); ++i) { //iterate over the elements of the list
-            tmp[i] = Long.valueOf(list.get(i));
-        }
-        for (int j = 0; j < tmp.length; ++j) {
-            ret = tmp[j];
-        }
-
-        return ret;
-    }
 
 
     //
@@ -123,6 +77,7 @@ public class ForeignDataDbSource  implements java.io.Serializable{
         values.put(DateiMemoDbHelper.COLUMN_FOTOID, foreignData.getFotoId());
         values.put(DateiMemoDbHelper.COLUMN_PUNKTX, foreignData.getPunktX());
         values.put(DateiMemoDbHelper.COLUMN_PUNKTY, foreignData.getPunktY());
+        values.put(DateiMemoDbHelper.COLUMN_IP, foreignData.getForeignIp());
 
 
         //
@@ -144,11 +99,18 @@ public class ForeignDataDbSource  implements java.io.Serializable{
     *
     *
     * */
-    public void deleteForeignData() {
+    public void deleteAllForeignData() {
         database = DatabaseManager.getInstance().openDatabase();
         database.delete(DateiMemoDbHelper.TABLE_FOREIGNDATA_LIST, null, null);
         DatabaseManager.getInstance().closeDatabase();
-        //Log.d(LOG_TAG, "Eintrag gelöscht! ID: " + foreignData.getUid() + " Inhalt: " + foreignData.toString());
+    }
+
+    public void deleteEachForeignData(int foto_id) {
+        database = DatabaseManager.getInstance().openDatabase();
+        database.delete(DateiMemoDbHelper.TABLE_FOREIGNDATA_LIST,
+                DateiMemoDbHelper.COLUMN_FOTOID +" = "+ foto_id,
+                null);
+        DatabaseManager.getInstance().closeDatabase();
     }
     /*
     *

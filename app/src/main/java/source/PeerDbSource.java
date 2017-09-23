@@ -32,19 +32,9 @@ public class PeerDbSource implements java.io.Serializable{
     private SQLiteDatabase database;
     private DateiMemoDbHelper dbHelper;
     private DateiMemoDbSource dateiMemoDbSource = new DateiMemoDbSource();
-    private PeerMemo peerMemo;  // TODO: löschen, da nie benutzt
+    //private PeerMemo peerMemo;  // TODO: löschen, da nie benutzt
 
-    private static final int    maxPeers= 3;  // TODO: model.Node.maxPeers verwenden
-
-
-
-    //neue Array String für Peer
-    private String[] columns_Peer = {   // TODO: nie benutzt
-            DateiMemoDbHelper.COLUMN_PEERID,
-            DateiMemoDbHelper.COLUMN_PEERIP,
-            DateiMemoDbHelper.COLUMN_UID,
-            //DateiMemoDbHelper.COLUMN_CHECKED
-    };
+    //private static final int    maxPeers= Node.maxPeers;  // TODO: model.Node.maxPeers verwenden
 
     public PeerDbSource(){
 
@@ -60,53 +50,7 @@ public class PeerDbSource implements java.io.Serializable{
     //
 
 
-    /*
-    *
-    *
-    *           Converting List to Double -- List to Integer -- List to Long
-    *
-    * */
-    public double listToDouble(List<Double> list){  // TODO: löschen, da nie benutzt
-        double[] tmp = new double[list.size()];
-        double ret = 0;
 
-        for (int i = 0; i < list.size(); ++i) { //iterate over the elements of the list
-            tmp[i] = Double.valueOf(list.get(i));
-        }
-        for (int j = 0; j < tmp.length; ++j) {
-            ret = tmp[j];
-        }
-
-        return ret;
-    }
-
-    public int listToInt(List<Integer> list){   // TODO: löschen, da nie benutzt
-        int[] tmp = new int[list.size()];
-        int ret = 0;
-
-        for (int i = 0; i < list.size(); ++i) { //iterate over the elements of the list
-            tmp[i] = Integer.valueOf(list.get(i));
-        }
-        for (int j = 0; j < tmp.length; ++j) {
-            ret = tmp[j];
-        }
-
-        return ret;
-    }
-
-    public long listToLong(List<Long> list){    // TODO: löschen, da nie benutzt
-        long[] tmp = new long[list.size()];
-        long ret = 0;
-
-        for (int i = 0; i < list.size(); ++i) { //iterate over the elements of the list
-            tmp[i] = Long.valueOf(list.get(i));
-        }
-        for (int j = 0; j < tmp.length; ++j) {
-            ret = tmp[j];
-        }
-
-        return ret;
-    }
 
 
     //
@@ -153,18 +97,22 @@ public class PeerDbSource implements java.io.Serializable{
     *
     *
     * */
-    public void deletePeerMemo() {      // TODO: diese Methode wuerde alle Peers von jedem Node loeschen, warum nicht als deleteAllPeers nennen? Ist das ueberhaupt so gewollt?
+    public void deleteAllPeerMemo() {      // TODO: diese Methode wuerde alle Peers von jedem Node loeschen, warum nicht als deleteAllPeers nennen? Ist das ueberhaupt so gewollt?
         database = DatabaseManager.getInstance().openDatabase();
         database.delete(DateiMemoDbHelper.TABLE_PEER_LIST, null, null);
         DatabaseManager.getInstance().closeDatabase();
         //Log.d(LOG_TAG, "Eintrag gelöscht! ID: " + peerMemo.getUid() + " Inhalt: " + peerMemo.toString());
     }
 
+    //
+    //Es wird nur eine Peer löschen,wo wir die peer_id bestimmen. (maximal peer_id = 3)
+    //
     public void deleteEachPeer(int peer_id){    // TODO: diese Methode loescht nur die Eintrage mit einem bestimmtem peerId.
         database = DatabaseManager.getInstance().openDatabase();
-        database.delete(DateiMemoDbHelper.TABLE_PEER_LIST,
-                DateiMemoDbHelper.COLUMN_PEERID +" = "+ peer_id,
+        database.delete(DateiMemoDbHelper.TABLE_PEER_LIST, //which Table
+                DateiMemoDbHelper.COLUMN_PEERID +" = "+ peer_id, //where clause -- "bestimmte peer zu löschen"
                 null);
+        DatabaseManager.getInstance().closeDatabase();
     }
 
     // TODO: wir brauchen eine Methode, die nur ein bestimmtes Peer loescht!
@@ -230,21 +178,21 @@ public class PeerDbSource implements java.io.Serializable{
     }
 
 
-    public int decreaseCountPeers () {  // TODO: peerCount braucht man nicht unbedingt in der Datenbank spichern!
+    public void decreaseCountPeers (int peer_id) {  // TODO: peerCount braucht man nicht unbedingt in der Datenbank spichern!
         if (getPeersCount() == 0){
             System.out.println("No more Peers");
         }
-        deleteEachPeer(maxPeers);   // TODO: BUG, da maxPeers ist nicht der UID der Node!!!
-        return getPeersCount();
+        deleteEachPeer(peer_id);   // TODO: BUG, da maxPeers ist nicht der UID der Node!!!
+        //return getPeersCount();
     }
 
-    public int increaseCountPeers (PeerMemo peerMemo) { // TODO: wir haben schon eine createPeerMemo() Methode fuer diesen Zweck!
-        if (getPeersCount() == 2){
-            System.out.println("Prepare to split");
-        }
-        createPeerMemo(peerMemo);
-        return getPeersCount();
-    }
+//    public int increaseCountPeers (PeerMemo peerMemo) { // TODO: wir haben schon eine createPeerMemo() Methode fuer diesen Zweck!
+//        if (getPeersCount() == 2){
+//            System.out.println("Prepare to split");
+//        }
+//        createPeerMemo(peerMemo);
+//        return getPeersCount();
+//    }
     //
     //===============================================================================================
     //
@@ -275,6 +223,7 @@ public class PeerDbSource implements java.io.Serializable{
         return id;
     }
 
+<<<<<<< HEAD
 
     public int getPeer(int index) // TODO: was genau sollte diese Methode liefern?
     {
@@ -299,6 +248,31 @@ public class PeerDbSource implements java.io.Serializable{
 
         return Id;
     }
+=======
+//    public int getPeer(long index)  // TODO: was genau sollte diese Methode liefern?
+//    {
+//        database = DatabaseManager.getInstance().openDatabase();
+//        String selectQuery = "SELECT " + DateiMemoDbHelper.COLUMN_PEERID + " FROM " + DateiMemoDbHelper.TABLE_PEER_LIST + " WHERE "
+//                + DateiMemoDbHelper.COLUMN_PEERID + " = " + index;  /* TODO: BUG diese SQL Anfrage liefert einchach den Wert von dem "index" Argument von dieser Methode! Siehe Aufschluesselung unten:
+//
+//           SELECT peerId
+//           FROM peer_list
+//           WHERE peerId = ?
+//         */
+//
+//        Cursor cursor = database.rawQuery(selectQuery, null);
+//
+//        cursor.moveToFirst();
+//
+//        int Id = cursor.getInt(cursor.getColumnIndex(DateiMemoDbHelper.COLUMN_PEERID));
+//
+//        cursor.close();
+//
+//        DatabaseManager.getInstance().closeDatabase();
+//
+//        return Id;
+//    }
+>>>>>>> 2f248724cce97bdc1027b5c4891aa4bf698ebf58
 
 
     /*
@@ -339,11 +313,6 @@ public class PeerDbSource implements java.io.Serializable{
 
         Cursor cursor = database.rawQuery(query, null);
 
-//        int idChecked = cursor.getColumnIndex(DateiMemoDbHelper.COLUMN_CHECKED);
-//        int intValueChecked = cursor.getInt(idChecked);
-//        boolean isChecked = (intValueChecked != 0);
-
-
         //3. Durchführen Zeile und füge in List hinzu
         PeerMemo peerMemo = null;
         if (cursor.moveToFirst()) {
@@ -366,6 +335,9 @@ public class PeerDbSource implements java.io.Serializable{
         return PeerMemoList;
     }
 
+    //
+    //Bestimmte Info von einzelner Peer rauszuholen
+    //
     public List<PeerMemo> getEachPeer(int peer_id) {
         List<PeerMemo> PeerMemoList = new LinkedList<PeerMemo>();
 

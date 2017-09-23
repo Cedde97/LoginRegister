@@ -69,7 +69,7 @@ public class Neighbour implements java.io.Serializable{
 //    }
 
    /**
-     * @author Joshua Zabel
+     *
      * @param uid
      * @param punktX
      * @param punktY

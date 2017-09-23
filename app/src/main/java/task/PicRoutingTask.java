@@ -1,5 +1,6 @@
 package task;
 
+import android.content.Context;
 import android.os.AsyncTask;
 
 import java.io.IOException;
@@ -13,6 +14,7 @@ import exception.XMustBeLargerThanZeroException;
 import exception.YMustBeLargerThanZeroException;
 import model.ForeignData;
 import model.Node;
+import source.DateiMemoDbHelper;
 import source.DateiMemoDbSource;
 import source.NeighborDbSource;
 import util.DBUtil;
@@ -22,6 +24,8 @@ import util.DBUtil;
  */
 
 public class PicRoutingTask extends AsyncTask<String, Void, Void>{
+    private static Context appContext;
+    private static DateiMemoDbHelper dbHelper;
     private final static int PORTNR = 9797;
     private Socket socket;
     private Client client = new Client();

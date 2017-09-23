@@ -1,7 +1,11 @@
 package task;
 
+import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Environment;
+import android.util.Log;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -13,6 +17,7 @@ import connection.RoutHelper;
 import exception.XMustBeLargerThanZeroException;
 import exception.YMustBeLargerThanZeroException;
 import model.ForeignData;
+import source.DateiMemoDbHelper;
 import source.DateiMemoDbSource;
 import source.ForeignDataDbSource;
 import source.NeighborDbSource;
@@ -25,7 +30,8 @@ import util.DBUtil;
 public class recoverPicturesTask extends AsyncTask<String,Void,Void>{
     private final static int PORTNR = 9797;
 
-
+    private static Context appContext;
+    private static DateiMemoDbHelper dbHelper;
     private Socket socket;
     private Client client = new Client();
     private DBUtil dbu = new DBUtil();
@@ -79,12 +85,26 @@ public class recoverPicturesTask extends AsyncTask<String,Void,Void>{
                 List<ForeignData> fdArray;
                 fdArray = fDb.getAllForeignData();
                 List<ForeignData> myPics = new ArrayList<ForeignData>();
+
                 for(int i = 0; i <= fdArray.size(); i++){
                     if(fdArray.get(i).getUid() == rh.getID()){
                         myPics.add(fdArray.get(i));
                     }
                 }
+
+                File[] fotos = new File[myPics.size()];
+                for(int i= 0; i<= myPics.size(); i++){
+                    fotos[i] = myPics.get(i).getImage(myPics.get(i).getUid(),fDb);
+                }
                 Socket socket = new Socket(rh.getIP(), PORTNR);
+                try{
+                    for(int i= 0; i<fotos.length; i++){
+                        client.sendImageAsByteArray(socket,fotos[i]);
+                    }
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+
                 // TODO: 19.09.2017 Jetzt noch alle Bilder(die in myPics sind) von Gerät holen und an socket senden  
 
 
@@ -100,6 +120,7 @@ public class recoverPicturesTask extends AsyncTask<String,Void,Void>{
         }
         return false;
     }
+
 
 
     private int compareValues(double[] distances) {
