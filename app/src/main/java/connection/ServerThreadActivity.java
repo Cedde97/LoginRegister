@@ -14,11 +14,15 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import exception.XMustBeLargerThanZeroException;
+import exception.YMustBeLargerThanZeroException;
+import model.Corner;
 import model.ForeignData;
 import model.Neighbour;
 import model.Node;
 import model.PeerMemo;
 
+import model.Zone;
 import source.DatabaseManager;
 import source.DateiMemoDbHelper;
 import source.DateiMemoDbSource;
@@ -71,23 +75,19 @@ public class ServerThreadActivity extends Activity {
     }
 
 
-    class ServerThread extends AsyncTask<String, String, String> {
+    class ServerThread extends AsyncTask<Void, Void, Void> {
 
 
-        protected String doInBackground(String... args) {
+        protected Void doInBackground(Void... args) {
 
             Serialization serialization = new Serialization();
             ServerSocket ss = null;
-            Node node = null;
-            RoutHelper routHelper = null;
-            Neighbour neighbour = null;
-            PeerMemo peerMemo = null;
-            ForeignData foreignData = null;
-            while (true) {
-                try {
+
+
+            try {
+                while(true) {
                     Log.d("Server is started", "In ServerThreadActivity");
                     ss = new ServerSocket(PORTNR);
-
                     Log.d("Waiting for request", "ServerThreadActivity");
                     Socket s = ss.accept();
 
@@ -127,7 +127,7 @@ public class ServerThreadActivity extends Activity {
                         case NODE_TRANSFER: {
                             Log.d("Node Transfer Request", "");
 
-                            node = server.getNode(buffer);
+                            Node node = server.getNode(buffer);
 
                             Log.d(node.toString(), "");
 
@@ -135,16 +135,16 @@ public class ServerThreadActivity extends Activity {
                         }
 
                         case ROUTING: {
+
                             Log.d("Routing: ", "");
 
                             RoutHelper rh = server.getRoutHelper(buffer);
 
-
-                            Log.d("nodeNew ", " " + rh.toString());
+                            Log.d("RoutHelper: ", " " + rh.toString());
                             break;
 
                         }
-                        
+
                         case FOREIGNDATA_TRANSFER: {
 
                             Log.d("ForeignTransfer", "");
@@ -180,6 +180,20 @@ public class ServerThreadActivity extends Activity {
                             Log.d("NeighbourList:", "");
                             int i = 0;
                             ArrayList<Neighbour> list = server.getListNeighbour(buffer);
+
+                            Log.d("List:", list.toString());
+
+
+                            Corner topRight = new Corner(0.0, 0.0);
+                            Corner topLeft = new Corner(0.0, 0.0);
+                            Corner bottomRight = new Corner(0.0, 0.0);
+                            Corner bottomLeft = new Corner(1.0, 1.0);
+                            Zone zone = new Zone(topRight, topLeft, bottomRight, bottomLeft);
+
+                            Node node1 = new Node(0, 2.0, 3.0, "IP", 9, zone);
+
+                            // ownDb.createDateiMemo(node1);
+
                             Neighbour n = null, n1 = null, n2 = null, n3 = null;
                             Neighbour[] array = new Neighbour[4];
                             array[0] = n;
@@ -190,36 +204,31 @@ public class ServerThreadActivity extends Activity {
                                 array[i] = list.get(i);
                                 array[i].setUid(ownDb.getUid());
                             }
-
-
-
                             startUpdateNeighbours(array[0], array[1], array[2], array[3]);
                             Log.d("NeighBOUUUUUUUR", "" + nDB.getAllNeighborMemo().toString());
                             break;
-
-                            //Log.d("List: ",  list.toString());
-
-                        }                      
-
-                    }
-
-                    ss.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                } finally {
-                    try {
-                        if (ss != null)
-                            ss.close();
-                        Log.d("ServerSocket closed", "");
-
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                        }
                     }
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
+            } catch (YMustBeLargerThanZeroException e) {
+                e.printStackTrace();
+            } catch (XMustBeLargerThanZeroException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    if (ss != null)
+                        ss.close();
+                    Log.d("ServerSocket closed", "");
 
 
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
+
+            return null;
         }
     }
 
