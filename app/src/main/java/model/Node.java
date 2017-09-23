@@ -470,7 +470,6 @@ public class Node implements java.io.Serializable{
         }
     }
 
-
     public boolean checkIfMaxPeersCount(){
         if (countPeers == maxPeers){
             return true;
@@ -511,9 +510,11 @@ public class Node implements java.io.Serializable{
     public void setTopLeft(Corner topLeft){
         getMyZone().setTopLeft(topLeft);
     }
+
     public void setBottomRight(Corner bottomRight){
         getMyZone().setBottomRight(bottomRight);
     }
+
     public void setBottomLeft(Corner bottomLeft){
         getMyZone().setBottomLeft(bottomLeft);
     }
@@ -537,6 +538,7 @@ public class Node implements java.io.Serializable{
     public String getIP() {
         return iP;
     }
+    
     public void setIP(String IP) {
         this.iP = IP;
     }

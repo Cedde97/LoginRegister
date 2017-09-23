@@ -126,11 +126,7 @@ public class RegisterActivity extends AppCompatActivity {
                                         .create()
                                         .show();
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        } catch (YMustBeLargerThanZeroException e) {
-                            e.printStackTrace();
-                        } catch (XMustBeLargerThanZeroException e) {
+                        } catch (JSONException | YMustBeLargerThanZeroException | XMustBeLargerThanZeroException e) {
                             e.printStackTrace();
                         }
                     }

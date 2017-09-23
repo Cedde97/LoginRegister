@@ -1,5 +1,6 @@
 package task;
 
+import android.content.Context;
 import android.os.AsyncTask;
 
 
@@ -15,6 +16,8 @@ import exception.XMustBeLargerThanZeroException;
 import exception.YMustBeLargerThanZeroException;
 import model.Node;
 import model.PeerMemo;
+import source.DatabaseManager;
+import source.DateiMemoDbHelper;
 import source.DateiMemoDbSource;
 import source.NeighborDbSource;
 import source.PeerDbSource;
@@ -26,7 +29,8 @@ import util.DBUtil;
 public class RoutingTask extends AsyncTask<String, Void, Void> {
     private final static int PORTNR = 9797;
 
-
+    private static Context appContext;
+    private static DateiMemoDbHelper dbHelper;
     private Socket socket;
     private Client client = new Client();
     private DBUtil dbu = new DBUtil();
@@ -34,6 +38,10 @@ public class RoutingTask extends AsyncTask<String, Void, Void> {
     private NeighborDbSource nDB = new NeighborDbSource();
     private PeerDbSource pDB = new PeerDbSource();
 
+    @Override
+    protected void onPreExecute() {
+
+    }
 
     //wie mache ich das mit routing und receiveRoutingRequest also wie rufe ich sie jeweils auf? da sie sich gegenseitig aufrufen
     @Override

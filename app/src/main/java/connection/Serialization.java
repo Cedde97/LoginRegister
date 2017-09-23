@@ -476,7 +476,7 @@ public class Serialization {
 	 *      Der Header (byte[0]) ist fuer den MethodenAufrufNamen reserviert (5)
 	 *      Im Body (ab byte[1]) stehen die eigentlichen Nutzdaten
 	 *
-	 * @param neighbour      = das PeerMemo, das in das HilfsByteArray geschrieben werden soll
+	 * @param      = das PeerMemo, das in das HilfsByteArray geschrieben werden soll
 	 * @return               = das erzeugte HilfsByteArray
 	 */
 	
@@ -503,7 +503,7 @@ public class Serialization {
 	 *      Der Header (byte[0]) ist fuer den MethodenAufrufNamen reserviert (6)
 	 *      Im Body (ab byte[1]) stehen die eigentlichen Nutzdaten
 	 *
-	 * @param neighbour      = die ForeignData, die in das HilfsByteArray geschrieben werden soll
+	 * @param     = die ForeignData, die in das HilfsByteArray geschrieben werden soll
 	 * @return               = das erzeugte HilfsByteArray
 	 */
 	

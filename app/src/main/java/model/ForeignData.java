@@ -1,5 +1,12 @@
 package model;
 
+import android.os.Environment;
+import android.util.Log;
+
+import java.io.File;
+
+import source.ForeignDataDbSource;
+
 /**
  * Created by eridhobufferyrollian on 12.08.17.
  * Class Foreign Data
@@ -27,7 +34,7 @@ public class ForeignData implements java.io.Serializable{
     }
 
 
-    public long getUid() {
+    public int getUid() {
         return uid;
     }
 
@@ -67,6 +74,21 @@ public class ForeignData implements java.io.Serializable{
         this.foreignIp = foreignIp;
     }
 
+    private String getFile(int uid,ForeignDataDbSource fDb) {
+        String foto = "";
+        Log.d("TEST",""+ uid );
+        if (uid == fDb.getUidForeign()) {
+            foto = fDb.getFotoId(fDb.getUidForeign()) + ".jpg";
+            Log.d("TEST", "FOTO " + foto);
+        }
+        return foto;
+    }
+
+    public File getImage(int uid, ForeignDataDbSource fDb)
+    {
+        File file = new File(Environment.getExternalStorageDirectory() + File.separator+"images"+ File.separator+"CAN_PICS"+ File.separator + getFile(uid,fDb));
+        return file;
+    }
 
     @Override
     public String toString() {
