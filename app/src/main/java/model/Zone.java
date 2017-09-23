@@ -163,7 +163,7 @@ public class Zone implements java.io.Serializable {
      * @return the new pair of zones created by splitting this zone
      */
 
-    public void split(Node node1, Node node2, Node node3, Node node4) {
+  /*  public void split(Node node1, Node node2, Node node3, Node node4) {
 
         // we split the zone along the longest side
         if (getLengthX(node1) >= getLengthY(node1)) {
@@ -432,12 +432,9 @@ public class Zone implements java.io.Serializable {
                 Log.d("EXCEPTION", "NODE4 " + e.getMessage());
             }
         }
+    }*/
 
-
-
-    }
-
-    public Node[] determineLocationX(Node node1, Node node2, Node node3, Node node4)
+    /*public Node[] determineLocationX(Node node1, Node node2, Node node3, Node node4)
     {
         Node[] nodeArray = new Node[4];
 
@@ -449,9 +446,9 @@ public class Zone implements java.io.Serializable {
         sortiere(nodeArray);
 
         return nodeArray;
-    }
+    }*/
 
-    public Node[] determineLocationY(Node node1, Node node2, Node node3, Node node4)
+   /* public Node[] determineLocationY(Node node1, Node node2, Node node3, Node node4)
     {
         Node[] nodeArray = new Node[4];
 
@@ -463,8 +460,8 @@ public class Zone implements java.io.Serializable {
         sortiere(nodeArray);
 
         return nodeArray;
-    }
-        public  void sortiere(Node x[]) {
+    }*/
+       /* public  void sortiere(Node x[]) {
             qSort(x, 0, x.length-1);
             }
 
@@ -497,128 +494,7 @@ public class Zone implements java.io.Serializable {
                 x[rechts] = help;
 
                 return i;
-            }
-
-
-
-       // Log.d("TEST", "Determine");
-      /* if(node1.getPunktX()<= node2.getPunktX() || node1.getPunktX()<= node3.getPunktX() || node1.getPunktX()<= node4.getPunktX() ) {
-           Log.d("1.TEST_X", "NODE1");
-           if(node1.getPunktY() <= node2.getPunktY() || node1.getPunktY() <= node3.getPunktY() || node1.getPunktY() <= node4.getPunktY()){
-               Log.d("1.TEST_Y", "NODE1");
-                nodeArray[0] = node1;
-           }
-       }
-       if(node2.getPunktX()<= node3.getPunktX() || node2.getPunktX()<= node4.getPunktX() ||  node2.getPunktX() <= node1.getPunktX()){
-           Log.d("1.TEST_X", "NODE2");
-           if(node2.getPunktY() <= node1.getPunktY() || node2.getPunktY() <= node3.getPunktY() || node2.getPunktY() <= node4.getPunktY()){
-               Log.d("1.TEST_Y", "NODE2");
-                nodeArray[0] = node2;
-           }
-       }
-       if(node3.getPunktX()<= node2.getPunktX() || node3.getPunktX()<= node1.getPunktX() || node3.getPunktX()<= node4.getPunktX() ) {
-           Log.d("1.TEST_X", "NODE3");
-            if(node3.getPunktY() <= node2.getPunktY() || node3.getPunktY() <= node1.getPunktY() || node3.getPunktY() <= node4.getPunktY()){
-                Log.d("1.TEST_Y", "NODE3");
-                nodeArray[0] = node3;
-            }
-        }
-        if(node4.getPunktX()<= node3.getPunktX() || node4.getPunktX()<= node2.getPunktX() ||  node4.getPunktX() <= node1.getPunktX()){
-           Log.d("1.TEST_X", "NODE4");
-            if(node4.getPunktY() <= node1.getPunktY() || node4.getPunktY() <= node3.getPunktY() || node4.getPunktY() <= node2.getPunktY()){
-                Log.d("1.TEST_Y", "NODE4");
-                nodeArray[0] = node4;
-            }
-        }
-
-        if(node1.getPunktX()<= node2.getPunktX() | node1.getPunktX()<= node3.getPunktX() | node1.getPunktX()<= node4.getPunktX() ) {
-            Log.d("2.TEST_X", "NODE1" + node1.getPunktY() + ", " + node4.getPunktY());
-            if(node1.getPunktY() >= node2.getPunktY() | node1.getPunktY() >= node3.getPunktY() | node1.getPunktY() >= node4.getPunktY()){
-                Log.d("2.TEST_Y", "NODE1");
-                nodeArray[1] = node1;
-            }
-        }
-        if(node2.getPunktX()<= node3.getPunktX() && node2.getPunktX()<= node4.getPunktX() &&  node2.getPunktX() <= node1.getPunktX()){
-            Log.d("2.TEST_X", "NODE2");
-            if(node2.getPunktY() >= node1.getPunktY() && node2.getPunktY() >= node3.getPunktY() && node2.getPunktY() >= node4.getPunktY()){
-                Log.d("2.TEST_Y", "NODE2");
-                nodeArray[1] = node2;
-            }
-        }
-        if(node3.getPunktX()<= node2.getPunktX() && node3.getPunktX()<= node1.getPunktX() && node3.getPunktX()<= node4.getPunktX() ) {
-            Log.d("2.TEST_X", "NODE3");
-            if(node3.getPunktY() >= node2.getPunktY() && node3.getPunktY() >= node1.getPunktY() && node3.getPunktY() >= node4.getPunktY()){
-                Log.d("2.TEST_Y", "NODE3");
-                nodeArray[1] = node3;
-            }
-        }
-        if(node4.getPunktX()<= node3.getPunktX() && node4.getPunktX()<= node2.getPunktX() &&  node4.getPunktX() <= node1.getPunktX()){
-            Log.d("2.TEST_X", "NODE4");
-            if(node4.getPunktY() >= node1.getPunktY() && node4.getPunktY() >= node3.getPunktY() && node4.getPunktY() >= node2.getPunktY()){
-                Log.d("2.TEST_Y", "NODE4");
-                nodeArray[1] = node4;
-            }
-        }
-
-
-        if(node1.getPunktX()>= node2.getPunktX() && node1.getPunktX()>= node3.getPunktX() && node1.getPunktX()>= node4.getPunktX() ) {
-            Log.d("3.TEST_X", "NODE1");
-            if(node1.getPunktY() <= node2.getPunktY() && node1.getPunktY() <= node3.getPunktY() && node1.getPunktY() <= node4.getPunktY()){
-                Log.d("3.TEST_Y", "NODE1");
-                nodeArray[2] = node1;
-            }
-        }
-        if(node2.getPunktX()>= node3.getPunktX() && node2.getPunktX()>= node4.getPunktX() &&  node2.getPunktX() >= node1.getPunktX()){
-            Log.d("3.TEST_X", "NODE2");
-            if(node2.getPunktY() <= node1.getPunktY() && node2.getPunktY() <= node3.getPunktY() && node2.getPunktY() <= node4.getPunktY()){
-                Log.d("3.TEST_Y", "NODE2");
-                nodeArray[2] = node2;
-            }
-        }
-        if(node3.getPunktX()>= node2.getPunktX() && node3.getPunktX()>= node1.getPunktX() && node3.getPunktX()>= node4.getPunktX() ) {
-            Log.d("3.TEST_X", "NODE3");
-            if(node3.getPunktY() <= node2.getPunktY() && node3.getPunktY() <= node1.getPunktY() && node3.getPunktY() <= node4.getPunktY()){
-                Log.d("3.TEST_Y", "NODE3");
-                nodeArray[2] = node3;
-            }
-        }
-        if(node4.getPunktX()>= node3.getPunktX() && node4.getPunktX()>= node2.getPunktX() &&  node4.getPunktX() >= node1.getPunktX()){
-            Log.d("3.TEST_X", "NODE4");
-            if(node4.getPunktY() <= node1.getPunktY() && node4.getPunktY() <= node3.getPunktY() && node4.getPunktY() <= node2.getPunktY()){
-                Log.d("3.TEST_Y", "NODE4");
-                nodeArray[2] = node4;
-            }
-        }
-
-
-        if(node1.getPunktX()>= node2.getPunktX() && node1.getPunktX()>= node3.getPunktX() && node1.getPunktX()>= node4.getPunktX() ) {
-            Log.d("4.TEST_X", "NODE1");
-            if(node1.getPunktY() >= node2.getPunktY() && node1.getPunktY() >= node3.getPunktY() && node1.getPunktY() >= node4.getPunktY()){
-                Log.d("4.TEST_Y", "NODE1");
-                nodeArray[3] = node1;
-            }
-        }
-        if(node2.getPunktX()>= node3.getPunktX() && node2.getPunktX()>= node4.getPunktX() &&  node2.getPunktX() >= node1.getPunktX()){
-            Log.d("4.TEST_X", "NODE2");
-            if(node2.getPunktY() >= node1.getPunktY() && node2.getPunktY() >= node3.getPunktY() && node2.getPunktY() >= node4.getPunktY()){
-                Log.d("4.TEST_Y", "NODE2");
-                nodeArray[3] = node2;
-            }
-        }
-        if(node3.getPunktX()>= node2.getPunktX() && node3.getPunktX()>= node1.getPunktX() && node3.getPunktX()>= node4.getPunktX() ) {
-            Log.d("4.TEST_X", "NODE3");
-            if(node3.getPunktY() >= node2.getPunktY() && node3.getPunktY() >= node1.getPunktY() && node3.getPunktY() >= node4.getPunktY()){
-                Log.d("4.TEST_Y", "NODE3");
-                nodeArray[3] = node3;
-            }
-        }
-        if(node4.getPunktX()>= node3.getPunktX() && node4.getPunktX()>= node2.getPunktX() &&  node4.getPunktX() >= node1.getPunktX()){
-            Log.d("4.TEST_X", "NODE4");
-            if(node4.getPunktY() >= node1.getPunktY() && node4.getPunktY() >= node3.getPunktY() && node4.getPunktY() >= node2.getPunktY()){
-                Log.d("4.TEST_Y", "NODE4");
-                nodeArray[3] = node4;
-            }
-        }*/
+            }*(
 
     /**
      * Get the length of the Y side of the zone
@@ -634,57 +510,6 @@ public class Zone implements java.io.Serializable {
         return  node.getBottomRight().getX() - node.getBottomLeft().getX();
     }
 
-    /**
-     * Merge two zones and create a single one from the merged zones.
-     * The two zones have to be neighbours and share a common side of the same length in order to be mergeable.
-     *
-     * @param //z1 The first zone to merge
-     * @param //z2 The second zone to merge
-     * @return the zone created by merging the two zones
-     */
-    /*   BRAUCHEN WIR DAS ÃœBERHAUPT
-    public static Zone merge(Zone z1, Zone z2) {
-
-        if (!z1.isNeighbour(z2)) {
-            throw new IllegalArgumentException("ERROR: " + z1 + " and " + z2 + " are not neighbours, and thus cannot be merged.");
-
-        } else if (z1.getLengthX() == z2.getLengthX() && z1.x1 == z2.x1 && z1.x2 == z2.x2) {
-
-            // the two zones share an X-side of the same length, now we check which one is above the other
-            if (z1.y2 == z2.y1) {
-
-                // z1 is below z2
-
-                return new Zone(z1.x1, z1.x2, z1.y1, z2.y2);
-            } else {
-
-                // z1 is above z2
-
-                return new Zone(z1.x1, z1.x2, z2.y1, z1.y2);
-            }
-
-        } else if (z1.getLengthY() == z2.getLengthY() && z1.y1 == z2.y1 && z1.y2 == z2.y2) {
-
-            // the two zones share a Y-side of the same length, now we check which one is right to the other
-            if (z1.x2 == z2.x1) {
-
-                // z2 is right to z1
-
-                return new Zone(z1.x1, z2.x2, z1.y1, z1.y2);
-            } else {
-
-                // z2 is left to z1
-
-                return new Zone(z2.x1, z1.x2, z1.y1, z1.y2);
-            }
-
-        } else {
-            throw new IllegalArgumentException("ERROR: " + z1 + " and " + z2 + " are neighbours, but do not have sides of the same length," +
-                    " and thus cannot be merged.");
-        }
-    }*/
-
-
     public String toString(){
         StringBuffer sb = new StringBuffer();
 
@@ -695,34 +520,4 @@ public class Zone implements java.io.Serializable {
 
         return sb.toString();
     }
-
-
-/*
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Zone zone = (Zone) o;
-
-        if (Double.compare(zone.x1, x1) != 0) return false;
-        if (Double.compare(zone.y1, y1) != 0) return false;
-        if (Double.compare(zone.x2, x2) != 0) return false;
-        return Double.compare(zone.y2, y2) == 0;
     }
-
-    @Override
-    public int hashCode() {
-        int result;
-        long temp;
-        temp = Double.doubleToLongBits(x1);
-        result = (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(y1);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(x2);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(y2);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        return result;
-    }*/
-}

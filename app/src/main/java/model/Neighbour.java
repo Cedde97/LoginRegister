@@ -37,7 +37,7 @@ public class Neighbour implements java.io.Serializable{
     private int uid;
     private int neighbour_id;
 
-    public long getNeighbour_id() {
+    public int getNeighbour_id() {
         return neighbour_id;
     }
 
@@ -77,13 +77,9 @@ public class Neighbour implements java.io.Serializable{
      * @param zone
      * @param rtt
      */
-<<<<<<< HEAD
+
     public Neighbour(int uid, double punktX, double punktY, String ip, Zone zone, double rtt){
-        this.uid = uid;
-=======
-    public Neighbour(long uid, double punktX, double punktY, String ip, Zone zone, double rtt){
         this.uid    = uid;
->>>>>>> 0b5215f35e35a9b91bafa7636d7fa204e56dfd99
         this.punktX = punktX;
         this.punktY = punktY;
         this.UIP    = ip;
@@ -179,7 +175,7 @@ public class Neighbour implements java.io.Serializable{
         this.RTT = RTT;
     }
 
-    public long getUid() {
+    public int getUid() {
         return uid;
     }
 

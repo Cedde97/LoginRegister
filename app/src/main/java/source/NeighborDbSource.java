@@ -765,7 +765,7 @@ public class NeighborDbSource  implements java.io.Serializable {
    *
    *
    * */
-    public double getRTT(long index) {
+    public double getRTT(int index) {
         database = DatabaseManager.getInstance().openDatabase();
 
         String selectQuery = "SELECT "+ DateiMemoDbHelper.COLUMN_RTT +" FROM " + DateiMemoDbHelper.TABLE_NEIGHBOR_LIST + " WHERE "
@@ -795,7 +795,7 @@ public class NeighborDbSource  implements java.io.Serializable {
      * @param index
      * @return die NID des Neighbours an stelle index
      */
-    public long getNID(int index) {
+    public int getNID(int index) {
         database = DatabaseManager.getInstance().openDatabase();
 
         String selectQuery = "SELECT "+ DateiMemoDbHelper.COLUMN_NID +" FROM " + DateiMemoDbHelper.TABLE_NEIGHBOR_LIST + " WHERE "
@@ -807,8 +807,8 @@ public class NeighborDbSource  implements java.io.Serializable {
 
         if (c != null)
             c.moveToFirst();
-        long uID;
-        uID = c.getLong(c.getColumnIndex(DateiMemoDbHelper.COLUMN_NID));
+        int uID;
+        uID = c.getInt(c.getColumnIndex(DateiMemoDbHelper.COLUMN_NID));
 
         c.close();
 

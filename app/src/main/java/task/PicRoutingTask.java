@@ -37,7 +37,7 @@ public class PicRoutingTask extends AsyncTask<String, Void, Void>{
         int fotoId= Integer.parseInt(params[3]);
         int uId  = Integer.parseInt(params[4]);
 
-        ForeignData fd = new ForeignData(x,y,fotoId,uId);
+        ForeignData fd = new ForeignData(ip,x,y,fotoId,uId);
         RoutHelper rh = new RoutHelper(ip,x,y,uId);
 
         //routingCheckZone leitet routing weiter falls nicht in der Zone

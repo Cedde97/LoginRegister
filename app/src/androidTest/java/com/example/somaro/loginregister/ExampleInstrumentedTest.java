@@ -924,16 +924,16 @@ public class ExampleInstrumentedTest {
         int id = 1;
         rh = new RoutHelper(ip, x, y, id);
 
-        ownDb.createDateiMemo(node1);
+        /*ownDb.createDateiMemo(node1);*/
 
-        Neighbour n1 = new Neighbour(03, 0.5, 0.5, ip, neighbourZone, 0.5);
+        Neighbour n1 = new Neighbour(1, 0.5, 0.5, ip, neighbourZone, 0.5);
 
         /*nDB.createNeighborMemo(n1);
         nDB.createNeighborMemo(n1);
         nDB.createNeighborMemo(n1);
         nDB.createNeighborMemo(n1);*/
 
-        Log.d("TEST", " " + nDB.getAllNeighborMemo());
+        Log.d("TEST", " " + nDB.getAllNeighborMemo().toString());
 
         Log.d("TEST", " " + determineRoutingDestination(rh));
 
@@ -1099,7 +1099,7 @@ public class ExampleInstrumentedTest {
     }
 
 
-        public String getFile(int uid, ForeignDataDbSource foreignDataDb)
+        private String getFile(int uid, ForeignDataDbSource foreignDataDb)
         {
             String foto = "";
             Log.d("TEST",""+ uid );

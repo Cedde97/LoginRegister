@@ -275,11 +275,8 @@ public class PeerDbSource implements java.io.Serializable{
         return id;
     }
 
-<<<<<<< HEAD
-    public int getPeer(int index)
-=======
-    public int getPeer(long index)  // TODO: was genau sollte diese Methode liefern?
->>>>>>> 0b5215f35e35a9b91bafa7636d7fa204e56dfd99
+
+    public int getPeer(int index) // TODO: was genau sollte diese Methode liefern?
     {
         database = DatabaseManager.getInstance().openDatabase();
         String selectQuery = "SELECT " + DateiMemoDbHelper.COLUMN_PEERID + " FROM " + DateiMemoDbHelper.TABLE_PEER_LIST + " WHERE "

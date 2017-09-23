@@ -7,13 +7,13 @@ package model;
 public class OwnDataMemo implements java.io.Serializable{
     private static final long serialVersionUID = -9108470830188537841L;
 
-    public long uid;
+    public int uid;
     public int fileId;
 
 
     public OwnDataMemo(){}
 
-    public OwnDataMemo(long uid, int fileId){
+    public OwnDataMemo(int uid, int fileId){
         this.uid = uid;
         this.fileId = fileId;
    }
@@ -38,11 +38,11 @@ public class OwnDataMemo implements java.io.Serializable{
    }
 
 
-    public long getUid() {
+    public int getUid() {
         return uid;
     }
 
-    public void setUid(long uid) {
+    public void setUid(int uid) {
         this.uid = uid;
     }
 

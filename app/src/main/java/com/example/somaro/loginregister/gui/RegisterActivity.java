@@ -25,8 +25,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-<<<<<<< HEAD
-=======
 import bootstrap.InsertOwnIPActivity;
 import connection.Client;
 import exception.XMustBeLargerThanZeroException;
@@ -39,7 +37,6 @@ import source.DateiMemoDbHelper;
 import source.DateiMemoDbSource;
 import task.CheckEmptyOnlineDBTask;
 
->>>>>>> 0b5215f35e35a9b91bafa7636d7fa204e56dfd99
 public class RegisterActivity extends AppCompatActivity {
     private int id;
     private Zone ownZone;
@@ -80,60 +77,58 @@ public class RegisterActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         try {
-                            JSONObject jsonResponse = new JSONObject(response);
+                            JSONObject jsonResponse = null;
+
+                            jsonResponse = new JSONObject(response);
                             boolean success = jsonResponse.getBoolean("success");
-                            if (success){
+
+
+                            if (success) {
 
                                 //start routing/ Abfrage ob das dies der erste Knoten ist der sich anmeldet
                                 // Nach dem erfolgreichen Registrieren öffnet sich die Login Seite
                                 startCheckEmptyOnlineDBTask();
                                 //isEmpty wird von startCheckEmptyOnlineDBTask initialisiert
-                                if(isEmpty){
-                                    Log.d("is empty","hat gefunkt");
+                                if (isEmpty) {
+                                    Log.d("is empty", "hat gefunkt");
                                     // das dieses Gerät das Erste ist, bekommt es die Grenzwerte von CAN als Zone/Corner
-                                    topRight    = new Corner(1.0,1.0);
-                                    topLeft     = new Corner(0.0,1.0);
-                                    bottomRight = new Corner(1.0,0.0);
-                                    bottomLeft  = new Corner(0.0,0.0);
-                                    ownZone     = new Zone(topLeft,topRight,bottomLeft,bottomRight);
+                                    topRight = new Corner(1.0, 1.0);
+                                    topLeft = new Corner(0.0, 1.0);
+                                    bottomRight = new Corner(1.0, 0.0);
+                                    bottomLeft = new Corner(0.0, 0.0);
+                                    ownZone = new Zone(topLeft, topRight, bottomLeft, bottomRight);
                                     //bekommt die IP des eignenen Gerätes
                                     String ip = Client.getOwnIpAddress();
                                     //fügt die eigene IP zu dem Bootstrap-Server hinzu
                                     startInsertOwnIP();
 
-<<<<<<< HEAD
-                                if(chickEmptyDatabase())
-                                {
-                                    Log.d("TEST", "DATENBANK IST LEER");
-                                    //Die IP vom ersten Knoten muss zum Bootstrap Server
-                                    //Zone auf Eckpunkte setzen
-                                    //Knoten serialisieren
-                                }else
-                                {
-=======
-                                    //hiermit holt man die id von dem DB-Server
-                                    Intent intent = getIntent();
-                                    String name = intent.getStringExtra("name");
-                                    id = intent.getIntExtra("id",0);
-                                    Node ownNode = new Node(id,Node.hashX(ip),Node.hashY(ip),ip,0,ownZone);
-                                    ownDb.createDateiMemo(ownNode);
+                                    if (chickEmptyDatabase()) {
+                                        Log.d("TEST", "DATENBANK IST LEER");
+                                        //Die IP vom ersten Knoten muss zum Bootstrap Server
+                                        //Zone auf Eckpunkte setzen
+                                        //Knoten serialisieren
+                                        //hiermit holt man die id von dem DB-Server
+                                        Intent intent = getIntent();
+                                        String name = intent.getStringExtra("name");
+                                        id = intent.getIntExtra("id", 0);
+                                        Node ownNode = new Node(id, Node.hashX(ip), Node.hashY(ip), ip, 0, ownZone);
+                                        ownDb.createDateiMemo(ownNode);
 
+                                    }else{
 
-                                }else {
->>>>>>> 0b5215f35e35a9b91bafa7636d7fa204e56dfd99
-                                    //IP vom Bootstrap Server holen
-                                    //Join-Request an diese IP senden
+                                        //IP vom Bootstrap Server holen
+                                        //Join-Request an diese IP senden
+                                    }
+
+                                    Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                                    RegisterActivity.this.startActivity(intent);
+                                } else {
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+                                    builder.setMessage("Register Failed")
+                                            .setNegativeButton("Retry", null)
+                                            .create()
+                                            .show();
                                 }
-
-                                Intent intent = new Intent(RegisterActivity.this,LoginActivity.class);
-                                RegisterActivity.this.startActivity(intent);
-                            }
-                            else{
-                                AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
-                                builder.setMessage("Register Failed")
-                                        .setNegativeButton("Retry", null)
-                                        .create()
-                                        .show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -152,7 +147,7 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-<<<<<<< HEAD
+
     protected boolean chickEmptyDatabase() {
 
         String jsonString = "";
@@ -178,11 +173,11 @@ public class RegisterActivity extends AppCompatActivity {
         }
         if (jsonString.equals("True")) {
             return true;
-        } else{
+        } else {
             return false;
         }
+    }
 
-=======
     private void startInsertOwnIP() throws JSONException {
         new InsertOwnIPActivity().execute();
     }
@@ -194,7 +189,6 @@ public class RegisterActivity extends AppCompatActivity {
                 isEmpty = result;
             }
         }).execute();
->>>>>>> 0b5215f35e35a9b91bafa7636d7fa204e56dfd99
     }
 }
 
