@@ -29,7 +29,6 @@ import source.DateiMemoDbSource;
 import source.ForeignDataDbSource;
 import source.NeighborDbSource;
 import source.PeerDbSource;
-import task.RoutingTask;
 
 
 /**
@@ -49,6 +48,7 @@ public class ServerThreadActivity extends Activity {
     private static final int FOREIGNDATA_TRANSFER 				 = 6;   
     private static final int PEERMEMO_LIST 						 = 7;
     private static final int NEIGHBOUR_LIST 					 = 8;
+    protected static final int ROUT_HELPER_PIC                   = 9;
 
     private Socket socket = null;
     private Server server = new Server();
@@ -140,9 +140,8 @@ public class ServerThreadActivity extends Activity {
                             Log.d("Routing: ", "");
 
                             RoutHelper rh = server.getRoutHelper(buffer);
-                            Log.d("RoutHelper: ", " " + rh.toString());
-                            startRoutingTask(rh);
 
+                            Log.d("RoutHelper: ", " " + rh.toString());
                             break;
 
                         }
@@ -185,6 +184,17 @@ public class ServerThreadActivity extends Activity {
 
                             Log.d("List:", list.toString());
 
+
+                            Corner topRight = new Corner(0.0, 0.0);
+                            Corner topLeft = new Corner(0.0, 0.0);
+                            Corner bottomRight = new Corner(0.0, 0.0);
+                            Corner bottomLeft = new Corner(1.0, 1.0);
+                            Zone zone = new Zone(topRight, topLeft, bottomRight, bottomLeft);
+
+                            Node node1 = new Node(0, 2.0, 3.0, "IP", 9, zone);
+
+                            // ownDb.createDateiMemo(node1);
+
                             Neighbour n = null, n1 = null, n2 = null, n3 = null;
                             Neighbour[] array = new Neighbour[4];
                             array[0] = n;
@@ -199,9 +209,18 @@ public class ServerThreadActivity extends Activity {
                             Log.d("NeighBOUUUUUUUR", "" + nDB.getAllNeighborMemo().toString());
                             break;
                         }
+                        
+                        case ROUT_HELPER_PIC: {
+                        	
+                        	// tun Sie was sie nicht lassen können
+                        }
                     }
                 }
             } catch (Exception e) {
+                e.printStackTrace();
+            } catch (YMustBeLargerThanZeroException e) {
+                e.printStackTrace();
+            } catch (XMustBeLargerThanZeroException e) {
                 e.printStackTrace();
             } finally {
                 try {
@@ -221,7 +240,7 @@ public class ServerThreadActivity extends Activity {
 
 
     /**
-     * Diese Methode speichert die übergebenen PeerMemos in der Datenbank
+     * Diese Methode speichert die Ã¼bergebenen PeerMemos in der Datenbank
      * @param p Erster Peer
      * @param p1 Zweiter Peer
      * @param p2 Dritter Peer
@@ -246,7 +265,7 @@ public class ServerThreadActivity extends Activity {
 
 
     /**
-     * Diese Methode speichert die übergebenen Neighbours in der Datenbank
+     * Diese Methode speichert die Ã¼bergebenen Neighbours in der Datenbank
      * @param n Erster Neighbour
      * @param n1 Zweiter Neighbour
      * @param n2 Dritter Neighbour
@@ -266,10 +285,6 @@ public class ServerThreadActivity extends Activity {
                 return null;
             }
         }.execute(n,n1,n2,n3);
-    }
-
-    private void startRoutingTask(RoutHelper rh){
-        new RoutingTask().execute(rh);
     }
 
     @Override
