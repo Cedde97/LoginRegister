@@ -45,7 +45,13 @@ public class FirstJoinTask extends AsyncTask<RoutHelper, Void, Void> {
         Zone ownZone       = new Zone(topLeft,topRight,bottomLeft,bottomRight);
         Node ownNode = new Node(rh.getID(),Node.hashX(rh.getIP()),Node.hashY(rh.getIP()),rh.getIP(),0,ownZone);
         ownDb.createDateiMemo(ownNode);
+
         return null;
+    }
+
+    @Override
+    protected void onPostExecute(Void aVoid) {
+        Log.d("Eigene DB: ", ownDb.getAllDateiMemos().toString());
     }
 
     private void determineRoutingDestination() throws JSONException {

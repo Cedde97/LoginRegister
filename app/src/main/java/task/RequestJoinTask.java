@@ -34,7 +34,7 @@ public class RequestJoinTask extends AsyncTask<RoutHelper, Void, Void> {
     @Override
     protected Void doInBackground(RoutHelper... params) {
         RoutHelper rh =  params[0];
-        Log.d("in RequestJoinTask","AAAAAAAAA");
+        Log.d("in RequestJoinTask","");
         for(int i = 0; i< bootIps.length; i++){
             try {
                 socket = new Socket(bootIps[i], PORTNR);
