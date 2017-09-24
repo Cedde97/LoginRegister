@@ -1,6 +1,5 @@
 package com.example.somaro.loginregister.gui;
 
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -29,12 +28,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
-
+import connection.ServerThread;
 import source.DatabaseManager;
 import source.DateiMemoDbHelper;
 import source.NeighborDbSource;
 import task.FileTransferTask;
-import task.FirstJoinTask;
 import task.RequestJoinTask;
 import task.SendNeighBourListTask;
 import activity.SendRoutActivity;
@@ -43,12 +41,14 @@ import bootstrap.InsertOwnIPActivity;
 import connection.Client;
 import connection.RoutHelper;
 import connection.ServerThreadActivity;
+import exception.XMustBeLargerThanZeroException;
+import exception.YMustBeLargerThanZeroException;
 import model.*;
-
 
 public class UserAreaActivity extends Activity {
     private static final int IMAGE_GALLERY_REQUEST = 20;
     private static final int PORT = 9797;
+    private ServerSocket serverSocket;
 
     private ImageView imageView;
 
@@ -62,21 +62,20 @@ public class UserAreaActivity extends Activity {
     private int id ;
     private NeighborDbSource nDb = new NeighborDbSource();
     private String data = null;
-    private ServerSocket serverSocket;
 
 
-    private Button routRequest, fileTransferRequest, neighbourTransfer, startServer, firstRouting;
 
+    private Button routRequest, fileTransferRequest, neighbourTransfer, firstRouting;
+    
 
     public String getPhotoId( ){
 
         String data = "";
 
         data = "" + getId() + getBildAnzahl() ;
-        return data;
+    return data;
 
     }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,16 +108,13 @@ public class UserAreaActivity extends Activity {
         neighbourTransfer = (Button) findViewById(R.id.neighbourTransferButton);
         neighbourTransfer.setOnClickListener(NeighbourTransferListener);
 
-        startServer = (Button) findViewById(R.id.startServerButton);
-        startServer.setOnClickListener(StartServerListener);
-
         imageView = (ImageView) findViewById(R.id.imageView);
         final TextView welcomeMsg = (TextView) findViewById(R.id.tvWelcomeMsg);
 
         Intent intent = getIntent();
         String name = intent.getStringExtra("name");
         id = intent.getIntExtra("id",0);
-        // String phototID = photoId(id);
+       // String phototID = photoId(id);
         String message = id + " " + getPhotoId() + name + " welcome to your user area";
 
         welcomeMsg.setText(message);
@@ -132,8 +128,8 @@ public class UserAreaActivity extends Activity {
         DatabaseManager.initializeInstance(dbHelper);
         //===============================================
 
-        //Thread serverThread = new Thread(new ServerThread());
-        //serverThread.start();
+        Thread serverThread = new Thread(new ServerThread());
+        serverThread.start();
     }
 
     /**
@@ -152,8 +148,7 @@ public class UserAreaActivity extends Activity {
             String name = intent.getStringExtra("name");
             id = intent.getIntExtra("id",0);
             RoutHelper rh = new RoutHelper(ownIP,x,y,id);
-            startFirstJoin(rh);
-
+            startRequestJoin(rh);
         }
     };
 
@@ -235,16 +230,6 @@ public class UserAreaActivity extends Activity {
             } catch (IOException e) {
                 Log.d("NeighbourTransfer: ", e.toString());
             }
-        }
-    };
-
-    private View.OnClickListener StartServerListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-
-            Intent i = new Intent(getApplicationContext(), ServerThreadActivity.class);
-            Log.d("Started Server", i.toString());
-            startActivity(i);
         }
     };
 
@@ -388,6 +373,13 @@ public class UserAreaActivity extends Activity {
         return uriString;
     }
 
+    private void insertOwnIP() throws JSONException {
+        new InsertOwnIPActivity().execute();
+    }
+
+    private void startRequestJoin(RoutHelper rh){
+        new RequestJoinTask().execute(rh);
+    }
 
     /**
      * Ã–ffnen der Foto Gallery
@@ -406,21 +398,6 @@ public class UserAreaActivity extends Activity {
 
         startActivityForResult(photoPickerIntent,IMAGE_GALLERY_REQUEST );
     }
-
-
-
-    private void insertOwnIP() throws JSONException {
-        new InsertOwnIPActivity().execute();
-    }
-
-    private void startRequestJoin(RoutHelper rh){
-        new RequestJoinTask().execute(rh);
-    }
-
-    private void startFirstJoin(RoutHelper rh){
-        new FirstJoinTask().execute(rh).execute();
-    }
-
 
     @Override
     protected void onDestroy() {
