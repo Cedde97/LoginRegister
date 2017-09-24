@@ -43,10 +43,6 @@ public class SplittActivity extends Activity {
 
         }catch(Exception e){
             e.printStackTrace();
-        } catch (YMustBeLargerThanZeroException e) {
-            e.printStackTrace();
-        } catch (XMustBeLargerThanZeroException e) {
-            e.printStackTrace();
         }
     }
 
