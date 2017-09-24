@@ -54,10 +54,9 @@ public class Serialization {
 		byte[] buffer = null;
 
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		ObjectOutput out = null;
 
 		try{
-			out = new ObjectOutputStream(bos);
+			ObjectOutput out = new ObjectOutputStream(bos);
 			out.writeObject(object);
 			out.flush();
 			buffer = bos.toByteArray();
@@ -82,10 +81,9 @@ public class Serialization {
 
 		Node node = null;
 		ByteArrayInputStream bis = new ByteArrayInputStream(buffer);
-		ObjectInput in = null;
 
 		try{
-			in = new ObjectInputStream(bis);
+			ObjectInputStream in = new ObjectInputStream(bis);
 
 			node = (Node) in.readObject();
 
@@ -110,10 +108,10 @@ public class Serialization {
 
 		RoutHelper routHelper = null;
 		ByteArrayInputStream bis = new ByteArrayInputStream(buffer);
-		ObjectInput in = null;
 
 		try{
-			in = new ObjectInputStream(bis);
+
+			ObjectInputStream in = new ObjectInputStream(bis);
 
 			routHelper = (RoutHelper) in.readObject();
 
@@ -138,10 +136,9 @@ public class Serialization {
 
 		Neighbour neighbour = null;
 		ByteArrayInputStream bis = new ByteArrayInputStream(buffer);
-		ObjectInput in = null;
 
 		try{
-			in = new ObjectInputStream(bis);
+			ObjectInputStream in = new ObjectInputStream(bis);
 
 			neighbour = (Neighbour) in.readObject();
 
@@ -166,10 +163,9 @@ public class Serialization {
 
 		PeerMemo peerMemo = null;
 		ByteArrayInputStream bis = new ByteArrayInputStream(buffer);
-		ObjectInput in = null;
 
 		try{
-			in = new ObjectInputStream(bis);
+			ObjectInputStream in = new ObjectInputStream(bis);
 
 			peerMemo = (PeerMemo) in.readObject();
 
@@ -194,10 +190,9 @@ public class Serialization {
 
 		ForeignData foreignData= null;
 		ByteArrayInputStream bis = new ByteArrayInputStream(buffer);
-		ObjectInput in = null;
 
 		try{
-			in = new ObjectInputStream(bis);
+			ObjectInputStream in = new ObjectInputStream(bis);
 
 			foreignData = (ForeignData) in.readObject();
 
@@ -223,10 +218,9 @@ public class Serialization {
 		ArrayList<Neighbour> list = new ArrayList<Neighbour>();
 
 		ByteArrayInputStream bis = new ByteArrayInputStream(buffer);
-		ObjectInput in = null;
 
 		try{
-			in = new ObjectInputStream(bis);
+			ObjectInputStream in = new ObjectInputStream(bis);
 
 			list = (ArrayList<Neighbour>) in.readObject();
 
@@ -252,10 +246,9 @@ public class Serialization {
 		ArrayList<PeerMemo> list = new ArrayList<PeerMemo>();
 
 		ByteArrayInputStream bis = new ByteArrayInputStream(buffer);
-		ObjectInput in = null;
 
 		try{
-			in = new ObjectInputStream(bis);
+			ObjectInputStream in = new ObjectInputStream(bis);
 
 			list = (ArrayList<PeerMemo>) in.readObject();
 
