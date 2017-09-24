@@ -48,6 +48,7 @@ public class ServerThreadActivity extends Activity {
     private static final int FOREIGNDATA_TRANSFER 				 = 6;   
     private static final int PEERMEMO_LIST 						 = 7;
     private static final int NEIGHBOUR_LIST 					 = 8;
+    protected static final int ROUT_HELPER_PIC                   = 9;
 
     private Socket socket = null;
     private Server server = new Server();
@@ -208,6 +209,11 @@ public class ServerThreadActivity extends Activity {
                             Log.d("NeighBOUUUUUUUR", "" + nDB.getAllNeighborMemo().toString());
                             break;
                         }
+                        
+                        case ROUT_HELPER_PIC: {
+                        	
+                        	// tun Sie was sie nicht lassen können
+                        }
                     }
                 }
             } catch (Exception e) {
@@ -234,7 +240,7 @@ public class ServerThreadActivity extends Activity {
 
 
     /**
-     * Diese Methode speichert die übergebenen PeerMemos in der Datenbank
+     * Diese Methode speichert die Ã¼bergebenen PeerMemos in der Datenbank
      * @param p Erster Peer
      * @param p1 Zweiter Peer
      * @param p2 Dritter Peer
@@ -259,7 +265,7 @@ public class ServerThreadActivity extends Activity {
 
 
     /**
-     * Diese Methode speichert die übergebenen Neighbours in der Datenbank
+     * Diese Methode speichert die Ã¼bergebenen Neighbours in der Datenbank
      * @param n Erster Neighbour
      * @param n1 Zweiter Neighbour
      * @param n2 Dritter Neighbour
