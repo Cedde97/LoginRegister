@@ -163,6 +163,25 @@ public class Client implements java.io.Serializable {
 		sendByteArray(socket, buffer);
 	}
 
+
+
+	/**
+	 * Methode, um ein RoutHelper-Objekt als ByteArray zu senden
+	 *
+	 * @param socket  					= das Socket, auf dem uebertragen wird
+	 * @param routhelper				= der RoutHelper, der uebertragen wird
+	 * @throws UnknownHostException     = Unknown Host
+	 * @throws IOException				= Fehler beim Input/Output
+	 */
+
+	public void sendRoutHelperPicAsByteArray(Socket socket, RoutHelper routhelper) throws UnknownHostException, IOException{
+
+		this.socket = socket;
+
+		byte[] buffer = serialization.fillRoutHelperPicByteArray(routhelper);
+		sendByteArray(socket, buffer);
+	}
+
 	
 
 	/**
