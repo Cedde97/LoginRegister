@@ -1,0 +1,243 @@
+package connection;
+
+import android.content.Context;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.util.Log;
+import java.io.File;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.ArrayList;
+import exception.*;
+import model.*;
+import source.*;
+
+public class ServerThread extends Thread {
+
+    static final int PORTNR = 9797;
+    private Server server = new Server();
+    private Serialization serialization = new Serialization();
+    private ServerSocket serverSocket = null;
+
+    private static final int IMAGE_TRANSFER						 = 1;
+    private static final int NODE_TRANSFER 						 = 2;
+    private static final int ROUTING 							 = 3;
+    private static final int NEIGHBOUR_TRANSFER					 = 4;
+    private static final int PEERMEMO_TRANSFER					 = 5;
+    private static final int FOREIGNDATA_TRANSFER 				 = 6;
+    private static final int PEERMEMO_LIST 						 = 7;
+    private static final int NEIGHBOUR_LIST 					 = 8;
+    protected static final int ROUT_HELPER_PIC                   = 9;
+
+    private NeighborDbSource nDB = new NeighborDbSource();
+    private PeerDbSource pDB = new PeerDbSource();
+    private ForeignDataDbSource fDB = new ForeignDataDbSource();
+    private DateiMemoDbSource ownDb = new DateiMemoDbSource();
+
+
+    @Override
+    public void run() {
+
+
+
+        try {
+
+            while (true) {
+
+                Log.d("Server is started", "In ServerThread");
+                serverSocket = new ServerSocket(PORTNR);
+                Log.d("Waiting for request", "ServerThreadActivity");
+
+                Socket socket = serverSocket.accept();
+                Log.d("Client connected", "ServerThreadActivity");
+
+                byte[] buffer = server.receiveByteArray(serverSocket, socket);
+
+                Log.d("BufferBytes: " + buffer.length, "");
+
+                Log.d("Received ByteArray", "");
+
+                int methodName = serialization.getByteHeader(buffer);
+
+                Log.d("Header: ", "" + methodName);
+                switch (methodName) {
+
+                    case IMAGE_TRANSFER: {
+                        Log.d("File Transfer Request", "");
+
+                        String pathDestination = "C://Users/Cedric/Pictures/test/placeholderNew1.jpg";
+
+                        File newFile = new File(pathDestination);
+
+                        byte[] bufferBody = serialization.getByteData(buffer);
+
+                        server.saveFileFromByteArray(bufferBody, newFile);
+
+                        Log.d("Converted ByteArray", "");
+
+                        Log.d("Saved File to: ", "pathDestination");
+
+                        break;
+                    }
+
+                    case NODE_TRANSFER: {
+                        Log.d("Node Transfer Request", "");
+
+                        Node node = server.getNode(buffer);
+
+                        Log.d(node.toString(), "");
+
+                        break;
+                    }
+
+                    case ROUTING: {
+
+                        Log.d("Routing: ", "");
+
+                        RoutHelper rh = server.getRoutHelper(buffer);
+
+                        Log.d("RoutHelper: ", " " + rh.toString());
+                        break;
+
+                    }
+
+                    case FOREIGNDATA_TRANSFER: {
+
+                        Log.d("ForeignTransfer", "");
+                        ForeignData fd = server.getForeignData(buffer);
+                        fDB.createForeignData(fd);
+                        Log.d("ForeignTransfer", "after Create");
+                        break;
+
+                    }
+
+                    case PEERMEMO_LIST: {
+                        Log.d("List: ", "");
+
+                        ArrayList<PeerMemo> list = server.getListPeer(buffer);
+                        PeerMemo p = null, p1 = null, p2 = null;
+                        int i;
+                        Log.d("PeerList filled", " " + list.toString());
+                        PeerMemo[] array = new PeerMemo[2];
+                        array[0] = p;
+                        array[1] = p1;
+                        array[2] = p2;
+                        for (i = 0; i <= list.size(); i++) {
+                            array[i] = list.get(i);
+                        }
+
+                        startUpdatePeers(p, p1, p2);
+                        Log.d("List: ", list.toString());
+                        Log.d("PEEEEEEEEEEEERS", pDB.getAllPeer().toString());
+                        break;
+                    }
+
+                    case NEIGHBOUR_LIST: {
+                        Log.d("NeighbourList:", "");
+                        int i = 0;
+                        ArrayList<Neighbour> list = server.getListNeighbour(buffer);
+
+                        Log.d("List:", list.toString());
+
+
+                        Corner topRight = new Corner(0.0, 0.0);
+                        Corner topLeft = new Corner(0.0, 0.0);
+                        Corner bottomRight = new Corner(0.0, 0.0);
+                        Corner bottomLeft = new Corner(1.0, 1.0);
+                        Zone zone = new Zone(topRight, topLeft, bottomRight, bottomLeft);
+
+                        Node node1 = new Node(0, 2.0, 3.0, "IP", 9, zone);
+
+                        // ownDb.createDateiMemo(node1);
+
+                        Neighbour n = null, n1 = null, n2 = null, n3 = null;
+                        Neighbour[] array = new Neighbour[4];
+                        array[0] = n;
+                        array[1] = n1;
+                        array[2] = n2;
+                        array[3] = n3;
+                        for (i = 0; i <= list.size() - 1; i++) {
+                            array[i] = list.get(i);
+                            array[i].setUid(ownDb.getUid());
+                        }
+                        startUpdateNeighbours(array[0], array[1], array[2], array[3]);
+                        Log.d("NeighBOUUUUUUUR", "" + nDB.getAllNeighborMemo().toString());
+                        break;
+                    }
+
+                    case ROUT_HELPER_PIC: {
+
+                        // tun Sie was sie nicht lassen können
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } catch (YMustBeLargerThanZeroException e) {
+            e.printStackTrace();
+        } catch (XMustBeLargerThanZeroException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (serverSocket != null)
+                    serverSocket.close();
+                Log.d("ServerSocket closed", "");
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+
+    /**
+     * Diese Methode speichert die Ã¼bergebenen PeerMemos in der Datenbank
+     * @param p Erster Peer
+     * @param p1 Zweiter Peer
+     * @param p2 Dritter Peer
+     * @author Joshua Zabel
+     */
+    private void startUpdatePeers(PeerMemo p, PeerMemo p1, PeerMemo p2){
+        new AsyncTask<PeerMemo,Void,Void>(){
+
+            @Override
+            protected Void doInBackground(PeerMemo... params) {
+                int i;
+                for(i=0; i<params.length; i++){
+                    if(params[i] != null){
+                        pDB.createPeerMemo(params[i]);
+                    }
+                }
+                return null;
+            }
+            // vieleicht noch Pram zu execute
+        }.execute(p,p1,p2);
+    }
+
+
+    /**
+     * Diese Methode speichert die Ã¼bergebenen Neighbours in der Datenbank
+     * @param n Erster Neighbour
+     * @param n1 Zweiter Neighbour
+     * @param n2 Dritter Neighbour
+     * @param n3 Vierter Neighbour
+     * @author Joshua Zabel
+     */
+    private void startUpdateNeighbours(Neighbour n, Neighbour n1, Neighbour n2, Neighbour n3) {
+        new AsyncTask<Neighbour, Void, Void>() {
+            @Override
+            protected Void doInBackground(Neighbour... params) {
+                int i;
+                for(i=0; i<params.length; i++){
+                    if(params[i] != null){
+                        nDB.createNeighborMemo(params[i]);
+                    }
+                }
+                return null;
+            }
+        }.execute(n,n1,n2,n3);
+    }
+}
