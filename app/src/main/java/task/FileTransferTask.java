@@ -1,4 +1,4 @@
-package activity;
+package task;
 
 import android.os.AsyncTask;
 
@@ -10,15 +10,14 @@ import java.net.UnknownHostException;
 import connection.Client;
 
 /**
- * Created by Joshi on 10.09.2017.
+ * Created by Joshua Zabel on 10.09.2017.
  */
-
-public   class FileTransferActivity extends AsyncTask<String, String, String> {
+public   class FileTransferTask extends AsyncTask<String, String, String> {
     private Client client;
     private Socket socket = null;
     private File file = null;
 
-    public FileTransferActivity(Socket socket, File file) {
+    public FileTransferTask(Socket socket, File file) {
         this.socket = socket;
         this.file = file;
     }

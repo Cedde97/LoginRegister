@@ -1,4 +1,4 @@
-package activity;
+package task;
 
 import android.os.AsyncTask;
 import android.util.Log;
@@ -11,9 +11,8 @@ import connection.Client;
 import model.Neighbour;
 
 /**
- * Created by Joshi on 15.09.2017.
+ * Created by Joshua Zabel on 15.09.2017.
  */
-
 public class SendNeighBourListTask extends AsyncTask<Void,Void,Void> {
     private Client client = new Client();
     private Socket socket;

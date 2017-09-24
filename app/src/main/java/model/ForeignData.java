@@ -15,13 +15,13 @@ import source.ForeignDataDbSource;
 public class ForeignData implements java.io.Serializable{
     //DateiMemo dateiMemo;
     private static final long serialVersionUID = -3180520592609573364L;
-    private long uid;
+    private int uid;
     private int fotoId;
     private double punktX;
     private double punktY;
     private String foreignIp;
 
-    public ForeignData(double punktX, double punktY, int fotoId, long uid){
+    public ForeignData(double punktX, double punktY, int fotoId, int uid){
         this.uid = uid;
         this.fotoId = fotoId;
         this.punktX = punktX;
@@ -38,7 +38,7 @@ public class ForeignData implements java.io.Serializable{
         return uid;
     }
 
-    public void setUid(long uid) {
+    public void setUid(int uid) {
         this.uid = uid;
     }
 

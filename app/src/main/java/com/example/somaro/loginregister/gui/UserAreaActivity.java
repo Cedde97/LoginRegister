@@ -27,8 +27,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
-import activity.FileTransferActivity;
-import activity.SendNeighBourListTask;
+import source.NeighborDbSource;
+import task.FileTransferTask;
+import task.RequestJoinTask;
+import task.SendNeighBourListTask;
 import activity.SendRoutActivity;
 import bootstrap.AllIPsActivity;
 import bootstrap.InsertOwnIPActivity;
@@ -54,11 +56,11 @@ public class UserAreaActivity extends Activity {
     private String singleParsed = "";
     private String dataParsed = "";
     private int id ;
-
+    private NeighborDbSource nDb = new NeighborDbSource();
     private String data = null;
 
 
-    private Button routRequest, fileTransferRequest, neighbourTransfer, startServer;
+    private Button routRequest, fileTransferRequest, neighbourTransfer, startServer, firstRouting;
     
 
     public String getPhotoId( ){
@@ -89,6 +91,8 @@ public class UserAreaActivity extends Activity {
         }
 
 
+        firstRouting = (Button) findViewById(R.id.firstRouting);
+        firstRouting.setOnClickListener(FirstRouteClickListener);
 
         routRequest = (Button) findViewById(R.id.routingRequest);
         routRequest.setOnClickListener(RoutClickListener);
@@ -115,15 +119,35 @@ public class UserAreaActivity extends Activity {
 
     }
 
+    /**
+     * @author Joshua Zabel
+     *
+     */
+    private View.OnClickListener FirstRouteClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v){
+            client = new Client();
+            //Eigene IP holen, benötigen wir für RouteHelper
+            String ownIP = Client.getOwnIpAddress();
+            double x = Node.hashX(ownIP);
+            double y = Node.hashY(ownIP);
+            Intent intent = getIntent();
+            String name = intent.getStringExtra("name");
+            id = intent.getIntExtra("id",0);
+            RoutHelper rh = new RoutHelper(ownIP,x,y,id);
+            startRequestJoin(rh);
 
+        }
+    };
 
     /**
-     * Button Test für Routing
+     * @author Joshua Zabel
+     * Button der das Routen eines Knoten Simuliert.
      */
-            private View.OnClickListener RoutClickListener = new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    client = new Client();
+    private View.OnClickListener RoutClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            client = new Client();
 
             try {
                 //ip von Bootstrap-Server holen
@@ -154,10 +178,11 @@ public class UserAreaActivity extends Activity {
         }
     };
 
-    private void insertOwnIP() throws JSONException {
-        new InsertOwnIPActivity().execute();
-    }
 
+    /**
+     * @author Joshua Zabel
+     * Methode zum Simulieren des Sendens einer NeigbourList
+     */
     private View.OnClickListener NeighbourTransferListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -166,8 +191,8 @@ public class UserAreaActivity extends Activity {
 
             try {
                 Socket socket = new Socket("192.168.2.102", PORT);
-                ArrayList<Neighbour> arrayList= new ArrayList<>();
-                Neighbour n = new Neighbour();
+                ArrayList<Neighbour> arrayList= (ArrayList)nDb.getAllNeighborMemo();
+                /*Neighbour n = new Neighbour();
                 Neighbour n1 = new Neighbour();
                 Corner topRight = new Corner(0.0,0.0);
                 Corner topLeft = new Corner(0.0,0.0);
@@ -181,9 +206,9 @@ public class UserAreaActivity extends Activity {
                 n.setPunktX(0.2);
                 n.setPunktY(0.4);
                 n.setUIP("277.0.0.0/8");
-                n.setRTT(25.89);
-                arrayList.add(n);
-                Log.d("before sending", ""+n.toString());
+                n.setRTT(25.89);*/
+
+                Log.d("before sending", ""+arrayList.toString());
                 SendNeighBourListTask snl =new SendNeighBourListTask(socket,arrayList);
                 snl.execute();
                 //Neighbour neighbour = new Neighbour(01l, 0.0, 0.1, "192.33.2.12", 12.3);
@@ -192,10 +217,6 @@ public class UserAreaActivity extends Activity {
                 // nft.execute();
             } catch (IOException e) {
                 Log.d("NeighbourTransfer: ", e.toString());
-            } catch (YMustBeLargerThanZeroException e) {
-                e.printStackTrace();
-            } catch (XMustBeLargerThanZeroException e) {
-                e.printStackTrace();
             }
         }
     };
@@ -224,7 +245,7 @@ public class UserAreaActivity extends Activity {
             try {
                 File file = new File(path);
                 Socket socket = new Socket("192.168.2.115", PORT);
-                FileTransferActivity ftt = new FileTransferActivity(socket, file);
+                FileTransferTask ftt = new FileTransferTask(socket, file);
                 ftt.execute();
             } catch (IOException e) {
                 Log.d("FileTransfer: ", e.toString());
@@ -348,6 +369,14 @@ public class UserAreaActivity extends Activity {
         String uriString = (dir.getAbsolutePath() +"/" + "#"
                 + getPhotoId() + "#" + ".jpg");
         return uriString;
+    }
+
+    private void insertOwnIP() throws JSONException {
+        new InsertOwnIPActivity().execute();
+    }
+
+    private void startRequestJoin(RoutHelper rh){
+        new RequestJoinTask().execute(rh);
     }
 
     /**

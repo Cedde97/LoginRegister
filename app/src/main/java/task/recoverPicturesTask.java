@@ -24,9 +24,8 @@ import source.NeighborDbSource;
 import util.DBUtil;
 
 /**
- * Created by Joshi on 19.09.2017.
+ * Created by Joshua Zabel on 19.09.2017.
  */
-
 public class recoverPicturesTask extends AsyncTask<String,Void,Void>{
     private final static int PORTNR = 9797;
 

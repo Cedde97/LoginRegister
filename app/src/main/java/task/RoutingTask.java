@@ -24,9 +24,9 @@ import source.PeerDbSource;
 import util.DBUtil;
 
 /**
- * Created by Joshi on 07.09.2017.
+ * Created by Joshua Zabel on 07.09.2017.
  */
-public class RoutingTask extends AsyncTask<String, Void, Void> {
+public class RoutingTask extends AsyncTask<RoutHelper, Void, Void> {
     private final static int PORTNR = 9797;
 
     private static Context appContext;
@@ -45,13 +45,10 @@ public class RoutingTask extends AsyncTask<String, Void, Void> {
 
     //wie mache ich das mit routing und receiveRoutingRequest also wie rufe ich sie jeweils auf? da sie sich gegenseitig aufrufen
     @Override
-    protected Void doInBackground(String... params) {
-        String ip = params[0];
-        double x = Double.parseDouble(params[1]);
-        double y = Double.parseDouble(params[2]);
-        int id = Integer.parseInt(params[3]);
+    protected Void doInBackground(RoutHelper... params) {
+        RoutHelper rh = params[0];
 
-        RoutHelper rh = new RoutHelper(ip, x, y, id);
+
         //if not in Zone, routingCheckZone kümmert sich darum das neuerKnoten Corner,Peers und Neighbour bekommt
         // Im If-Blcok wird weiter gerouted
         if (!routingCheckZone(rh)) {

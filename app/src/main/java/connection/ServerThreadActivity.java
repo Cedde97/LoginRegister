@@ -29,6 +29,7 @@ import source.DateiMemoDbSource;
 import source.ForeignDataDbSource;
 import source.NeighborDbSource;
 import source.PeerDbSource;
+import task.RoutingTask;
 
 
 /**
@@ -139,8 +140,9 @@ public class ServerThreadActivity extends Activity {
                             Log.d("Routing: ", "");
 
                             RoutHelper rh = server.getRoutHelper(buffer);
-
                             Log.d("RoutHelper: ", " " + rh.toString());
+                            startRoutingTask(rh);
+
                             break;
 
                         }
@@ -183,17 +185,6 @@ public class ServerThreadActivity extends Activity {
 
                             Log.d("List:", list.toString());
 
-
-                            Corner topRight = new Corner(0.0, 0.0);
-                            Corner topLeft = new Corner(0.0, 0.0);
-                            Corner bottomRight = new Corner(0.0, 0.0);
-                            Corner bottomLeft = new Corner(1.0, 1.0);
-                            Zone zone = new Zone(topRight, topLeft, bottomRight, bottomLeft);
-
-                            Node node1 = new Node(0, 2.0, 3.0, "IP", 9, zone);
-
-                            // ownDb.createDateiMemo(node1);
-
                             Neighbour n = null, n1 = null, n2 = null, n3 = null;
                             Neighbour[] array = new Neighbour[4];
                             array[0] = n;
@@ -211,10 +202,6 @@ public class ServerThreadActivity extends Activity {
                     }
                 }
             } catch (Exception e) {
-                e.printStackTrace();
-            } catch (YMustBeLargerThanZeroException e) {
-                e.printStackTrace();
-            } catch (XMustBeLargerThanZeroException e) {
                 e.printStackTrace();
             } finally {
                 try {
@@ -279,6 +266,10 @@ public class ServerThreadActivity extends Activity {
                 return null;
             }
         }.execute(n,n1,n2,n3);
+    }
+
+    private void startRoutingTask(RoutHelper rh){
+        new RoutingTask().execute(rh);
     }
 
     @Override

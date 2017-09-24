@@ -20,9 +20,8 @@ import source.NeighborDbSource;
 import util.DBUtil;
 
 /**
- * Created by Joshi on 17.09.2017.
+ * Created by Joshua Zabel on 17.09.2017.
  */
-
 public class PicRoutingTask extends AsyncTask<String, Void, Void>{
     private static Context appContext;
     private static DateiMemoDbHelper dbHelper;

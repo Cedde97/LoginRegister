@@ -2,7 +2,6 @@ package task;
 import android.os.AsyncTask;
 import android.util.Log;
 
-
 import org.json.JSONException;
 
 import java.io.IOException;
@@ -13,9 +12,9 @@ import connection.Client;
 import connection.RoutHelper;
 
 /**
- * Created by Joshi on 07.09.2017.
+ * Created by Joshua Zabel on 07.09.2017.
  */
-public class RequestJoinTask extends AsyncTask<String, Void, Void> {
+public class RequestJoinTask extends AsyncTask<RoutHelper, Void, Void> {
     private final static int PORTNR = 9797;
 
 
@@ -33,12 +32,8 @@ public class RequestJoinTask extends AsyncTask<String, Void, Void> {
     }
 
     @Override
-    protected Void doInBackground(String... params) {
-        String ip = params[0];
-        double x = Double.parseDouble(params[1]);
-        double y = Double.parseDouble(params[2]);
-        int id = Integer.parseInt(params[3]);
-        RoutHelper rh = new RoutHelper(ip, x, y, id);
+    protected Void doInBackground(RoutHelper... params) {
+        RoutHelper rh =  params[0];
         Log.d("in RequestJoinTask","AAAAAAAAA");
         for(int i = 0; i< bootIps.length; i++){
             try {
@@ -61,19 +56,6 @@ public class RequestJoinTask extends AsyncTask<String, Void, Void> {
                 bootIps = result;
             }
         }).execute();
-    }
-
-    private int compareValues(double[] distances) {
-        int index = 0;
-        double temp = distances[0];
-        for (int i = 1; i < distances.length; i++) {
-            if (temp > distances[i]) {
-
-                temp = distances[i];
-                index = i;
-            }
-        }
-        return index;
     }
 
 
