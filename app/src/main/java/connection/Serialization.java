@@ -54,10 +54,9 @@ public class Serialization {
 		byte[] buffer = null;
 
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		ObjectOutput out = null;
 
 		try{
-			out = new ObjectOutputStream(bos);
+			ObjectOutput out = new ObjectOutputStream(bos);
 			out.writeObject(object);
 			out.flush();
 			buffer = bos.toByteArray();
@@ -82,10 +81,9 @@ public class Serialization {
 
 		Node node = null;
 		ByteArrayInputStream bis = new ByteArrayInputStream(buffer);
-		ObjectInput in = null;
 
 		try{
-			in = new ObjectInputStream(bis);
+			ObjectInputStream in = new ObjectInputStream(bis);
 
 			node = (Node) in.readObject();
 
@@ -110,10 +108,10 @@ public class Serialization {
 
 		RoutHelper routHelper = null;
 		ByteArrayInputStream bis = new ByteArrayInputStream(buffer);
-		ObjectInput in = null;
 
 		try{
-			in = new ObjectInputStream(bis);
+
+			ObjectInputStream in = new ObjectInputStream(bis);
 
 			routHelper = (RoutHelper) in.readObject();
 
@@ -138,10 +136,9 @@ public class Serialization {
 
 		Neighbour neighbour = null;
 		ByteArrayInputStream bis = new ByteArrayInputStream(buffer);
-		ObjectInput in = null;
 
 		try{
-			in = new ObjectInputStream(bis);
+			ObjectInputStream in = new ObjectInputStream(bis);
 
 			neighbour = (Neighbour) in.readObject();
 
@@ -166,10 +163,9 @@ public class Serialization {
 
 		PeerMemo peerMemo = null;
 		ByteArrayInputStream bis = new ByteArrayInputStream(buffer);
-		ObjectInput in = null;
 
 		try{
-			in = new ObjectInputStream(bis);
+			ObjectInputStream in = new ObjectInputStream(bis);
 
 			peerMemo = (PeerMemo) in.readObject();
 
@@ -194,10 +190,9 @@ public class Serialization {
 
 		ForeignData foreignData= null;
 		ByteArrayInputStream bis = new ByteArrayInputStream(buffer);
-		ObjectInput in = null;
 
 		try{
-			in = new ObjectInputStream(bis);
+			ObjectInputStream in = new ObjectInputStream(bis);
 
 			foreignData = (ForeignData) in.readObject();
 
@@ -223,10 +218,9 @@ public class Serialization {
 		ArrayList<Neighbour> list = new ArrayList<Neighbour>();
 
 		ByteArrayInputStream bis = new ByteArrayInputStream(buffer);
-		ObjectInput in = null;
 
 		try{
-			in = new ObjectInputStream(bis);
+			ObjectInputStream in = new ObjectInputStream(bis);
 
 			list = (ArrayList<Neighbour>) in.readObject();
 
@@ -252,10 +246,9 @@ public class Serialization {
 		ArrayList<PeerMemo> list = new ArrayList<PeerMemo>();
 
 		ByteArrayInputStream bis = new ByteArrayInputStream(buffer);
-		ObjectInput in = null;
 
 		try{
-			in = new ObjectInputStream(bis);
+			ObjectInputStream in = new ObjectInputStream(bis);
 
 			list = (ArrayList<PeerMemo>) in.readObject();
 
@@ -378,15 +371,15 @@ public class Serialization {
 	protected byte[] fillImageByteArray(File file){
 
 		byte methodName = (byte) STR_SEND_IMG;
-		byte[] bufferHeader= new byte[1];
-		bufferHeader[0] = methodName;
+
 
 		byte[] bufferBody = imageSerializer(file);
 
 		byte[] bufferTarget = new byte[RESERVED_BYTES_FOR_METHOD_CALL + bufferBody.length];
 
-		System.arraycopy(bufferHeader, 0, bufferTarget, 0, 1);
-		System.arraycopy(bufferBody, 0, bufferTarget, 1, bufferBody.length -1);
+		bufferTarget[0] = methodName;
+
+		System.arraycopy(bufferBody, 0, bufferTarget, 1, bufferBody.length);
 
 		return bufferTarget;
 	}
@@ -405,17 +398,16 @@ public class Serialization {
 	protected byte[] fillNodeByteArray(Node node){
 
 		byte methodName = (byte) STR_SEND_NODE;
-		byte[] bufferHeader= new byte[1];
-		bufferHeader[0] = methodName;
 
 		byte[] bufferBody = serializeObject(node);
 
 		int bufferLength = bufferBody.length;
 
-		byte[] bufferTarget = new byte[RESERVED_BYTES_FOR_METHOD_CALL + bufferLength];
+		byte[] bufferTarget = new byte[RESERVED_BYTES_FOR_METHOD_CALL + bufferBody.length];
 
-		System.arraycopy(bufferHeader, 0, bufferTarget, 0, 1);
-		System.arraycopy(bufferBody, 0, bufferTarget, 1, bufferLength -1);
+		bufferTarget[0] = methodName;
+
+		System.arraycopy(bufferBody, 0, bufferTarget, 1, bufferBody.length);
 
 		return bufferTarget;
 	}
@@ -433,19 +425,18 @@ public class Serialization {
 	
 	protected byte[] fillRoutHelperByteArray(RoutHelper routHelper){
 
-		byte methodName = (byte) STR_SEND_ROUTING_REQUEST;
-		byte[] bufferHeader= new byte[1];
-		bufferHeader[0] = methodName;
+			byte methodName = (byte) STR_SEND_ROUTING_REQUEST;
 
-		byte[] bufferBody = serializeObject(routHelper);
+			byte[] bufferBody = serializeObject(routHelper);
 
-		byte[] bufferTarget = new byte[RESERVED_BYTES_FOR_METHOD_CALL + bufferBody.length];
+			byte[] bufferTarget = new byte[RESERVED_BYTES_FOR_METHOD_CALL + bufferBody.length];
 
-		System.arraycopy(bufferHeader, 0, bufferTarget, 0, 1);
-		System.arraycopy(bufferBody, 0, bufferTarget, 1, bufferBody.length -1);
+			bufferTarget[0] = methodName;
 
-		return bufferTarget;
-	}
+			System.arraycopy(bufferBody, 0, bufferTarget, 1, bufferBody.length);
+
+			return bufferTarget;
+		}
 
 	
 	
@@ -461,15 +452,14 @@ public class Serialization {
 	protected byte[] fillNeighbourByteArray(Neighbour neighbour){
 
 		byte methodName = (byte) STR_SEND_NEIGHBOUR;
-		byte[] bufferHeader= new byte[1];
-		bufferHeader[0] = methodName;
 
 		byte[] bufferBody = serializeObject(neighbour);
 
 		byte[] bufferTarget = new byte[RESERVED_BYTES_FOR_METHOD_CALL + bufferBody.length];
 
-		System.arraycopy(bufferHeader, 0, bufferTarget, 0, 1);
-		System.arraycopy(bufferBody, 0, bufferTarget, 1, bufferBody.length -1);
+		bufferTarget[0] = methodName;
+
+		System.arraycopy(bufferBody, 0, bufferTarget, 1, bufferBody.length);
 
 		return bufferTarget;
 	}
@@ -488,15 +478,14 @@ public class Serialization {
 	protected byte[] fillPeerMemoByteArray(PeerMemo peerMemo){
 
 		byte methodName = (byte) STR_SEND_PEERMEMO;
-		byte[] bufferHeader= new byte[1];
-		bufferHeader[0] = methodName;
 
 		byte[] bufferBody = serializeObject(peerMemo);
 
 		byte[] bufferTarget = new byte[RESERVED_BYTES_FOR_METHOD_CALL + bufferBody.length];
 
-		System.arraycopy(bufferHeader, 0, bufferTarget, 0, 1);
-		System.arraycopy(bufferBody, 0, bufferTarget, 1, bufferBody.length -1);
+		bufferTarget[0] = methodName;
+
+		System.arraycopy(bufferBody, 0, bufferTarget, 1, bufferBody.length);
 
 		return bufferTarget;
 	}
@@ -515,15 +504,14 @@ public class Serialization {
 	protected byte[] fillForeignDataByteArray(ForeignData foreignData){
 
 		byte methodName = (byte) STR_SEND_FOREIGNDATA;
-		byte[] bufferHeader= new byte[1];
-		bufferHeader[0] = methodName;
 
 		byte[] bufferBody = serializeObject(foreignData);
 
 		byte[] bufferTarget = new byte[RESERVED_BYTES_FOR_METHOD_CALL + bufferBody.length];
 
-		System.arraycopy(bufferHeader, 0, bufferTarget, 0, 1);
-		System.arraycopy(bufferBody, 0, bufferTarget, 1, bufferBody.length -1);
+		bufferTarget[0] = methodName;
+
+		System.arraycopy(bufferBody, 0, bufferTarget, 1, bufferBody.length);
 
 		return bufferTarget;
 	}
@@ -542,14 +530,13 @@ public class Serialization {
 	protected byte[] fillPeerMemoListByteArray(ArrayList<PeerMemo> list){
 
 		byte methodName = (byte) STR_SEND_LIST_PEERMEMO;
-		byte[] bufferHeader= new byte[1];
-		bufferHeader[0] = methodName;
 
 		byte[] bufferBody = serializeObject(list);
 
 		byte[] bufferTarget = new byte[RESERVED_BYTES_FOR_METHOD_CALL + bufferBody.length];
 
-		System.arraycopy(bufferHeader, 0, bufferTarget, 0, 1);
+		bufferTarget[0] = methodName;
+
 		System.arraycopy(bufferBody, 0, bufferTarget, 1, bufferBody.length);
 
 		return bufferTarget;
@@ -569,14 +556,13 @@ public class Serialization {
 	protected byte[] fillNeighbourListByteArray(ArrayList<Neighbour> list){
 
 		byte methodName = (byte) STR_SEND_LIST_NEIGHBOUR;
-		byte[] bufferHeader= new byte[1];
-		bufferHeader[0] = methodName;
 
 		byte[] bufferBody = serializeObject(list);
 
 		byte[] bufferTarget = new byte[RESERVED_BYTES_FOR_METHOD_CALL + bufferBody.length];
 
-		System.arraycopy(bufferHeader, 0, bufferTarget, 0, 1);
+		bufferTarget[0] = methodName;
+
 		System.arraycopy(bufferBody, 0, bufferTarget, 1, bufferBody.length);
 
 		return bufferTarget;
@@ -596,15 +582,14 @@ public class Serialization {
 	protected byte[] fillRoutHelperPicByteArray(RoutHelper routHelper){
 
 		byte methodName = (byte) STR_SEND_ROUT_HELPER_PIC;
-		byte[] bufferHeader= new byte[1];
-		bufferHeader[0] = methodName;
 
 		byte[] bufferBody = serializeObject(routHelper);
 
 		byte[] bufferTarget = new byte[RESERVED_BYTES_FOR_METHOD_CALL + bufferBody.length];
 
-		System.arraycopy(bufferHeader, 0, bufferTarget, 0, 1);
-		System.arraycopy(bufferBody, 0, bufferTarget, 1, bufferBody.length -1);
+		bufferTarget[0] = methodName;
+
+		System.arraycopy(bufferBody, 0, bufferTarget, 1, bufferBody.length);
 
 		return bufferTarget;
 	}
