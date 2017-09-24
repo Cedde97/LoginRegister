@@ -170,14 +170,14 @@ public class LogicTest {
         neighbourList.add(n1);
         peerMemoList.add(p);
 
-
+/*
         Node node = new Node(01,0.5,0.5,ip,2,zone);
         node.setNeighbourList(neighbourList);
         node.setPeerMemoList(peerMemoList);
         RoutHelper rh = new RoutHelper(ip,0.3,0.5,02);
 
         Node neuerNode = node.routing(rh);
-        System.out.println(neuerNode.toString());
+        System.out.println(neuerNode.toString());*/
 
     }
   /*  @Test

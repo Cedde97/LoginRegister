@@ -1,5 +1,11 @@
-package com.example.somaro.loginregister;
 
+
+
+
+package com.example.somaro.loginregister;
+public class ExampleInstrumentedTest{
+
+/*
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.test.InstrumentationRegistry;
@@ -21,11 +27,11 @@ import source.*;
 
 import static org.junit.Assert.*;
 
-/**
+*//**
  * Instrumentation test, which will execute on an Android device.
  *
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
- */
+ *//*
 @SuppressWarnings("deprecation")
 @RunWith(AndroidJUnit4.class)
 public class ExampleInstrumentedTest {
@@ -412,10 +418,10 @@ public class ExampleInstrumentedTest {
 
     }
 
-    /**
+    *//**
      * @author Alexander Lukacs
      *
-     */
+     *//*
     @Test
     public void testExist()
     {
@@ -665,10 +671,10 @@ public class ExampleInstrumentedTest {
 
             zone.split(node1,node2,node3,node4);
 
-            /*neighborDbSource1.createNeighborMemo(neighbour1);
+            *//*neighborDbSource1.createNeighborMemo(neighbour1);
             neighborDbSource2.createNeighborMemo(neighbour2);
             neighborDbSource3.createNeighborMemo(neighbour3);
-            neighborDbSource3.createNeighborMemo(neighbour4);*/
+            neighborDbSource3.createNeighborMemo(neighbour4);*//*
 
             dateiMemoDbSource1.updateCornerBottomRightY(node1.getMyZone().getBottomRight().getY());
             dateiMemoDbSource1.updateCornerBottomRightX(node1.getMyZone().getBottomRight().getX());
@@ -895,7 +901,7 @@ public class ExampleInstrumentedTest {
         Node neuerNode = node.routing(rh);
         System.out.println(neuerNode.toString());
 
-    }
+    }*/
   /*  @Test
     public void testSendIPAddress() throws IOException {
         Client client = new Client();

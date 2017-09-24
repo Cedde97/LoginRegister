@@ -23,7 +23,6 @@ public class NodeActivity extends Activity {
         try{
             startHashX();
             startHashY();
-            startRouting();
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -49,9 +48,6 @@ public class NodeActivity extends Activity {
 
 
 
-    private void startRouting(){
-        new RoutingTask().execute("1.3","3.5");
-    }
 }
 
 

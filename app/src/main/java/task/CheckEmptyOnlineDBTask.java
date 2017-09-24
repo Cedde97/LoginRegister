@@ -15,7 +15,6 @@ import java.net.URL;
 /**
  * Created by Joshi on 20.09.2017.
  */
-
 public class CheckEmptyOnlineDBTask extends AsyncTask<Void,Void,Boolean> {
     private boolean isEmpty;
 

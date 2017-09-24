@@ -69,7 +69,7 @@
 
         <Button
             android:id="@+id/fileTransferButton"
-            android:layout_width="179dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="FileTransfer" />
 
@@ -82,7 +82,7 @@
 
         <Button
             android:id="@+id/routingRequest"
-            android:layout_width="181dp"
+            android:layout_width="124dp"
             android:layout_height="38dp"
             android:onClick="startRoutingRequest"
             android:text="Routing" />
@@ -90,7 +90,7 @@
 
     <Button
         android:id="@+id/button"
-        android:layout_width="137dp"
+        android:layout_width="122dp"
         android:layout_height="wrap_content"
         android:text="Button" />
 
@@ -102,7 +102,7 @@
 
     <Button
         android:id="@+id/firstRouting"
-        android:layout_width="182dp"
+        android:layout_width="wrap_content"
         android:layout_height="38dp"
         android:text="FirstRouting" />
 

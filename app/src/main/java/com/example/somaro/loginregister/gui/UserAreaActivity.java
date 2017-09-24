@@ -2,6 +2,7 @@ package com.example.somaro.loginregister.gui;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -21,14 +22,19 @@ import com.example.somaro.loginregister.R;
 import org.json.JSONException;
 
 import java.io.File;
+import java.net.ServerSocket;
 import java.util.ArrayList;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
+
+import source.DatabaseManager;
+import source.DateiMemoDbHelper;
 import source.NeighborDbSource;
 import task.FileTransferTask;
+import task.FirstJoinTask;
 import task.RequestJoinTask;
 import task.SendNeighBourListTask;
 import activity.SendRoutActivity;
@@ -37,8 +43,6 @@ import bootstrap.InsertOwnIPActivity;
 import connection.Client;
 import connection.RoutHelper;
 import connection.ServerThreadActivity;
-import exception.XMustBeLargerThanZeroException;
-import exception.YMustBeLargerThanZeroException;
 import model.*;
 
 
@@ -58,19 +62,21 @@ public class UserAreaActivity extends Activity {
     private int id ;
     private NeighborDbSource nDb = new NeighborDbSource();
     private String data = null;
+    private ServerSocket serverSocket;
 
 
     private Button routRequest, fileTransferRequest, neighbourTransfer, startServer, firstRouting;
-    
+
 
     public String getPhotoId( ){
 
         String data = "";
 
         data = "" + getId() + getBildAnzahl() ;
-    return data;
+        return data;
 
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,11 +118,22 @@ public class UserAreaActivity extends Activity {
         Intent intent = getIntent();
         String name = intent.getStringExtra("name");
         id = intent.getIntExtra("id",0);
-       // String phototID = photoId(id);
+        // String phototID = photoId(id);
         String message = id + " " + getPhotoId() + name + " welcome to your user area";
 
         welcomeMsg.setText(message);
 
+        Context appContext;
+        DateiMemoDbHelper dbHelper;
+
+        //===============================================
+        appContext = this.getApplicationContext();
+        dbHelper = new DateiMemoDbHelper(appContext);
+        DatabaseManager.initializeInstance(dbHelper);
+        //===============================================
+
+        //Thread serverThread = new Thread(new ServerThread());
+        //serverThread.start();
     }
 
     /**
@@ -135,7 +152,7 @@ public class UserAreaActivity extends Activity {
             String name = intent.getStringExtra("name");
             id = intent.getIntExtra("id",0);
             RoutHelper rh = new RoutHelper(ownIP,x,y,id);
-            startRequestJoin(rh);
+            startFirstJoin(rh);
 
         }
     };
@@ -371,13 +388,6 @@ public class UserAreaActivity extends Activity {
         return uriString;
     }
 
-    private void insertOwnIP() throws JSONException {
-        new InsertOwnIPActivity().execute();
-    }
-
-    private void startRequestJoin(RoutHelper rh){
-        new RequestJoinTask().execute(rh);
-    }
 
     /**
      * Ã–ffnen der Foto Gallery
@@ -397,4 +407,31 @@ public class UserAreaActivity extends Activity {
         startActivityForResult(photoPickerIntent,IMAGE_GALLERY_REQUEST );
     }
 
+
+
+    private void insertOwnIP() throws JSONException {
+        new InsertOwnIPActivity().execute();
+    }
+
+    private void startRequestJoin(RoutHelper rh){
+        new RequestJoinTask().execute(rh);
+    }
+
+    private void startFirstJoin(RoutHelper rh){
+        new FirstJoinTask().execute(rh).execute();
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if (serverSocket != null) {
+            try {
+                serverSocket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

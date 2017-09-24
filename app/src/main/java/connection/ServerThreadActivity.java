@@ -103,8 +103,6 @@ public class ServerThreadActivity extends Activity {
 
                     int methodName = serialization.getByteHeader(buffer);
 
-                    System.out.println(Integer.toString(methodName));
-
                     Log.d("Header: ", "" + methodName);
                     switch (methodName) {
 
@@ -131,7 +129,7 @@ public class ServerThreadActivity extends Activity {
 
                             Node node = server.getNode(buffer);
 
-                            Log.d(node.toString(), "");
+                            Log.d("Mein neuer Node: ", node.toString());
 
                             break;
                         }

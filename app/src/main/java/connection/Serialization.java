@@ -1,5 +1,8 @@
 package connection;
 
+import android.os.Environment;
+import android.util.Log;
+
 import model.*;
 import source.ForeignDataDbSource;
 
