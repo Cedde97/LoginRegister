@@ -274,7 +274,7 @@ public class ForeignDataDbSource  implements java.io.Serializable{
         if (cursor.moveToFirst()) {
             do {
                 foreignData = new ForeignData();
-                foreignData.setUid(cursor.getLong(cursor.getColumnIndex(dbHelper.COLUMN_FID)));
+                foreignData.setUid(cursor.getInt(cursor.getColumnIndex(dbHelper.COLUMN_FID)));
                 //foreignData.setChecked(isChecked);
                 foreignData.setPunktX(cursor.getDouble(cursor.getColumnIndex(dbHelper.COLUMN_PUNKTX)));
                 foreignData.setPunktY(cursor.getDouble(cursor.getColumnIndex(dbHelper.COLUMN_PUNKTY)));
@@ -311,7 +311,7 @@ public class ForeignDataDbSource  implements java.io.Serializable{
         if (cursor.moveToFirst()) {
             do {
                 foreignData = new ForeignData();
-                foreignData.setUid(cursor.getLong(cursor.getColumnIndex(dbHelper.COLUMN_FID)));
+                foreignData.setUid(cursor.getInt(cursor.getColumnIndex(dbHelper.COLUMN_FID)));
                 //foreignData.setChecked(isChecked);
                 foreignData.setPunktX(cursor.getDouble(cursor.getColumnIndex(dbHelper.COLUMN_PUNKTX)));
                 foreignData.setPunktY(cursor.getDouble(cursor.getColumnIndex(dbHelper.COLUMN_PUNKTY)));
