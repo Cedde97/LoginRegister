@@ -1,6 +1,8 @@
 package connection;
-import connection.RoutHelper;
+
 import model.*;
+import source.ForeignDataDbSource;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -16,7 +18,7 @@ import java.util.ArrayList;
 
 
 /**
- * Klasse Serialization, die Methoden zum serialisieren und deserialisieren von Objekten bietet.
+ * Klasse Serialization, die Methoden zum Serialisieren und Deserialisieren von Objekten bietet.
  * 
  * @author Cedric 
  */
@@ -34,7 +36,7 @@ public class Serialization {
 	protected static final int STR_SEND_FOREIGNDATA             = 6;
 	protected static final int STR_SEND_LIST_PEERMEMO           = 7;
 	protected static final int STR_SEND_LIST_NEIGHBOUR          = 8;
-
+	protected static final int STR_SEND_ROUT_HELPER_PIC         = 9;
 
 
 	/**
@@ -476,7 +478,7 @@ public class Serialization {
 	 *      Der Header (byte[0]) ist fuer den MethodenAufrufNamen reserviert (5)
 	 *      Im Body (ab byte[1]) stehen die eigentlichen Nutzdaten
 	 *
-	 * @param      = das PeerMemo, das in das HilfsByteArray geschrieben werden soll
+	 * @param peerMemo      = das PeerMemo, das in das HilfsByteArray geschrieben werden soll
 	 * @return               = das erzeugte HilfsByteArray
 	 */
 	
@@ -503,7 +505,7 @@ public class Serialization {
 	 *      Der Header (byte[0]) ist fuer den MethodenAufrufNamen reserviert (6)
 	 *      Im Body (ab byte[1]) stehen die eigentlichen Nutzdaten
 	 *
-	 * @param     = die ForeignData, die in das HilfsByteArray geschrieben werden soll
+	 * @param foreignData    = die ForeignData, die in das HilfsByteArray geschrieben werden soll
 	 * @return               = das erzeugte HilfsByteArray
 	 */
 	
@@ -577,17 +579,52 @@ public class Serialization {
 		return bufferTarget;
 	}
 
-	/////////////////////////////fuer spaeter wenn Zeit ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+	/**
+	 * Methode fillRoutHelperByteArray, zum Fuellen eines HilfsByteArrays
+	 *      Der Header (byte[0]) ist fuer den MethodenAufrufNamen reserviert (9)
+	 *      Im Body (ab byte[1]) stehen die eigentlichen Nutzdaten
+	 *
+	 * @param routHelper	  = der RoutHelper, der in das HilfsByteArray geschrieben werden soll
+	 * @return           	  = das erzeugte HilfsByteArray
+	 */
+
+	protected byte[] fillRoutHelperPicByteArray(RoutHelper routHelper){
+
+		byte methodName = (byte) STR_SEND_ROUT_HELPER_PIC;
+		byte[] bufferHeader= new byte[1];
+		bufferHeader[0] = methodName;
+
+		byte[] bufferBody = serializeObject(routHelper);
+
+		byte[] bufferTarget = new byte[RESERVED_BYTES_FOR_METHOD_CALL + bufferBody.length];
+
+		System.arraycopy(bufferHeader, 0, bufferTarget, 0, 1);
+		System.arraycopy(bufferBody, 0, bufferTarget, 1, bufferBody.length -1);
+
+		return bufferTarget;
+	}
+
+	///////////////////////////// von Alex  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	
-	protected void deserializdeObject(byte[] buffer){
+	private String getFoto(int uid, ForeignDataDbSource foreignDataDb)
+	{
+		String foto = "";
+		Log.d("TEST",""+ uid );
+		if (uid == foreignDataDb.getUidForeign()) {
+			foto = foreignDataDb.getFotoId(foreignDataDb.getUidForeign()) + ".jpg";
+			Log.d("TEST", "FOTO " + foto);
+		}
+		return foto;
+	}
 
-		// schreibe ObjektTyp in buffer[0], ObjektInhalt in Rest mit array.copy
-		// getBufferHeader ==> ObjektTyp
-		// cast Objekt in ObjektTyp
-		// return Objekt
-
+	private File getFilePath(int uid, ForeignDataDbSource foreignDataDb)
+	{
+		return new File(Environment.getExternalStorageDirectory() + File.separator+"images"
+				+ File.separator + "CAN_PICS" + File.separator + getFoto(uid,foreignDataDb) );
 	}
 }
 
