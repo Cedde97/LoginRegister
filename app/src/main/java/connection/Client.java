@@ -34,7 +34,7 @@ public class Client implements java.io.Serializable {
 	 * @param buffer	= das zu uebertragende ByteArray
 	 */
 
-	public void sendByteArray (Socket socket, byte[] buffer)throws IOException, UnknownHostException{
+	public void sendByteArray (Socket socket, byte[] buffer){
 
 		byte[] message = buffer;
 		this.socket    = socket;
@@ -49,7 +49,11 @@ public class Client implements java.io.Serializable {
 			e.printStackTrace();
 		}finally{
 			if(socket != null){
-				socket.close();
+				try{
+					socket.close();
+				}catch (IOException e){
+					e.printStackTrace();
+				}
 			}
 		}
 	}
@@ -61,27 +65,16 @@ public class Client implements java.io.Serializable {
 	 *
 	 * @param socket 						= das Socket, auf dem Uebertragen wird
 	 * @param file							= die File/ das Image zum Senden
-	 * @uses imageSerializer				= Hilfsmethode, um eine File/ein Image als ByteArray wiederzugeben
-	 * @uses sendByteArray 					= Hilfsmethode, zum Senden eines ByteArrays
-	 * @throws UnknownHostException			= unbekannter Host
-	 * @throws IOException					= Fehler beim Input/Output
-	 */
+	*/
 
 	public void sendImageAsByteArray(Socket socket, File file){
 
 		this.socket = socket;
 
-		try {
+		byte[] message = serialization.fillImageByteArray(file);
 
-			byte[] message = serialization.fillImageByteArray(file);
+		sendByteArray(socket, message);
 
-			sendByteArray(socket, message);
-
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 
 
@@ -91,11 +84,9 @@ public class Client implements java.io.Serializable {
 	 * 
 	 * @param socket  					= das Socket, auf dem uebertragen wird	 
 	 * @param node						= der zu uebertragende Knoten/Node
-	 * @throws UnknownHostException		= Unknown Host
-	 * @throws IOException				= Fehler beim Input/Output
 	 */
 
-	public void sendNodeAsByteArray(Socket socket, Node node) throws UnknownHostException, IOException{
+	public void sendNodeAsByteArray(Socket socket, Node node){
 
 		this.socket = socket;
 
@@ -111,11 +102,9 @@ public class Client implements java.io.Serializable {
 	 * 
 	 * @param socket  					= das Socket, auf dem uebertragen wird
 	 * @param list						= die Liste, die gesendet wird
-	 * @throws UnknownHostException     = Unknown Host
-	 * @throws IOException				= Fehler beim Input/Output
 	 */
 	
-	public void sendPeerMemoListAsByteArray(Socket socket, ArrayList<PeerMemo> list) throws UnknownHostException, IOException{
+	public void sendPeerMemoListAsByteArray(Socket socket, ArrayList<PeerMemo> list){
 
 		this.socket = socket;
 
@@ -131,11 +120,9 @@ public class Client implements java.io.Serializable {
 	 * 
 	 * @param socket  					= das Socket, auf dem uebertragen wird
 	 * @param list						= die Liste, die gesendet wird
-	 * @throws UnknownHostException     = Unknown Host
-	 * @throws IOException				= Fehler beim Input/Output
 	 */
 
-	public void sendNeighbourListAsByteArray(Socket socket, ArrayList<Neighbour> list) throws UnknownHostException, IOException{
+	public void sendNeighbourListAsByteArray(Socket socket, ArrayList<Neighbour> list){
 
 		this.socket = socket;
 
@@ -151,15 +138,14 @@ public class Client implements java.io.Serializable {
 	 * 
 	 * @param socket  					= das Socket, auf dem uebertragen wird
 	 * @param routhelper				= der RoutHelper, der uebertragen wird
-	 * @throws UnknownHostException     = Unknown Host
-	 * @throws IOException				= Fehler beim Input/Output
 	 */
 	
-	public void sendRoutHelperAsByteArray(Socket socket, RoutHelper routhelper) throws UnknownHostException, IOException{
+	public void sendRoutHelperAsByteArray(Socket socket, RoutHelper routhelper){
 
 		this.socket = socket;
 
 		byte[] buffer = serialization.fillRoutHelperByteArray(routhelper);
+
 		sendByteArray(socket, buffer);
 	}
 
@@ -170,15 +156,14 @@ public class Client implements java.io.Serializable {
 	 *
 	 * @param socket  					= das Socket, auf dem uebertragen wird
 	 * @param routhelper				= der RoutHelper, der uebertragen wird
-	 * @throws UnknownHostException     = Unknown Host
-	 * @throws IOException				= Fehler beim Input/Output
 	 */
 
-	public void sendRoutHelperPicAsByteArray(Socket socket, RoutHelper routhelper) throws UnknownHostException, IOException{
+	public void sendRoutHelperPicAsByteArray(Socket socket, RoutHelper routhelper){
 
 		this.socket = socket;
 
 		byte[] buffer = serialization.fillRoutHelperPicByteArray(routhelper);
+
 		sendByteArray(socket, buffer);
 	}
 
@@ -189,11 +174,9 @@ public class Client implements java.io.Serializable {
 	 * 
 	 * @param socket  					= das Socket, auf dem uebertragen wird
 	 * @param neighbour					= der Neighbour, der uebertragen wird
-	 * @throws UnknownHostException     = Unknown Host
-	 * @throws IOException				= Fehler beim Input/Output
 	 */
 	
-	public void sendNeighbourAsByteArray(Socket socket, Neighbour neighbour) throws UnknownHostException, IOException{
+	public void sendNeighbourAsByteArray(Socket socket, Neighbour neighbour){
 
 		this.socket = socket;
 
@@ -209,11 +192,9 @@ public class Client implements java.io.Serializable {
 	 * 
 	 * @param socket  					= das Socket, auf dem uebertragen wird
 	 * @param peerMemo				= das PeerMemo, das uebertragen wird
-	 * @throws UnknownHostException     = Unknown Host
-	 * @throws IOException				= Fehler beim Input/Output
 	 */
 
-	public void sendPeerMemoAsByteArray(Socket socket, PeerMemo peerMemo) throws UnknownHostException, IOException{
+	public void sendPeerMemoAsByteArray(Socket socket, PeerMemo peerMemo){
 
 		this.socket = socket;
 
@@ -229,11 +210,9 @@ public class Client implements java.io.Serializable {
 	 * 
 	 * @param socket  					= das Socket, auf dem uebertragen wird
 	 * @param foreignData				= die ForeignData, die uebertragen wird
-	 * @throws UnknownHostException     = Unknown Host
-	 * @throws IOException				= Fehler beim Input/Output
 	 */
 
-	public void sendForeignDataAsByteArray(Socket socket, ForeignData foreignData) throws UnknownHostException, IOException{
+	public void sendForeignDataAsByteArray(Socket socket, ForeignData foreignData){
 
 		this.socket = socket;
 
